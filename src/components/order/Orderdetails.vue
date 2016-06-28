@@ -147,6 +147,12 @@
     text-overflow: ellipsis;
     margin-bottom: 5px;
 }
+.order-details-foot dt{
+    width: auto;
+}
+.order-details-foot dd{
+    margin-left: 70px;
+}
 
 </style>
 
@@ -334,7 +340,7 @@
                 <div class="code-box-title">
                     <span><i class="glyphicon glyphicon-tags"></i>信息总览</span>
                 </div>
-                <div class="row">
+                <div class="row order-details-foot">
                     <div class="col-md-3">
                         <h5>收货人信息</h3>
                         <dl class="dl-horizontal">
