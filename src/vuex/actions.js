@@ -7,13 +7,21 @@ import {API_ROOT} from '../config'
 
 //订单列表
 export const orderList=function({dispatch, state},orderlist){
-    Vue.http({url: API_ROOT+'adminapi/order/list', data:{page: orderlist.page,status:orderlist.status},method: 'post'})
-    .then(res =>
-        [dispatch('ORDERLIST',res.data.data)]
-    )
-    .catch(function(ex) {
-        console.log('parsing failed', ex)
-    })
+    // POST
+     this.$http.post(API_ROOT+'adminapi/order/list', {page: orderlist.page,status:orderlist.status}).then((response) => {
+         // get status
+         response.status;
+         // get status text
+         response.statusText;
+         // get all headers
+         response.headers;
+         // get 'Expires' header
+         response.headers['Expires'];
+         // set data
+         dispatch('ORDERLIST',response.data.data)
+     }, (response) => {
+         // error callback
+     });
 }
 
 //订单详情
