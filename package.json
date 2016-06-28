@@ -1,7 +1,7 @@
 {
-  "name": "vue-cli",
+  "name": "admin-web",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "admin-web",
   "author": "小鱼 <80447081@qq.com>",
   "private": true,
   "scripts": {

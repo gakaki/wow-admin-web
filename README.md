@@ -1,6 +1,6 @@
 # admin-web
 
-> A Vue.js project
+> admin-web
 
 ## Build Setup
 
