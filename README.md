@@ -1,4 +1,4 @@
-# wowdsgn-admin-vue
+# admin-web
 
 > A Vue.js project
 
