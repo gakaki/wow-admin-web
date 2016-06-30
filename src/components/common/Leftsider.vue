@@ -101,6 +101,11 @@
                             </a>
                         </li>
                         <li class="menu-item-selected">
+                            <a v-link='{ path: "/goods/addproducts"}'>
+                                新增商品
+                            </a>
+                        </li>
+                        <li class="menu-item-selected">
                             <a v-link='{ path: "/goods/import"}'>
                                 批量导入商品
                             </a>

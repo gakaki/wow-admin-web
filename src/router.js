@@ -56,6 +56,12 @@ export default function(router) {
                         require(['./views/goods/Goods'], resolve)
                     }
                 },
+                '/addproducts': {
+                    breadcrumb: '新增商品',
+                    component(resolve) {
+                        require(['./views/addproducts/addproducts'], resolve)
+                    }
+                },
                 '/list/details/:goodsid': {
                     breadcrumb: '商品详情',
                     component(resolve) {

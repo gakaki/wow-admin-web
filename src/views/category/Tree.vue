@@ -1,10 +1,11 @@
 <style media="screen">
-.tree-box .item {
+.tree-box-item {
     cursor: pointer;
 }
 
-.tree-box .bold {
+.tree-box-bold {
     font-weight: bold;
+    background: #f9f9f9;
 }
 
 .tree-box ul {
@@ -18,12 +19,12 @@
 <template>
 
 <li class="tree-box">
-    <div :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
+    <div :class="{'tree-box-bold': isFolder}" @click="toggle" @dblclick="changeType">
         {{model.name}}
         <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
     </div>
     <ul v-show="open" v-if="isFolder">
-        <item @click.stop.prevent="select(model.name,model.id,model.id)" class="item" v-for="model in model.children" :model="model">
+        <item @click.stop.prevent="select(model.name,model.id)" class="tree-box-item" v-for="model in model.children" :model="model">
         </item>
     </ul>
 </li>
@@ -40,7 +41,8 @@ export default {
     data: function() {
         return {
             open: true,
-            activeName:null
+            tag:null,
+            activeName:null,
         }
     },
     computed: {
@@ -50,19 +52,26 @@ export default {
         }
     },
     methods: {
+        /**
+         * [toggle 点击展开或者收回]
+         * [select 选中后传值]
+         */
         toggle: function() {
             if (this.isFolder) {
-                this.open = !this.open
+                //this.open = !this.open
             }
         },
         select:function(val,id){
+            /**
+             * [$dispatch 通知Categorytree.vue接受选中的分类信息]
+             */
             this.$dispatch('child-msg', {val:val,id:id})
         },
         changeType: function() {
-            if (!this.isFolder) {
-                Vue.set(this.model, 'children', [])
-                this.open = true
-            }
+            // if (!this.isFolder) {
+            //     Vue.set(this.model, 'children', [])
+            //     this.open = true
+            // }
         }
     }
 }

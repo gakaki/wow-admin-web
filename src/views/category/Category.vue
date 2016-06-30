@@ -75,9 +75,18 @@
     .category-list-one li+li{
         padding:25px 10px;
     }
+    .category-select-box{
+        position: absolute;
+        background: #fff;
+        z-index: 5;
+        border: 1px solid #ddd;
+        width: 90%;
+        height: 200px;
+        overflow: scroll;
+        padding: 5px;
+    }
 </style>
 <template>
-
     <div class="row">
         <div class="col-md-12">
             <div class="btn-group pull-left">
@@ -218,26 +227,15 @@
                 </div>
                 <div class="form-group">
                     <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>父分类</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" placeholder="数字、英文和汉字，1-20个字">
+                    <div class="col-sm-5" style="position:relative;">
+                        <Categorytree></Categorytree>
                     </div>
                     <span class="col-sm-5 control-label">
                         <div class="text-left text-muted">顶级分类请选择 - 无 -</div>
                     </span>
                 </div>
-                <div class="form-group">
-                    <label for="firstname" class="col-sm-2 control-label"><span class="text-danger"></span>虚拟父分类</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" placeholder="数字、英文和汉字，1-20个字">
-                    </div>
-                    <span class="col-sm-5 control-label" style="text-align:left;">
-                        <em class="icon-box-sm">
-                            <i class="glyphicon glyphicon-plus"></i>
-                        </em>
-                        <em class="icon-box-sm text-danger">
-                            <i class="glyphicon glyphicon-remove"></i>
-                        </em>
-                    </span>
+                <div v-for="item in CategorytreecloneNum" v-if="categoryFather!=null">
+                    <Categorytreeclone></Categorytreeclone>
                 </div>
                 <div class="form-group">
                     <label for="lastname" class="col-sm-2 control-label"><span class="text-danger">*</span>LOGO</label>
@@ -278,12 +276,17 @@
 </template>
 
 <script type="text/javascript">
-    import Modal from '../../components/common/Modal'
+    import Modal                from    '../../components/common/Modal'
+    import Categorytree         from    './Categorytree'
+    import Categorytreeclone    from    './Categorytreeclone'
     export default{
         data(){
             return{
-                showmodal:false,
-                modaltitle:'新增分类',
+                showmodal               :   false,
+                modaltitle              :   '新增分类',
+                categoryFather          :   null,
+                categoryCloneArr        :   [],
+                CategorytreecloneNum    :   1,
                 list:[
                     {
                         icon:'http://o7s1lyy5h.bkt.clouddn.com/2016_06_23_newuser/index/icon-suning.png',
@@ -492,13 +495,14 @@
             }
         },
         components:{
-            Modal
+            Modal,
+            Categorytree,
+            Categorytreeclone
         },
         methods:{
             listUp:function(data){
                 console.log('上移');
                 console.log(data);
-                //this.list[0].sort=2;
             },
             listDown:function(data){
                 console.log('下移')
@@ -515,6 +519,45 @@
             },
             categorySave:function(){
                 this.showmodal=false;
+            }
+        },
+        events: {
+            'categoryCollect': function (msg) {
+                if (msg.father==true) {
+                    /**
+                     * [$set 收集已选的父分类id]
+                     * @param {[type]} 'categoryFather' [广播名]
+                     * @param  {[type]} msg.msg.id [父组件传过来的已选分类信息]
+                     */
+                    this.$set('categoryFather',msg.msg.id);
+                    console.log(this.categoryFather);
+                }else if(msg.father==false){
+                    /**
+                     * [categoryCloneArr 收集已选的虚拟父分类id]
+                     * @param {[type]} 'categoryCloneArr' [广播名]
+                     * @param  {[type]} msg.msg.id [父组件传过来的已选分类信息]
+                     */
+                    this.categoryCloneArr.push(msg.msg.id)
+                    let set = new Set(this.categoryCloneArr);
+                    let array = Array.from(set);
+                    this.$set('categoryCloneArr',array)
+                    console.log(this.categoryCloneArr);
+                }
+            },
+            'addCloneCategory': function (msg) {
+                this.$set('CategorytreecloneNum',this.CategorytreecloneNum+1);
+            },
+            'deleteCloneCategory':function(msg){
+                console.log(msg);
+                let set = new Set(this.categoryCloneArr);
+                set.delete(msg.deleteid);
+                let array = Array.from(set);
+                this.$set('categoryCloneArr',array)
+                console.log(this.categoryCloneArr);
+                if (this.CategorytreecloneNum==1) {
+                    return false;
+                }
+                this.$set('CategorytreecloneNum',this.CategorytreecloneNum-1);
             }
         },
         ready(){
