@@ -59,7 +59,7 @@ export default function(router) {
                 '/addproducts': {
                     breadcrumb: '新增商品',
                     component(resolve) {
-                        require(['./views/addproducts/addproducts'], resolve)
+                        require(['./views/addproducts/Addproducts'], resolve)
                     }
                 },
                 '/list/details/:goodsid': {
