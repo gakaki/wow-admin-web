@@ -55,6 +55,9 @@
     .sales-attribute-table tbody td{
         padding:10px 3px !important;
     }
+    .sales-attribute-table tbody td input[type=text]{
+        text-align: center;
+    }
     .sales-attribute-table-text{
         width: 74px;
         display: inline-block;

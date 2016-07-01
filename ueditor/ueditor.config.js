@@ -40,8 +40,7 @@
             'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
             'directionalityltr', 'directionalityrtl', 'indent', '|',
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
-            'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-            'simpleupload', 'insertcode', 'pagebreak', '|',
+            'link', 'unlink', 'anchor', '|', 'insertcode', 'pagebreak', '|',
             'horizontal', 'date', 'time'
         ]]
         // , toolbars: [[
