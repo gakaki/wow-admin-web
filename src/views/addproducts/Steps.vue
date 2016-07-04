@@ -67,6 +67,10 @@
 </template>
 <script type="text/javascript">
     export default{
-        props:['stepsinfo','stateinfo']
+        props:[
+            'stepsinfo',
+            'stateinfo',
+            'nowtag'
+        ]
     }
 </script>

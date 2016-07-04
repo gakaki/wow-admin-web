@@ -115,21 +115,36 @@
     .details-img-group textarea{
         height: 140px;
     }
+    .addproductsFoot{
+        margin-left: 225px;
+    }
+    .addproductsFoot .col-md-12{
+        padding-top: 7px;
+    }
 </style>
 <template>
     <div class="row">
         <div class="col-md-12" style="margin-top:20px;">
             <div style="width:740px; margin:0 auto;">
-                <Steps :stepsinfo="list" :stateinfo="state"></Steps>
+                <Steps :stepsinfo="list" :stateinfo="state" :nowtag="nowtag"></Steps>
             </div>
         </div>
     </div>
     <Selectcategory v-show="nowtag=='1'"></Selectcategory>
     <div class="row" v-show="nowtag=='1'">
         <div class="text-center col-md-12" style="margin-top:30px;">
-            <button class="btn btn-primary">下一步</button>
+            <button @click="nextSteps" class="btn btn-primary">下一步</button>
         </div>
     </div>
+
+    <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
+       <div class="row">
+           <div class="col-md-12 text-center">
+               <button type="button" class="btn btn-primary">保存商品</button>
+               <button type="button" class="btn btn-warning">预览商品</button>
+           </div>
+       </div>
+    </nav>
 
     <div class="row" v-show="nowtag=='2'">
         <Basicinformation></Basicinformation>
@@ -172,6 +187,18 @@
                 ],
                 state:'2',
                 nowtag:'2'
+            }
+        },
+        methods:{
+            nextSteps:function(){
+                this.$set('state','2');
+                this.$set('nowtag','2');
+            }
+        },
+        events:{
+            'callStepsChangeFater':function(msg){
+                this.$set('nowtag',msg);
+                this.$set('state',msg);
             }
         }
     }

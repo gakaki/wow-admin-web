@@ -30,17 +30,16 @@
                 <script id="editor" type="text/plain" style="width:100%;height:500px;"></script>
             </div>
         </div>
-        <hr>
-        <button @click="setContent(true)" type="button" name="button">插入指定内容</button>
-        <button @click="getContent()" type="button" name="button">获取编辑器内容</button>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+            </label>
+            <div class="col-sm-7">
+                <button @click="getContent()" type="button" name="button">获取编辑器内容</button>
+            </div>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
-
-    //实例化编辑器
-    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    var ue = UE.getEditor('editor');
-
     export default{
         data(){
             return{
@@ -49,10 +48,6 @@
             }
         },
         methods:{
-            insertHtml:function(){
-                var value = prompt('插入html代码', '');
-                UE.getEditor('editor').execCommand('insertHtml', value)
-            },
             setContent:function(isAppendTo,imglink){
                 console.log('回调链接'+imglink);
                 UE.getEditor('editor').setContent('<img style="max-width:640px;" src='+imglink+'>', isAppendTo);
@@ -67,6 +62,10 @@
             }
         },
         ready(){
+            //实例化编辑器
+            //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+            var ue = UE.getEditor('editor');
+
             let _this=this;
             let brandPic = {
                 runtimes: 'html5,flash,html4', //上传模式,依次退化
@@ -102,6 +101,8 @@
                         console.log('#####################上传进行时#######################');
                     },
                     'FileUploaded': function(up, file, info) {
+                        console.log(file);
+                        console.log(info);
                         // 每个文件上传成功后,处理相关的事情
                         console.log('#####################上传成功#######################');
                         let domain = up.getOption('domain');
