@@ -125,6 +125,11 @@
                                 分类管理
                             </a>
                         </li>
+                        <li>
+                            <a v-link='{ path: "/goods/attribute"}'>
+                                商品属性
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

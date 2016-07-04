@@ -91,6 +91,12 @@ export default function(router) {
                     component(resolve) {
                         require(['./views/designers/Designers'], resolve)
                     }
+                },
+                '/attribute': {
+                    breadcrumb: '商品属性',
+                    component(resolve) {
+                        require(['./views/product_attribute/List'], resolve)
+                    }
                 }
             }
         }
