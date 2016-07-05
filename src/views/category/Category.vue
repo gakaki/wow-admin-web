@@ -124,91 +124,7 @@
                 </li>
             </ul>
         </div>
-        <div class="category-main-box" v-for="item in list | orderBy 'sort' 1">
-            <ul class="category-list category-list-one">
-                <li>
-                    <div class="category-box-head">
-                        {{item.sort}}
-                        <p class="category-box-name">
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                            <img class="category-img" v-bind:src=item.icon alt="" />
-                            {{item.name}}
-                        </p>
-                        <a href="javascript:;">新增子分类+</a>
-                    </div>
-                </li>
-                <li>{{item.number}} </li>
-                <li>{{item.totalSales}}</li>
-                <li>{{item.like}}</li>
-                <li>
-                    <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([item.sort])">
-                        <span class="glyphicon glyphicon-chevron-up"></span>上移
-                    </a>
-                    <a v-bind:class="{'btn disabled':$index==list.length-1}" href="javascript:;" @click="listDown([item.sort])">
-                        <span class="glyphicon glyphicon-chevron-down"></span>下移
-                    </a>
-                    <a @click="modalShow()" href="javascript:;">
-                        <span class="glyphicon glyphicon-edit"></span>编辑
-                    </a>
-                    <a href="javascript:;">
-                        <span class="glyphicon glyphicon-minus"></span>删除
-                    </a>
-                </li>
-            </ul>
-            <div class="category-main-box-son" v-for="items in item.son | orderBy 'sort' 1">
-                <ul class="category-list">
-                    <li>
-                        <div class="category-box-head" style="margin-left:30px;">
-                            {{items.sort}}
-                            <p class="category-box-name">
-                                <span class="glyphicon glyphicon-chevron-down"></span>
-                                {{items.name}}
-                            </p>
-                            <a href="javascript:;">新增子分类+</a>
-                        </div>
-                    </li>
-                    <li>{{items.number}}</li>
-                    <li>{{items.totalSales}}</li>
-                    <li>{{items.like}}</li>
-                    <li>
-                        <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([item.sort])">
-                            <span class="glyphicon glyphicon-chevron-up"></span>上移
-                        </a>
-                        <a v-bind:class="{'btn disabled':$index==item.son.length-1}" href="javascript:;" @click="listDown([item.sort])">
-                            <span class="glyphicon glyphicon-chevron-down"></span>下移
-                        </a>
-                        <a @click="modalShow()" href="javascript:;">
-                            <span class="glyphicon glyphicon-edit"></span>编辑
-                        </a>
-                        <a href="javascript:;">
-                            <span class="glyphicon glyphicon-minus"></span>删除
-                        </a>
-                    </li>
-                </ul>
-                <ul class="category-list" v-for="itemss in items.son | orderBy 'sort' 1">
-                    <li v-bind:class="{ 'text-danger': itemss.clone == true}">{{itemss.sort}}{{itemss.name}}</li>
-                    <li v-bind:class="{ 'text-danger': itemss.clone == true}">{{itemss.number}}</li>
-                    <li v-bind:class="{ 'text-danger': itemss.clone == true}">{{itemss.totalSales}}</li>
-                    <li v-bind:class="{ 'text-danger': itemss.clone == true}">{{itemss.like}}</li>
-                    <li>
-                        <span v-if="itemss.clone==false">
-                            <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([item.sort])">
-                                <span class="glyphicon glyphicon-chevron-up"></span>上移
-                            </a>
-                            <a v-bind:class="{'btn disabled':$index==items.son.length-1}" href="javascript:;" @click="listDown([item.sort])">
-                                <span class="glyphicon glyphicon-chevron-down"></span>下移
-                            </a>
-                            <a @click="modalShow()" href="javascript:;">
-                                <span class="glyphicon glyphicon-edit"></span>编辑
-                            </a>
-                            <a href="javascript:;">
-                                <span class="glyphicon glyphicon-minus"></span>删除
-                            </a>
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <Categorypanel v-for="item in list | orderBy 'sort' 1" :list="list[$index]" :isopen="false"></Categorypanel>
     </div>
 
     <modal :show.sync="showmodal">
@@ -279,6 +195,7 @@
     import Modal                from    '../../components/common/Modal'
     import Categorytree         from    './Categorytree'
     import Categorytreeclone    from    './Categorytreeclone'
+    import Categorypanel        from    './Categorypanel'
     export default{
         data(){
             return{
@@ -401,8 +318,8 @@
                         ]
                     },
                     {
-                        icon:'http://o7s1lyy5h.bkt.clouddn.com/2016_06_23_newuser/index/icon-suning.png',
-                        name:'客厅卧室1111',
+                        icon:'http://o7s1lyy5h.bkt.clouddn.com/logo.png',
+                        name:'厨房用品',
                         number:200,
                         totalSales:100,
                         like:500,
@@ -483,8 +400,8 @@
                             }
                         ]
                     },{
-                        icon:'http://o7s1lyy5h.bkt.clouddn.com/2016_06_23_newuser/index/icon-suning.png',
-                        name:'客厅卧室1111',
+                        icon:'http://o7s1lyy5h.bkt.clouddn.com/p1-11.png',
+                        name:'儿童玩具',
                         number:200,
                         totalSales:100,
                         like:500,
@@ -497,7 +414,8 @@
         components:{
             Modal,
             Categorytree,
-            Categorytreeclone
+            Categorytreeclone,
+            Categorypanel
         },
         methods:{
             listUp:function(data){
@@ -508,17 +426,24 @@
                 console.log('下移')
             },
             modalShow:function(data){
-                this.showmodal=true;
+                this.$set('showmodal',true)
                 if (data=='add') {
                     console.log('新增');
-                    this.modaltitle='新增分类'
+                    this.$set('modaltitle','新增分类')
                 }else {
                     console.log('编辑');
-                    this.modaltitle='编辑分类'
+                    this.$set('modaltitle','编辑分类')
                 }
             },
             categorySave:function(){
-                this.showmodal=false;
+                this.$set('showmodal',false)
+            },
+            categoryToggle:function(){
+                if(this.hideCategory==true){
+                    this.$set('hideCategory',false);
+                }else{
+                    this.$set('hideCategory',true);
+                }
             }
         },
         events: {
