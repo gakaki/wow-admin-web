@@ -61,46 +61,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr v-for="item in list">
                     <td>
-                        attribute_code
+                        {{item.code}}
                     </td>
                     <td>
-                        属性名称
+                        {{item.name}}
                     </td>
                     <td>
-                        文本
+                        {{item.type}}
                     </td>
                     <td>
-                        是
+                        <span v-if="item.required==true">是</span>
+                        <span v-if="item.required==false">否</span>
                     </td>
                     <td>
-                        <span class="text-success">启用</span>
-                    </td>
-                    <td>
-                        <a href="javascript:;">
-                            <span class="glyphicon glyphicon-edit"></span>编辑
-                        </a>
-                        <a href="javascript:;">
-                            <span class="glyphicon glyphicon-minus"></span>删除
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        attribute_code
-                    </td>
-                    <td>
-                        属性名称
-                    </td>
-                    <td>
-                        文本
-                    </td>
-                    <td>
-                        是
-                    </td>
-                    <td>
-                        <span class="text-danger">禁用</span>
+                        <span v-if="item.disabled==true" class="text-success">启用</span>
+                        <span v-if="item.disabled==false" class="text-danger">禁用</span>
                     </td>
                     <td>
                         <a href="javascript:;">
@@ -113,11 +90,16 @@
                 </tr>
             </tbody>
         </table>
+        <Pager :cur.sync="1" :all.sync='15'></Pager>
     </div>
 </template>
 
 <script type="text/javascript">
+    import Pager from '../../components/common/Pager'
     export default{
+        components:{
+            Pager
+        },
         data(){
             return{
                 tablist:[
@@ -125,6 +107,24 @@
                     {name:'通用属性',value:'http://www.163.com'}
                 ],
                 tablisttag:0,
+                list:[
+                    {
+                        id:'1',
+                        code:'attribute_code',
+                        name:'属性名称',
+                        type:'文本',
+                        required:true,
+                        disabled:true
+                    },
+                    {
+                        id:'2',
+                        code:'attribute_code2',
+                        name:'属性名称2',
+                        type:'文本2',
+                        required:false,
+                        disabled:false
+                    }
+                ]
             }
         },
         methods:{
