@@ -21,7 +21,7 @@
                 <a v-bind:class="{'btn disabled':$index==list.length-1}" href="javascript:;" @click="listDown([list.sort])">
                     下移
                 </a>
-                <a @click="modalShow()" href="javascript:;">
+                <a @click="modalShow(list.id)" href="javascript:;">
                     编辑
                 </a>
                 <a href="javascript:;">
@@ -44,13 +44,13 @@
                 <li>{{items.totalSales}}</li>
                 <li>{{items.like}}</li>
                 <li>
-                    <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([item.sort])">
+                    <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([items.sort])">
                         <span class="glyphicon glyphicon-chevron-up"></span>上移
                     </a>
-                    <a v-bind:class="{'btn disabled':$index==list.son.length-1}" href="javascript:;" @click="listDown([item.sort])">
+                    <a v-bind:class="{'btn disabled':$index==list.son.length-1}" href="javascript:;" @click="listDown([items.sort])">
                         <span class="glyphicon glyphicon-chevron-down"></span>下移
                     </a>
-                    <a @click="modalShow()" href="javascript:;">
+                    <a @click="modalShow(items.id)" href="javascript:;">
                         <span class="glyphicon glyphicon-edit"></span>编辑
                     </a>
                     <a href="javascript:;">
@@ -71,7 +71,7 @@
                         <a v-bind:class="{'btn disabled':$index==items.son.length-1}" href="javascript:;" @click="listDown([items.sort])">
                             <span class="glyphicon glyphicon-chevron-down"></span>下移
                         </a>
-                        <a @click="modalShow()" href="javascript:;">
+                        <a @click="modalShow(items.id)" href="javascript:;">
                             <span class="glyphicon glyphicon-edit"></span>编辑
                         </a>
                         <a href="javascript:;">
@@ -82,10 +82,25 @@
             </ul>
         </div>
     </div>
+    <Categorymodal :categoryid="categoryid" :categorymodalshow.sync="showmodal" :modaltitle="modaltitle"></Categorymodal>
 </template>
 <script type="text/javascript">
+    import Categorymodal        from    './Categorymodal'
     export default{
-        props:['list','isopen'],
+        props:['list','isopen','categorymodalshow'],
+        data(){
+            return{
+                categoryFather          :   null,
+                categoryCloneArr        :   [],
+                showmodal               :   false,
+                CategorytreecloneNum    :   1,
+                categoryid              :   null,
+                modaltitle              :   '编辑分类'
+            }
+        },
+        components:{
+            Categorymodal
+        },
         methods:{
             toggleIsOpen:function(){
                 if(this.isopen==true){
@@ -103,15 +118,9 @@
                 console.log(data);
             },
             modalShow:function(data){
-                this.$set('showmodal',true)
-                if (data=='add') {
-                    console.log('新增');
-                    this.$set('modaltitle','新增分类')
-                }else {
-                    console.log('编辑');
-                    this.$set('modaltitle','编辑分类')
-                }
-            },
+                this.$set('categoryid',data);
+                this.$set('showmodal',true);
+            }
         }
     }
 </script>
