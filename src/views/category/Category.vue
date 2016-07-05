@@ -418,23 +418,6 @@
             Categorypanel
         },
         methods:{
-            listUp:function(data){
-                console.log('上移');
-                console.log(data);
-            },
-            listDown:function(data){
-                console.log('下移')
-            },
-            modalShow:function(data){
-                this.$set('showmodal',true)
-                if (data=='add') {
-                    console.log('新增');
-                    this.$set('modaltitle','新增分类')
-                }else {
-                    console.log('编辑');
-                    this.$set('modaltitle','编辑分类')
-                }
-            },
             categorySave:function(){
                 this.$set('showmodal',false)
             },

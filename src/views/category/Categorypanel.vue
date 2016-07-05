@@ -65,10 +65,10 @@
                 <li v-bind:class="{ 'text-danger': itemss.clone == true}">{{itemss.like}}</li>
                 <li>
                     <span v-if="itemss.clone==false">
-                        <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([item.sort])">
+                        <a v-bind:class="{'btn disabled':$index==0}" href="javascript:;" @click="listUp([items.sort])">
                             <span class="glyphicon glyphicon-chevron-up"></span>上移
                         </a>
-                        <a v-bind:class="{'btn disabled':$index==items.son.length-1}" href="javascript:;" @click="listDown([item.sort])">
+                        <a v-bind:class="{'btn disabled':$index==items.son.length-1}" href="javascript:;" @click="listDown([items.sort])">
                             <span class="glyphicon glyphicon-chevron-down"></span>下移
                         </a>
                         <a @click="modalShow()" href="javascript:;">
@@ -93,7 +93,25 @@
                 }else{
                     this.$set('isopen',true);
                 }
-            }
+            },
+            listUp:function(data){
+                console.log('上移');
+                console.log(data);
+            },
+            listDown:function(data){
+                console.log('下移');
+                console.log(data);
+            },
+            modalShow:function(data){
+                this.$set('showmodal',true)
+                if (data=='add') {
+                    console.log('新增');
+                    this.$set('modaltitle','新增分类')
+                }else {
+                    console.log('编辑');
+                    this.$set('modaltitle','编辑分类')
+                }
+            },
         }
     }
 </script>

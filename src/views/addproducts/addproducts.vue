@@ -137,20 +137,19 @@
         </div>
     </div>
 
-    <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
-       <div class="row">
-           <div class="col-md-12 text-center">
-               <button type="button" class="btn btn-primary">保存商品</button>
-               <button type="button" class="btn btn-warning">预览商品</button>
-           </div>
-       </div>
-    </nav>
-
     <div class="row" v-show="nowtag=='2'">
         <Basicinformation></Basicinformation>
         <Salesattribute></Salesattribute>
         <Productdetails></Productdetails>
         <Other></Other>
+        <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
+           <div class="row">
+               <div class="col-md-12 text-center">
+                   <button type="button" class="btn btn-primary">保存商品</button>
+                   <button type="button" class="btn btn-warning">预览商品</button>
+               </div>
+           </div>
+        </nav>
     </div>
 </template>
 <script type="text/javascript">

@@ -4,9 +4,9 @@
         <div class="well well-sm">基本信息</div>
         <div class="form-group">
             <label class="col-sm-2 control-label">所属分类</label>
-            <div class="col-sm-4">
-                <p class="control-label">
-                    住宅家具>沙发类>沙发 <button @click="callStepsChange" type="button" class="btn-link">重新选择</button>
+            <div class="col-sm-10">
+                <p class="control-label text-muted">
+                    住宅家具>沙发类>沙发 <a @click="callStepsChange" href="javascript:;">重新选择</a>
                 </p>
             </div>
         </div>
