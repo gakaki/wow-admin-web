@@ -355,7 +355,6 @@
             }
         },
         ready(){
-            console.log(this.list);
         }
     }
 </script>

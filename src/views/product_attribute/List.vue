@@ -25,7 +25,7 @@
                    </li>
                 </ul>
                 <div class="btn-group attribute_head_left">
-                    <button type="button" class="btn btn-default">新增分类</button>
+                    <button @click="addshowmodal=true" type="button" class="btn btn-default">新增属性</button>
                 </div>
                 <div class="attribute_head_right">
                     <form class="form-inline">
@@ -91,17 +91,37 @@
             </tbody>
         </table>
         <Pager :cur.sync="1" :all.sync='15'></Pager>
+        <Addattribute :attributeObj="attributeObj" :addshowmodal.sync="addshowmodal"></Addattribute>
     </div>
 </template>
 
 <script type="text/javascript">
-    import Pager from '../../components/common/Pager'
+    import Pager        from '../../components/common/Pager'
+    import Addattribute from './Addattribute'
+    import {attribute} from './Model.js'
     export default{
         components:{
-            Pager
+            Pager,
+            Addattribute
+        },
+        route: {
+            data({
+                to: {
+                    params: {
+                        attribute
+                    }
+                }
+            }) {
+                console.log(123);
+                // setTimeout(()=>{
+                //     this.Setexpressobj({tag: false})
+                // },0)
+            }
         },
         data(){
             return{
+                attributeObj:attribute,
+                addshowmodal:false,
                 tablist:[
                     {name:'自定义属性',value:'http://baidu.com'},
                     {name:'通用属性',value:'http://www.163.com'}
