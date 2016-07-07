@@ -2,8 +2,8 @@ export const attribute={
     common:{
         code        :   null,
         name        :   null,
-        required    :   false,
-        disabled    :   true
+        required    :   1,
+        disabled    :   1
     },
     input:{
         minLength   :   null,
@@ -14,13 +14,7 @@ export const attribute={
         maxLength   :   null,
     },
     select:{
-        add:{
-            value       :   null,
-            selected    :   true
-        },
-        option:[
-            // {value:'选项一',selected:true}
-        ]
+        option:[]
     },
     checkbox:{
         add:{
@@ -32,7 +26,7 @@ export const attribute={
         ]
     },
     numerical:{
-        currency        :   false,
+        currency        :   1,
         decimalPoint    :   0,
         Unit            :   null,
     },

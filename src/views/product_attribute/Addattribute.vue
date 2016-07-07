@@ -52,12 +52,12 @@
                     </p>
                 </div>
                 <div class="col-md-8">
-                    <input-attr :inputattrobj.sync="attrObj" v-if="attrSelect==0"></input-attr>
-                    <textarea-attr v-if="attrSelect==1"></textarea-attr>
-                    <select-attr v-if="attrSelect==2"></select-attr>
-                    <checkbox-attr v-if="attrSelect==3"></checkbox-attr>
-                    <numerical-attr v-if="attrSelect==4"></numerical-attr>
-                    <date-attr v-if="attrSelect==5"></date-attr>
+                    <Input-attr :inputattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==0"></Input-attr>
+                    <Textarea-attr :textareaattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==1"></Textarea-attr>
+                    <Select-attr :selectattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==2"></Select-attr>
+                    <Checkbox-attr v-if="attrSelect==3"></Checkbox-attr>
+                    <Numerical-attr v-if="attrSelect==4"></Numerical-attr>
+                    <Date-attr v-if="attrSelect==5"></Date-attr>
                 </div>
             </div>
         </div>
@@ -69,26 +69,27 @@
 
 <script type="text/javascript">
     import Modal from '../../components/common/Modal'
-    import inputAttr from './add_attribute_tab/input'
-    import textareaAttr from './add_attribute_tab/textarea'
-    import selectAttr from './add_attribute_tab/select'
-    import checkboxAttr from './add_attribute_tab/checkbox'
-    import numericalAttr from './add_attribute_tab/numerical'
-    import dateAttr from './add_attribute_tab/date'
+    import InputAttr from './add_attribute_tab/Input'
+    import TextareaAttr from './add_attribute_tab/Textarea'
+    import SelectAttr from './add_attribute_tab/Select'
+    import CheckboxAttr from './add_attribute_tab/Checkbox'
+    import NumericalAttr from './add_attribute_tab/Numerical'
+    import DateAttr from './add_attribute_tab/Date'
     export default{
         props:['attributeobj','addshowmodal'],
         components:{
             Modal,
-            inputAttr,
-            textareaAttr,
-            selectAttr,
-            checkboxAttr,
-            numericalAttr,
-            dateAttr
+            InputAttr,
+            TextareaAttr,
+            SelectAttr,
+            CheckboxAttr,
+            NumericalAttr,
+            DateAttr
         },
         data(){
             return{
-                attrObj:{},
+                attrObj:this.attributeobj.input,
+                commonattrObj:this.attributeobj.common,
                 attrSelect:0,
                 attrType:[
                     {
@@ -121,10 +122,12 @@
         methods:{
             attributeSave:function(){
                 console.log(this.attrObj);
+                console.log(this.commonattrObj);
             },
             chuangeobj:function(index,obj){
                 this.$set('attrSelect',index);
                 this.$set('attrObj',this.attributeobj[obj]);
+                this.$set('commonattrObj',{code:null,name:null,required:false,disabled:false})
             }
         }
     }

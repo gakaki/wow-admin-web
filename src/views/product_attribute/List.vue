@@ -72,12 +72,12 @@
                         {{item.type}}
                     </td>
                     <td>
-                        <span v-if="item.required==true">是</span>
-                        <span v-if="item.required==false">否</span>
+                        <span v-if="item.required==1">是</span>
+                        <span v-if="item.required==0">否</span>
                     </td>
                     <td>
-                        <span v-if="item.disabled==true" class="text-success">启用</span>
-                        <span v-if="item.disabled==false" class="text-danger">禁用</span>
+                        <span v-if="item.disabled==1" class="text-success">启用</span>
+                        <span v-if="item.disabled==0" class="text-danger">禁用</span>
                     </td>
                     <td>
                         <a href="javascript:;">
@@ -104,20 +104,6 @@
             Pager,
             Addattribute
         },
-        route: {
-            data({
-                to: {
-                    params: {
-                        attribute
-                    }
-                }
-            }) {
-                console.log(123);
-                // setTimeout(()=>{
-                //     this.Setexpressobj({tag: false})
-                // },0)
-            }
-        },
         data(){
             return{
                 attributeObj:attribute,
@@ -133,16 +119,16 @@
                         code:'attribute_code',
                         name:'属性名称',
                         type:'文本',
-                        required:true,
-                        disabled:true
+                        required:0,
+                        disabled:0
                     },
                     {
                         id:'2',
                         code:'attribute_code2',
                         name:'属性名称2',
                         type:'文本2',
-                        required:false,
-                        disabled:false
+                        required:0,
+                        disabled:0
                     }
                 ]
             }
