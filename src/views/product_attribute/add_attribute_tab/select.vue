@@ -17,17 +17,20 @@
                     </button>
                 </div>
             </div>
-            <div class="form-group" v-for="item in selectattrobj.option">
+            <div class="form-group" v-for="item in selectattrobj.option" style="background:#f9f9f9;">
                 <label for="firstname" class="col-sm-3 control-label"></label>
                 <div class="col-sm-5">
-                    <input v-model="item.value" v-bind:disabled="item.disabled" type="text" class="form-control" placeholder="选项内容">
+                    <input v-focus="item.disabled" v-model="item.value" v-bind:disabled="item.disabled" type="text" class="form-control" placeholder="选项内容">
                 </div>
                 <div class="col-sm-4 control-label">
                     <label @click="defaultOption($index)" class="checkbox-inline pull-left" style="padding-top:0px; margin-right:25px">
                         <input v-model="item.selected" type="checkbox"> 默认
                     </label>
-                    <a title="编辑" class="pull-left" href="javascript:;">
+                    <a v-if="item.disabled!=false" @click="editOption($index)" title="编辑" class="pull-left" href="javascript:;">
                         <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a v-if="item.disabled==false" @click="chuangeOk($index)" title="确认" class="pull-left" href="javascript:;">
+                        <span class="glyphicon glyphicon-ok-circle"></span>
                     </a>
                     <a @click="deleteOption($index)" title="删除" href="javascript:;">
                         <span class="glyphicon glyphicon-remove-sign"></span>
@@ -51,6 +54,7 @@
                 optionText:null,
                 selected:false,
                 optionDisabled:true,
+                token:true,
                 alertObj:{
                     alertType:null,
                     alertInfo:null,
@@ -58,6 +62,17 @@
                 }
             }
         },
+        directives: {
+			focus(value) {
+                console.log(value);
+				if (value) {
+					return
+				}
+				this.vm.$nextTick(() => {
+					this.el.focus()
+				})
+			}
+		},
         methods:{
             setDefaultOption:function(array){
                 let _this=this;
@@ -93,6 +108,16 @@
                     this.selectattrobj.option.splice(index,index);
                 }
                 console.log(this.selectattrobj.option);
+            },
+            editOption:function(index){
+                let _this=this;
+                this.selectattrobj.option.forEach(function(v, i, a) {
+                    _this.$set('selectattrobj.option['+i+'].disabled',true);
+                });
+                this.$set('selectattrobj.option['+index+'].disabled',false)
+            },
+            chuangeOk:function(index){
+                this.$set('selectattrobj.option['+index+'].disabled',true)
             }
         }
     }
