@@ -64,7 +64,6 @@
         },
         directives: {
 			focus(value) {
-                console.log(value);
 				if (value) {
 					return
 				}
@@ -102,11 +101,7 @@
                 this.setDefaultOption(this.selectattrobj.option);
             },
             deleteOption:function(index){
-                if (index==0) {
-                    this.selectattrobj.option.splice(0,1);
-                }else {
-                    this.selectattrobj.option.splice(index,index);
-                }
+                this.selectattrobj.option.splice(index,1);
                 console.log(this.selectattrobj.option);
             },
             editOption:function(index){
