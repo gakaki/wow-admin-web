@@ -2,19 +2,19 @@
     <div class="form-group">
         <label for="firstname" class="col-sm-3 control-label"><span class="text-danger">*</span>代码</label>
         <div class="col-sm-7">
-            <input v-model="commonattr.code" type="text" class="form-control" placeholder="唯一识别代码">
+            <input maxlength="30" v-model="commonattr.code" value="" type="text" class="form-control" placeholder="唯一识别代码">
         </div>
         <div class="col-sm-2 control-label">
-            <div class="text-left text-muted">0/30</div>
+            <div class="text-left text-muted">{{commonattr.code.length}}/30</div>
         </div>
     </div>
     <div class="form-group">
         <label for="firstname" class="col-sm-3 control-label"><span class="text-danger">*</span>属性名称</label>
         <div class="col-sm-7">
-            <input v-model="commonattr.name" type="text" class="form-control" placeholder="唯一属性名称">
+            <input maxlength="30" v-model="commonattr.name" value="" type="text" class="form-control" placeholder="唯一属性名称">
         </div>
         <div class="col-sm-2 control-label">
-            <div class="text-left text-muted">0/30</div>
+            <div class="text-left text-muted">{{commonattr.name.length}}/30</div>
         </div>
     </div>
     <div class="form-group">

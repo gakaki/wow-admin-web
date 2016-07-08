@@ -7,13 +7,13 @@
                 <div class="col-sm-4">
                     <div class="input-group">
                         <span class="input-group-addon">最少</span>
-                        <input v-model="textareaattrobj.minLength" type="text" class="form-control" placeholder="字数">
+                        <input maxlength="3" v-model="textareaattrobj.minLength" type="text" class="form-control" placeholder="字数">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="input-group">
                         <span class="input-group-addon">最多</span>
-                        <input v-model="textareaattrobj.maxLength" type="text" class="form-control" placeholder="字数">
+                        <input maxlength="3" v-model="textareaattrobj.maxLength" type="text" class="form-control" placeholder="字数">
                     </div>
                 </div>
             </div>

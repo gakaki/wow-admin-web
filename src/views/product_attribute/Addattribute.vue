@@ -35,7 +35,7 @@
     <Modal class="addshowmodal" :show.sync="addshowmodal">
         <h4 slot="header" class="modal-title">新增属性</h4>
         <button slot="close" type="button" class="close" @click="addshowmodal=false">&times;</button>
-        <div slot="body" id="attributeBody" style="max-height:500px;overflow:scroll">
+        <div slot="body" id="attributeBody">
             <div class="row">
                 <div class="col-md-4" style="border-right:1px solid #ccc;">
                     <h5>字段类型</h5>
@@ -47,17 +47,41 @@
                     <h5>
                         示例
                     </h5>
-                    <p style="margin-right:15px;">
-                        <input type="text" class="form-control" placeholder="示例">
-                    </p>
+                    <hr style="margin-right:15px;">
+                    <div style="margin-right:15px; margin-bottom:25px;">
+                        <div v-if="attrSelect==0" >
+                            <input type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
+                        </div>
+                        <div v-if="attrSelect==1">
+                            <textarea class="form-control" placeholder="{{commonattrObj.name||'示例'}}"></textarea>
+                        </div>
+                        <div v-if="attrSelect==2">
+                            <select class="form-control">
+                                <option v-for="item in attrObj.option | orderBy 'value' 1" v-bind:selected="item.selected==1||item.selected==true">
+                                    {{item.value}}
+                                </option>
+                             </select>
+                        </div>
+                        <div v-if="attrSelect==3">
+                            <label style="margin:5px;" class="checkbox-inline" v-for="item in attrObj.option">
+                                <input type="checkbox" value="0"> {{item.value}}
+                            </label>
+                        </div>
+                        <div v-if="attrSelect==4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="8888" type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
+                                <span class="input-group-addon">{{attrObj.Unit}}</span>
+                          </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8" style="max-height: 500px; overflow-x: hidden; overflow-y: scroll;">
                     <Input-attr :inputattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==0"></Input-attr>
                     <Textarea-attr :textareaattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==1"></Textarea-attr>
                     <Select-attr :selectattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==2"></Select-attr>
-                    <Checkbox-attr v-if="attrSelect==3"></Checkbox-attr>
-                    <Numerical-attr v-if="attrSelect==4"></Numerical-attr>
-                    <Date-attr v-if="attrSelect==5"></Date-attr>
+                    <Checkbox-attr :checkboxattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==3"></Checkbox-attr>
+                    <Numerical-attr :numericalattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==4"></Numerical-attr>
+                    <Date-attr :dateattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==5"></Date-attr>
                 </div>
             </div>
         </div>
@@ -105,7 +129,7 @@
                         obj :'select'
                     },
                     {
-                        name:'多选',
+                        name:'多选框',
                         obj :'checkbox'
                     },
                     {
@@ -127,7 +151,7 @@
             chuangeobj:function(index,obj){
                 this.$set('attrSelect',index);
                 this.$set('attrObj',this.attributeobj[obj]);
-                this.$set('commonattrObj',{code:null,name:null,required:false,disabled:false})
+                this.$set('commonattrObj',{code:'',name:'',required:1,disabled:1})
             }
         }
     }

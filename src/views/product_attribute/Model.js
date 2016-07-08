@@ -1,7 +1,7 @@
 export const attribute={
     common:{
-        code        :   null,
-        name        :   null,
+        code        :   '',
+        name        :   '',
         required    :   1,
         disabled    :   1
     },
@@ -17,18 +17,12 @@ export const attribute={
         option:[]
     },
     checkbox:{
-        add:{
-            value   :   null
-        },
-        value:[
-            '多选项卡1',
-            '多选项卡2'
-        ]
+        option:[]
     },
     numerical:{
         currency        :   1,
         decimalPoint    :   0,
-        Unit            :   null,
+        Unit            :   '',
     },
     date:{
         dateType    :   'data'
