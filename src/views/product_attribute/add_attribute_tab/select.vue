@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
-        <div class="col-md-12 addproduct-box-html form-horizontal">
+        <div class="col-md-12 form-horizontal">
             <common-attr :commonattr.sync="commonattr"></common-attr>
             <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label"><span class="text-danger">*</span>添加选项</label>
@@ -95,7 +95,10 @@
                 this.selectattrobj.option.push({value:optionText,selected:Number(selected),disabled:optionDisabled});
                 this.$set('optionText',null);
                 this.$set('selected',false);
-                console.log(this.selectattrobj.option);
+                setTimeout(function(){
+                    console.log($('#attributeBody .col-md-8').height()+20);
+                    $('#attributeBody').scrollTop($('#attributeBody .col-md-8').height()+20);
+                },10)
             },
             defaultOption:function(index){
                 this.setDefaultOption(this.selectattrobj.option);

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-12 addproduct-box-html form-horizontal">
+        <div class="col-md-12 form-horizontal">
             <div class="form-group">
                 <label for="firstname" class="col-sm-3 control-label"><span class="text-danger">*</span>代码</label>
                 <div class="col-sm-7">

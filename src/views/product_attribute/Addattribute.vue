@@ -35,7 +35,7 @@
     <Modal class="addshowmodal" :show.sync="addshowmodal">
         <h4 slot="header" class="modal-title">新增属性</h4>
         <button slot="close" type="button" class="close" @click="addshowmodal=false">&times;</button>
-        <div slot="body">
+        <div slot="body" id="attributeBody" style="max-height:500px;overflow:scroll">
             <div class="row">
                 <div class="col-md-4" style="border-right:1px solid #ccc;">
                     <h5>字段类型</h5>
