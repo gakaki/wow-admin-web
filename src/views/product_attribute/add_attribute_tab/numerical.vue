@@ -1,5 +1,8 @@
 <template>
     <div class="row">
+        <p>
+            {{ 1232888 | byteFormat }}
+        </p>
         <div class="col-md-12 form-horizontal">
             <common-attr :commonattr.sync="commonattr"></common-attr>
             <div class="form-group">
@@ -38,6 +41,8 @@
 </template>
 <script type="text/javascript">
     import commonAttr from './commonAttr'
+    import Vue from 'vue'
+    Vue.filter('byteFormat', require('../../../components/common/filter/ZeroFill.js'));
     export default{
         props:['commonattr','numericalattrobj'],
         components:{

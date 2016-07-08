@@ -71,7 +71,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" value="8888" type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
                                 <span class="input-group-addon">{{attrObj.Unit}}</span>
-                          </div>
+                            </div>
                         </div>
                     </div>
                 </div>
