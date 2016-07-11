@@ -4,15 +4,9 @@
     }
     .addshowmodal .row{
         margin: 0px;
-        overflow: hidden;
     }
     .addshowmodal .col-md-4, .addshowmodal .col-md-8{
         padding: 15px 0px;
-    }
-    .addshowmodal .col-md-4{
-        padding-top: 0px;
-        padding-bottom:9999px;
-        margin-bottom:-9999px;
     }
     .addshowmodal .list-unstyled{
         border:1px solid #ccc;
@@ -37,7 +31,7 @@
         <button slot="close" type="button" class="close" @click="addshowmodal=false">&times;</button>
         <div slot="body" id="attributeBody">
             <div class="row">
-                <div class="col-md-4" style="border-right:1px solid #ccc;">
+                <div class="col-md-4">
                     <h5>字段类型</h5>
                     <ul class="list-unstyled">
                         <li @click="chuangeobj($index,item.obj)" v-bind:class="{'addshowmodal-select':attrSelect==$index}" v-for="item in attrType">
@@ -50,13 +44,13 @@
                     <hr style="margin-right:15px;">
                     <div style="margin-right:15px; margin-bottom:25px;">
                         <div v-if="attrSelect==0" >
-                            <input type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
+                            <input type="text" class="form-control" placeholder="{{commonattrObj.name||'单行文本'}}">
                         </div>
                         <div v-if="attrSelect==1">
-                            <textarea class="form-control" placeholder="{{commonattrObj.name||'示例'}}"></textarea>
+                            <textarea class="form-control" placeholder="{{commonattrObj.name||'多行文本'}}"></textarea>
                         </div>
                         <div v-if="attrSelect==2">
-                            <select class="form-control">
+                            <select  class="form-control">
                                 <option v-for="item in attrObj.option | orderBy 'value' 1" v-bind:selected="item.selected==1||item.selected==true">
                                     {{item.value}}
                                 </option>
@@ -69,13 +63,24 @@
                         </div>
                         <div v-if="attrSelect==4">
                             <div class="input-group">
-                                <input type="text" class="form-control" value="8888" type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
+                                <input type="text" class="form-control" v-model="textCurrency" type="text" class="form-control" placeholder="{{commonattrObj.name||'示例'}}">
                                 <span class="input-group-addon">{{attrObj.Unit}}</span>
+                            </div>
+                            <p class=" center-block label label-info" style="margin-top:5px; text-align:left; padding:10px;">
+                                展示：{{textCurrency | byteFormat attrObj.decimalPoint}} {{attrObj.Unit}}
+                            </p>
+                        </div>
+                        <div v-if="attrSelect==5">
+                            <div v-if="attrObj.dateType==0">
+                                <input class="form-control" type="text" v-model="value" placeholder="日期">
+                            </div>
+                            <div v-if="attrObj.dateType==1">
+                                <input type="text" class="form-control" placeholder="日期+时间">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8" style="max-height: 500px; overflow-x: hidden; overflow-y: scroll;">
+                <div class="col-md-8" style="min-height:400px; max-height: 500px; overflow-x: hidden; overflow-y: scroll; border-left:1px solid #ccc;">
                     <Input-attr :inputattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==0"></Input-attr>
                     <Textarea-attr :textareaattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==1"></Textarea-attr>
                     <Select-attr :selectattrobj.sync="attrObj" :commonattr.sync="commonattrObj" v-if="attrSelect==2"></Select-attr>
@@ -99,6 +104,7 @@
     import CheckboxAttr from './add_attribute_tab/Checkbox'
     import NumericalAttr from './add_attribute_tab/Numerical'
     import DateAttr from './add_attribute_tab/Date'
+
     export default{
         props:['attributeobj','addshowmodal'],
         components:{
@@ -108,13 +114,15 @@
             SelectAttr,
             CheckboxAttr,
             NumericalAttr,
-            DateAttr
+            DateAttr,
         },
         data(){
             return{
                 attrObj:this.attributeobj.input,
                 commonattrObj:this.attributeobj.common,
                 attrSelect:0,
+                textCurrency:100,
+                maxLength:null,
                 attrType:[
                     {
                         name:'单行文本',
@@ -141,6 +149,15 @@
                         obj :'date'
                     }
                 ]
+            }
+        },
+        watch:{
+            'attrObj.decimalPoint':function(val){
+                if (val==0) {
+                    this.$set('textCurrency',100)
+                }else {
+                    this.$set('textCurrency',100+'.'+val*6)
+                }
             }
         },
         methods:{

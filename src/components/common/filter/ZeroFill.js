@@ -1,30 +1,66 @@
-module.exports = function (size) {
-    var result;
-
+module.exports = function (size,length) {
+    let result=size.toString().split(".");
     switch (true) {
-        case (size === null || size === '' || isNaN(size)):
-            result = '-';
+        case length==0:
+            result=result[0];
             break;
 
-        case (size >= 0 && size < 1024):
-            result = size + ' B';
+        case length==1:
+            if (result[1]!=undefined&&result[1]!='') {
+                let resultSplit=result[1].toString().split("")
+                result=result[0]+'.'+resultSplit[0];
+            }else{
+                result=Number(result[0]+'.'+0);
+            }
             break;
 
-        case (size >= 1024 && size < Math.pow(1024, 2)):
-            result = Math.round(size / 1024 * 100) / 100 + ' K';
+        case length==2:
+            if (result[1]!=undefined&&result[1]!='') {
+                let resultSplit=result[1].toString().split("")
+                if (resultSplit[1]==undefined) {
+                    resultSplit[1]=0;
+                }
+                result=result[0]+'.'+resultSplit[0]+resultSplit[1];
+            }else{
+                result=Number(result[0]+'.'+'00');
+            }
             break;
 
-        case (size >= Math.pow(1024, 2) && size < Math.pow(1024, 3)):
-            result = Math.round(size / Math.pow(1024, 2) * 100) / 100 + ' M';
+        case length==3:
+            if (result[1]!=undefined&&result[1]!='') {
+                let resultSplit=result[1].toString().split("")
+                if (resultSplit[1]==undefined) {
+                    resultSplit[1]=0;
+                }
+                if (resultSplit[2]==undefined) {
+                    resultSplit[2]=0;
+                }
+                result=result[0]+'.'+resultSplit[0]+resultSplit[1]+resultSplit[2];
+            }else{
+                result=Number(result[0]+'.'+'000');
+            }
             break;
 
-        case (size >= Math.pow(1024, 3) && size < Math.pow(1024, 4)):
-            result = Math.round(size / Math.pow(1024, 3) * 100) / 100 +' G';
+        case length==4:
+            if (result[1]!=undefined&&result[1]!='') {
+                let resultSplit=result[1].toString().split("")
+                if (resultSplit[1]==undefined) {
+                    resultSplit[1]=0;
+                }
+                if (resultSplit[2]==undefined) {
+                    resultSplit[2]=0;
+                }
+                if (resultSplit[3]==undefined) {
+                    resultSplit[3]=0;
+                }
+                result=result[0]+'.'+resultSplit[0]+resultSplit[1]+resultSplit[2]+resultSplit[3];
+            }else{
+                result=Number(result[0]+'.'+'0000');
+            }
             break;
 
         default:
-            result = Math.round(size / Math.pow(1024, 4) * 100) / 100 + ' T';
+            result=result[0];
     }
-
     return result;
 };

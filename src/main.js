@@ -10,6 +10,10 @@ import './assets/css/validator.css'
 //Vue面包屑Breadcrumbs
 Vue.use(VueBreadcrumbs)
 
+//引入过滤器
+Vue.filter('byteFormat', require('components/common/filter/ZeroFill.js'));
+
+
 //使用VueResource
 Vue.use(VueResource)
 
