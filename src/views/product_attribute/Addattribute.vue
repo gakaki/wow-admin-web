@@ -196,6 +196,7 @@
             attributeSave:function(){
                 console.log(this.attrObj);
                 console.log(this.commonattrObj);
+                this.$set('addshowmodal',false);
                 //时间戳转换日期
                 //console.log(moment(1469541420*1000).format('YYYY-MM-DD HH:mm:ss'));
                 //日期转换时间戳
