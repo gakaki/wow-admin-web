@@ -111,7 +111,7 @@
                             </a>
                         </li>
                         <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/import"}'>
+                            <a>
                                 组合商品管理
                             </a>
                         </li>
@@ -121,7 +121,7 @@
                             </a>
                         </li>
                         <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/import"}'>
+                            <a>
                                 回收站
                             </a>
                         </li>

@@ -1,4 +1,8 @@
-
+<style media="screen">
+    .table-tbody-hover tbody:hover{
+        background: #f5f5f5;
+    }
+</style>
 
 <template>
 
@@ -98,12 +102,12 @@
             <button type="button" class="btn btn-default">删除</button>
         </div>
         <div class="btn-group pull-right">
-            <button class="btn btn-primary">商品视图</button>
-            <button class="btn btn-default">SKU视图</button>
+            <button @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default">SPU视图</button>
+            <button @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default">SKU视图</button>
         </div>
     </div>
 </div>
-<table class="table order-list table-thead-center table-tbody-center">
+<table class="table order-list table-thead-center table-tbody-center table-hover" v-if="listView=='spu'">
     <thead>
         <tr>
             <th>
@@ -170,6 +174,75 @@
         </tr>
     </tbody>
 </table>
+
+<table class="table order-list table-thead-center table-tbody-center table-tbody-hover" v-if="listView=='sku'">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" value="1077" name="1077name1">
+            </th>
+            <th>图片</th>
+            <th>商品名称</th>
+            <th>品牌</th>
+            <th>规格</th>
+            <th>SKU</th>
+            <th>售价</th>
+            <th>库存</th>
+            <th>销量</th>
+            <th>商品状态</th>
+            <th>发布时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody v-for="item in skuArrView">
+        <tr v-for="items in item.list">
+            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+                <input type="checkbox" value="1077" name="1077name1">
+            </td>
+            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+                <img src="../../assets/img/file_242_2.jpg" style="width:50px;" alt="" />
+            </td>
+            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+                <p>
+                    <a href="javascript:void(0);">GRASSY小草收纳座</a>
+                </p>
+                <p class="text-muted">
+                    SPU：C02356652
+                </p>
+            </td>
+            <td>
+                {{$index}}
+                Umbra
+            </td>
+            <td>
+                L
+            </td>
+            <td>
+                {{$index*12932+'ab'}}
+            </td>
+            <td>
+                40
+            </td>
+            <td>
+                <span v-bind:class="{ 'text-danger': $index <= 3}">{{$index}}</span>
+            </td>
+            <td>
+                220
+            </td>
+            <td>
+                <span v-if="$index <=3" class="text-success">已上架</span>
+                <span v-if="$index > 3" class="text-danger">待上架</span>
+            </td>
+            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+                2016-05-03 06:12:35
+            </td>
+            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+                <a href="#">编辑</a>
+                <a href="#">删除</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <Pager :cur.sync="1" :all.sync='5'></Pager>
 
 </template>
@@ -179,7 +252,31 @@
     export default{
         data(){
             return{
-                list:10
+                list:10,
+                listView:'spu',
+                skuArrView:[
+                    {
+                        list:[1,2,3]
+                    },
+                    {
+                        list:[1,2]
+                    },
+                    {
+                        list:[1,2,3,4,5]
+                    },
+                    {
+                        list:[1,2,3,4,5,6,7]
+                    },
+                    {
+                        list:[1]
+                    },
+                    {
+                        list:[1,2,3]
+                    },
+                    {
+                        list:[1,2,3,4]
+                    }
+                ]
             }
         },
         components:{
