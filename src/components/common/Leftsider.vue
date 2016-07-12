@@ -62,6 +62,11 @@
         background: #2db7f5;
         color: #fff;
     }
+    .left-nav-hr{
+        width: 90%;
+        margin: 0 auto;
+        border-top: 1px solid #404040;
+    }
 </style>
 
 <template>
@@ -96,13 +101,18 @@
                 <li>
                     <ul class="menu-dark">
                         <li class="menu-item-selected">
+                            <a v-link='{ path: "/goods/addproducts"}'>
+                                新增商品
+                            </a>
+                        </li>
+                        <li class="menu-item-selected">
                             <a v-link='{ path: "/goods/list"}'>
                                 商品管理
                             </a>
                         </li>
                         <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/addproducts"}'>
-                                新增商品
+                            <a v-link='{ path: "/goods/import"}'>
+                                组合商品管理
                             </a>
                         </li>
                         <li class="menu-item-selected">
@@ -110,6 +120,12 @@
                                 批量导入商品
                             </a>
                         </li>
+                        <li class="menu-item-selected">
+                            <a v-link='{ path: "/goods/import"}'>
+                                回收站
+                            </a>
+                        </li>
+                        <hr class="left-nav-hr">
                         <li>
                             <a v-link='{ path: "/goods/brand"}'>
                                 品牌
@@ -120,6 +136,7 @@
                                 设计师
                             </a>
                         </li>
+                        <hr class="left-nav-hr">
                         <li>
                             <a v-link='{ path: "/goods/category"}'>
                                 分类管理

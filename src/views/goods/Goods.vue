@@ -128,7 +128,7 @@
                 <input type="checkbox" value="1077" name="1077name1">
             </td>
             <td>
-                <img src="http://admindemo.dev.wowdsgn.com/images/%E5%95%86%E5%93%81%E7%AE%A1%E7%90%86_%E5%95%86%E5%93%81%E8%A7%86%E5%9B%BE/u64.png" style="width:50px;" alt="" />
+                <img src="../../assets/img/file_242_2.jpg" style="width:50px;" alt="" />
             </td>
             <td>
                 <p>
