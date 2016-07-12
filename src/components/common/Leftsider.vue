@@ -111,7 +111,7 @@
                             </a>
                         </li>
                         <li class="menu-item-selected">
-                            <a>
+                            <a v-link='{ path: "/goods/combination"}'>
                                 组合商品管理
                             </a>
                         </li>

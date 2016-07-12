@@ -68,6 +68,12 @@ export default function(router) {
                         require(['./views/goods/Goodsdetails'], resolve)
                     }
                 },
+                '/combination': {
+                    breadcrumb: '组合商品管理',
+                    component(resolve) {
+                        require(['./views/combination/list'], resolve)
+                    }
+                },
                 '/import': {
                     breadcrumb: '批量导入商品',
                     component(resolve) {
