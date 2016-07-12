@@ -1,9 +1,3 @@
-<style media="screen">
-    .table-tbody-hover tbody:hover{
-        background: #f5f5f5;
-    }
-</style>
-
 <template>
 
 <div class="well well-sm">

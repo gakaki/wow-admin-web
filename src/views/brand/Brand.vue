@@ -4,6 +4,7 @@
 
 <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在删除...">
 </spinner>
+
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group pull-left">
