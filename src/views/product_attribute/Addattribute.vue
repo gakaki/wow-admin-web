@@ -72,10 +72,10 @@
                         </div>
                         <div v-if="attrSelect==5">
                             <div v-if="attrObj.dateType==0">
-                                <input class="form-control" type="text" v-model="value" placeholder="日期">
+                                <my-datepicker :time.sync="dateText" :option="option"></my-datepicker>
                             </div>
                             <div v-if="attrObj.dateType==1">
-                                <input type="text" class="form-control" placeholder="日期+时间">
+                                <my-datepicker :time.sync="dateTime" :option="timeoption"></my-datepicker>
                             </div>
                         </div>
                     </div>
@@ -104,6 +104,9 @@
     import CheckboxAttr from './add_attribute_tab/Checkbox'
     import NumericalAttr from './add_attribute_tab/Numerical'
     import DateAttr from './add_attribute_tab/Date'
+    import myDatepicker from 'vue-datepicker'
+    import moment from 'moment'
+    moment.locale('zh-cn');
 
     export default{
         props:['attributeobj','addshowmodal'],
@@ -115,6 +118,7 @@
             CheckboxAttr,
             NumericalAttr,
             DateAttr,
+            myDatepicker
         },
         data(){
             return{
@@ -148,7 +152,35 @@
                         name:'日期',
                         obj :'date'
                     }
-                ]
+                ],
+                /**日历数据 start**/
+                dateText: '',
+                dateTime: '',
+                option: {
+                    type: 'day',
+                    week: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    format: 'YYYY-MM-DD',
+                    placeholder: '日期',
+                    buttons: {
+                        ok: '确认',
+                        cancel: '取消'
+                    },
+                    overlayOpacity: 0.5, // 0.5 as default
+                    dismissible: true // as true as default
+                },
+                timeoption: {
+                    type: 'min',
+                    week: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                    month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    format: 'YYYY-MM-DD HH:mm',
+                    placeholder: '日期+时间',
+                    buttons: {
+                        ok: '确认',
+                        cancel: '取消'
+                    }
+                }
+                /**日历数据 end**/
             }
         },
         watch:{
@@ -164,6 +196,10 @@
             attributeSave:function(){
                 console.log(this.attrObj);
                 console.log(this.commonattrObj);
+                //时间戳转换日期
+                //console.log(moment(1469541420*1000).format('YYYY-MM-DD HH:mm:ss'));
+                //日期转换时间戳
+                //console.log(moment('2016-07-14 21:58').unix());
             },
             chuangeobj:function(index,obj){
                 this.$set('attrSelect',index);
