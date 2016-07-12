@@ -64,11 +64,6 @@
     .category-list li:last-child{
         width: 25%;
     }
-    .category-list li:last-child a{
-        margin: 5px;
-        padding: 0px;
-        display: inline;
-    }
     .category-main-box-son ul+ul li:first-child{
         text-align: center;
     }

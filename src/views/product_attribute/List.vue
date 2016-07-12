@@ -9,11 +9,6 @@
         right: 15px;
         top: 0px;
     }
-    .attribute_box table td a{
-        margin: 5px 10px;
-        padding: 0px;
-        display: inline;
-    }
 </style>
 <template>
     <div class="attribute_box">
@@ -79,12 +74,12 @@
                         <span v-if="item.disabled==1" class="text-success">启用</span>
                         <span v-if="item.disabled==0" class="text-danger">禁用</span>
                     </td>
-                    <td>
+                    <td class="linst-link-group">
                         <a href="javascript:;">
-                            <span class="glyphicon glyphicon-edit"></span>编辑
+                            编辑
                         </a>
-                        <a href="javascript:;">
-                            <span class="glyphicon glyphicon-minus"></span>删除
+                        <a class="link-delete" href="javascript:;">
+                            删除
                         </a>
                     </td>
                 </tr>

@@ -62,10 +62,10 @@
             <td>
                 90
             </td>
-            <td>
+            <td class="linst-link-group">
                 <a @click="modalShow($index)" href="javascript:void(0);">编辑</a>
                 <vs-popover position="top">
-                    <a @click="popoverHide" href="javascript:void(0);">删除</a>
+                    <a @click="popoverHide" class="link-delete" href="javascript:void(0);">删除</a>
                     <div slot="content" class="text-center">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-warning" @click='deleteData($index)'>确认</button>

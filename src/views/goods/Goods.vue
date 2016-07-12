@@ -161,9 +161,9 @@
                 <span v-if="$index <=3" class="text-success">已上架</span>
                 <span v-if="$index > 3" class="text-danger">待上架</span>
             </td>
-            <td>
+            <td  class="linst-link-group">
                 <a href="#">编辑</a>
-                <a href="#">删除</a>
+                <a class="link-delete" href="#">删除</a>
             </td>
         </tr>
     </tbody>
@@ -230,9 +230,9 @@
             <td v-if="$index==0" v-bind:rowspan="item.list.length">
                 2016-05-03 06:12:35
             </td>
-            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+            <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.list.length">
                 <a href="#">编辑</a>
-                <a href="#">删除</a>
+                <a class="link-delete" href="#">删除</a>
             </td>
         </tr>
     </tbody>
