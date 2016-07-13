@@ -121,7 +121,7 @@
                             </a>
                         </li>
                         <li class="menu-item-selected">
-                            <a>
+                            <a v-link='{path: "/goods/recycle"}'>
                                 回收站
                             </a>
                         </li>
@@ -140,6 +140,11 @@
                         <li>
                             <a v-link='{ path: "/goods/category"}'>
                                 分类管理
+                            </a>
+                        </li>
+                        <li>
+                            <a v-link='{ path: "/goods/category-attr-set"}'>
+                                分类属性设置
                             </a>
                         </li>
                         <li>

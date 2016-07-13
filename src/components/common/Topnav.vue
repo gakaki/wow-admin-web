@@ -58,14 +58,14 @@
             <li>
                 <a v-link='{ path: "/goods"}'><em class="glyphicon glyphicon-picture"></em>商品</a>
             </li>
-            <li><a href="#"><em class="glyphicon glyphicon-user"></em>顾客</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-flag"></em>营销</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-book"></em>故事</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-shopping-cart"></em>采购</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-briefcase"></em>仓储</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-usd"></em>财务</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-list-alt"></em>报表</a></li>
-            <li><a href="#"><em class="glyphicon glyphicon-cog"></em>系统</a></li>
+            <li><a><em class="glyphicon glyphicon-user"></em>顾客</a></li>
+            <li><a><em class="glyphicon glyphicon-flag"></em>营销</a></li>
+            <li><a><em class="glyphicon glyphicon-book"></em>故事</a></li>
+            <li><a><em class="glyphicon glyphicon-shopping-cart"></em>采购</a></li>
+            <li><a><em class="glyphicon glyphicon-briefcase"></em>仓储</a></li>
+            <li><a><em class="glyphicon glyphicon-usd"></em>财务</a></li>
+            <li><a><em class="glyphicon glyphicon-list-alt"></em>报表</a></li>
+            <li><a><em class="glyphicon glyphicon-cog"></em>系统</a></li>
         </ul>
     </div>
     <div class="navbar-text navbar-right">

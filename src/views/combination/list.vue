@@ -7,13 +7,13 @@
             <div class="pull-right">
                 <form class="form-inline">
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="组合名称">
+                        <input v-model="combinationName" type="email" class="form-control" placeholder="组合名称">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="子商品名称">
+                        <input v-model="combinationSunName" type="email" class="form-control" placeholder="子商品名称">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="SPU/SKU">
+                        <input v-model="combinationNumber" type="text" class="form-control" placeholder="SPU/SKU">
                     </div>
 
                     <button type="submit" class="btn btn-primary">查询</button>
@@ -82,6 +82,9 @@
         },
         data(){
             return{
+                combinationName:null,
+                combinationSunName:null,
+                combinationNumber:null,
                 skuArrView:[
                     {
                         list:[1,2,3]

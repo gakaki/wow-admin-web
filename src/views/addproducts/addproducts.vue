@@ -137,11 +137,11 @@
         </div>
     </div>
 
-    <div class="row" v-show="nowtag=='2'">
+    <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
         <Basicinformation></Basicinformation>
         <Salesattribute></Salesattribute>
         <Productdetails></Productdetails>
-        <Other></Other>
+        <!-- <Other></Other> -->
         <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
            <div class="row">
                <div class="col-md-12 text-center">

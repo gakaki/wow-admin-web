@@ -71,7 +71,7 @@ export default function(router) {
                 '/combination': {
                     breadcrumb: '组合商品管理',
                     component(resolve) {
-                        require(['./views/combination/list'], resolve)
+                        require(['./views/combination/List'], resolve)
                     }
                 },
                 '/import': {
@@ -80,10 +80,22 @@ export default function(router) {
                         require(['./views/goods/Import'], resolve)
                     }
                 },
+                '/recycle': {
+                    breadcrumb: '商品回收站',
+                    component(resolve) {
+                        require(['./views/recycle/List'], resolve)
+                    }
+                },
                 '/category': {
                     breadcrumb: '分类列表',
                     component(resolve) {
                         require(['./views/category/Category'], resolve)
+                    }
+                },
+                '/category-attr-set': {
+                    breadcrumb: '分类属性',
+                    component(resolve) {
+                        require(['./views/category/CategoryAttrSet'], resolve)
                     }
                 },
                 '/brand': {

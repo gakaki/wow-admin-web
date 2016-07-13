@@ -37,11 +37,11 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" placeholder="品牌">
+                <Select2 :selected.sync="brandid" :options="brandlist"></Select2>
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">
-                    <button type="button" class="btn btn-xs btn-info">+新增品牌</button>
+                    {{brandid}}
                     <button type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>
@@ -51,11 +51,11 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>设计师</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" placeholder="设计师">
+                <Select2 :selected.sync="designersid" :options="designers"></Select2>
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">
-                    <button type="button" class="btn btn-xs btn-info">+新增设计师</button>
+                    {{designersid}}
                     <button type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>
@@ -199,11 +199,49 @@
 </template>
 <script type="text/javascript">
     import {basiInfo} from '../model'
+    import Select2 from '../../../components/common/selecte2/Selecte2'
     export default{
+        components:{
+            Select2
+        },
         data(){
             return{
                 basiInfo:basiInfo,
-                labeltest:14
+                labeltest:14,
+                brandid: 'null',
+                designersid: 'null',
+                brandlist: [
+                    { id: 1, text: 'aida' },
+                    { id: 2, text: 'aim' },
+                    { id: 3, text: 'aless' },
+                    { id: 4, text: 'artis' },
+                    { id: 5, text: '匠物' },
+                    { id: 6, text: '本来设计' },
+                    { id: 7, text: '罗奇堡' },
+                    { id: 8, text: '旁白' },
+                    { id: 9, text: '木佰士' },
+                    { id: 10, text: '唯诗' },
+                    { id: 11, text: '有所' },
+                    { id: 12, text: '意外设计' },
+                    { id: 13, text: '晓器' },
+                    { id: 14, text: '造物' },
+                    { id: 15, text: '十八纸' },
+                    { id: 16, text: '东术' },
+                    { id: 17, text: '吾舍' },
+                    { id: 18, text: '自然家' },
+                    { id: 19, text: '本土创造' },
+                    { id: 20, text: '素生' },
+                    { id: 21, text: '玩物志' },
+                    { id: 22, text: '物应' },
+                    { id: 23, text: '明基' },
+                    { id: 24, text: '爱瓦' },
+                ],
+                designers:[
+                    { id: 1, text: '设计师1' },
+                    { id: 2, text: '设计师2' },
+                    { id: 3, text: '设计师3' },
+                    { id: 4, text: '设计师4' },
+                ]
             }
         },
         methods:{
