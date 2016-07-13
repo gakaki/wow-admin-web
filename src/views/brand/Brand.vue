@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<table class="table order-list table-thead-center table-tbody-center">
+<table class="table order-list table-thead-center table-tbody-center table-hover">
     <thead>
         <tr>
             <th>品牌名称</th>
