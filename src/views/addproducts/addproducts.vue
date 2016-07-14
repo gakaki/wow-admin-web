@@ -133,7 +133,8 @@
     <Selectcategory v-show="nowtag=='1'"></Selectcategory>
     <div class="row" v-show="nowtag=='1'">
         <div class="text-center col-md-12" style="margin-top:30px;">
-            <button @click="nextSteps" class="btn btn-primary">下一步</button>
+            {{productBasiInfo.Selectcategory | json}}
+            <button v-bind:disabled="productBasiInfo.Selectcategory.one==null||productBasiInfo.Selectcategory.two==null||productBasiInfo.Selectcategory.three==null" @click="nextSteps" class="btn btn-primary">下一步</button>
         </div>
     </div>
 
@@ -186,8 +187,8 @@
                         state:'3'
                     }
                 ],
-                state:'2',
-                nowtag:'2'
+                state:'1',
+                nowtag:'1'
             }
         },
         methods:{

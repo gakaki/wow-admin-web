@@ -12,25 +12,28 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品名称</label>
             <div class="col-sm-4">
-                <input v-model="productbasiinfo.productName" type="text" class="form-control" placeholder="商品名称">
+                <input maxlength="30" v-model="productbasiinfo.productName" type="text" class="form-control" placeholder="商品名称">
+                {{productbasiinfo.productName}}
             </div>
             <span class="col-sm-4 control-label">
-                <div class="text-left text-muted">0/30</div>
+                <div class="text-left text-muted">{{productbasiinfo.productName.length}}/30</div>
             </span>
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>卖点</label>
             <div class="col-sm-4">
                 <input v-model="productbasiinfo.sellingPoin" type="text" class="form-control" placeholder="商店卖点">
+                {{productbasiinfo.sellingPoin}}
             </div>
             <span class="col-sm-4 control-label">
-                <div class="text-left text-muted">0/30</div>
+                <div class="text-left text-muted">{{productbasiinfo.sellingPoin.length}}/30</div>
             </span>
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品型号</label>
             <div class="col-sm-2">
                 <input v-model="productbasiinfo.productId" type="text" class="form-control" placeholder="商品型号">
+                {{productbasiinfo.productId}}
             </div>
         </div>
         <div class="form-group">
@@ -52,12 +55,14 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地</label>
             <div class="col-sm-2">
                 <input v-model="productbasiinfo.producer" type="text" class="form-control" placeholder="产地">
+                {{productbasiinfo.producer}}
             </div>
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
             <div class="col-sm-2">
                 <input v-model="productbasiinfo.style" type="text" class="form-control" placeholder="风格">
+                {{productbasiinfo.style}}
             </div>
         </div>
         <div class="form-group">
@@ -68,6 +73,7 @@
                     <input v-model="productbasiinfo.size.long" type="text" class="form-control" placeholder="长">
                     <span class="input-group-addon">cm</span>
                 </div>
+                {{productbasiinfo.size.long}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
@@ -75,6 +81,7 @@
                     <input v-model="productbasiinfo.size.width" type="text" class="form-control" placeholder="宽">
                     <span class="input-group-addon">cm</span>
                 </div>
+                {{productbasiinfo.size.width}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
@@ -82,6 +89,7 @@
                     <input v-model="productbasiinfo.size.height" type="text" class="form-control" placeholder="高">
                     <span class="input-group-addon">cm</span>
                 </div>
+                {{productbasiinfo.size.height}}
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">若为系列商品，按尺寸最大的填写</div>
@@ -99,6 +107,7 @@
                     <option v-bind:value="4">儿童</option>
                     <option v-bind:value="5">老人</option>
                  </select>
+                 {{productbasiinfo.intendedFor}}
             </div>
         </div>
         <div class="form-group">
@@ -109,6 +118,7 @@
                     <option v-bind:value="true">可以定制</option>
                     <option v-bind:value="false">不可以定制</option>
                  </select>
+                 {{productbasiinfo.customized}}
             </div>
         </div>
         <div class="form-group">
@@ -133,14 +143,16 @@
                 <label class="checkbox-inline">
                     <input type="checkbox" v-model="productbasiinfo.scenarios" value="option6"> 儿童房
                 </label>
+                {{productbasiinfo.scenarios | json}}
             </div>
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in labeltest">
-                    <input v-model="productbasiinfo.material" type="checkbox" value="{{$index}}"> 选项 1
+                    <input v-model="productbasiinfo.material" type="checkbox" value="{{$index}}"> 选项{{$index}}
                 </label>
+                {{productbasiinfo.material | json }}
             </div>
         </div>
     </div>
