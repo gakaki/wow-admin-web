@@ -1,12 +1,14 @@
 /**
  * 新增商品模型
  */
-export const basiInfo = {
+export const productBasiInfo = {
     productName         :   null,
     sellingPoin         :   null,
     productId           :   null,
-    brand               :   {name:null,id:null},
-    designers           :   [],
+    brandid             :   '',
+    designersid         :   [
+                                { id: ''},
+                            ],
     producer            :   null,
     style               :   null,
     size                :   {long:null,width:null,height:null},

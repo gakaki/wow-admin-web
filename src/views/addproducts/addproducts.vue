@@ -138,14 +138,14 @@
     </div>
 
     <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
-        <Basicinformation></Basicinformation>
+        <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
         <Salesattribute></Salesattribute>
         <Productdetails></Productdetails>
         <!-- <Other></Other> -->
         <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
            <div class="row">
                <div class="col-md-12 text-center">
-                   <button type="button" class="btn btn-primary">保存商品</button>
+                   <button @click="saveProducts()" type="button" class="btn btn-primary">保存商品</button>
                    <button type="button" class="btn btn-warning">预览商品</button>
                </div>
            </div>
@@ -155,6 +155,7 @@
 <script type="text/javascript">
     import Steps                from    './Steps'
     import Selectcategory       from    './Selectcategory'
+    import {productBasiInfo}    from    './model'
     import Basicinformation     from    './info/Basicinformation'
     import Salesattribute       from    './info/Salesattribute'
     import Productdetails       from    './info/Productdetails'
@@ -170,6 +171,7 @@
         },
         data(){
             return{
+                productBasiInfo:productBasiInfo,
                 list:[
                     {
                         name:'选择分类',
@@ -192,6 +194,9 @@
             nextSteps:function(){
                 this.$set('state','2');
                 this.$set('nowtag','2');
+            },
+            saveProducts:function(){
+                console.log(this.productBasiInfo)
             }
         },
         events:{

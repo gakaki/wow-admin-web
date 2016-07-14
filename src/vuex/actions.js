@@ -18,7 +18,7 @@ export const orderList=function({dispatch, state},orderlist){
          // get 'Expires' header
          response.headers['Expires'];
          // set data
-         dispatch('ORDERLIST',response.data.data)
+         dispatch('ORDERLIST',response.data.data);
      }, (response) => {
          // error callback
      });

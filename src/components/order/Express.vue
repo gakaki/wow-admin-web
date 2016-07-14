@@ -79,7 +79,7 @@
                <label class="checkbox-inline">
                   <input type="radio" name="expressRadios" value="true" checked="checked" v-model="needExpress"> 需要物流
                </label>
-               <label class="checkbox-inline">
+               <label class="checkbox-inline" v-show=''>
                   <input type="radio" name="expressRadios" value="false" v-model="needExpress"> 不需要物流
                </label>
            </h5>
@@ -117,15 +117,7 @@ export default{
         return {
             fruitOptions: [
                 {value:'{"name":"顺丰速运","code":"shunfengsuyun"}', label:'顺丰速运'},
-                {value:'{"name":"圆通快递","code":"yuantongkuaidi"}', label:'圆通快递'},
-                {value:'{"name":"天天快递","code":"tiantiankuaidi"}', label:'天天快递'},
-                {value:'{"name":"申通快递","code":"shentongkuaidi"}', label:'申通快递'},
-                {value:'{"name":"EMS","code":"ems"}', label:'EMS'},
-                {value:'{"name":"城通快递","code":"chengtongkuaidi"}', label:'城通快递'},
-                {value:'{"name":"同城快递","code":"tongchengkuaidi"}', label:'同城快递'},
-                {value:'{"name":"宅急送","code":"zhaijisong"}', label:'宅急送'},
-                {value:'{"name":"德邦物流","code":"debangwuliu"}', label:'德邦物流'},
-                {value:'{"name":"铁通物流","code":"tietongwuliu"}', label:'铁通快递'},
+                {value:'{"name":"日日顺","code":"ririshun"}', label:'日日顺'},
             ],
             checkedItems:[],
             expressinfo:{

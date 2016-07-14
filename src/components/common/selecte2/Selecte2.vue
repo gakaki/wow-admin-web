@@ -4,7 +4,7 @@
 
 <div>
     <select style="width:100%;" v-select="selected">
-        <option value="null">请选择</option>
+        <option value="">请选择</option>
         <option v-for="o in options" :value="o.id">{{ o.text }}</option>
     </select>
 </div>

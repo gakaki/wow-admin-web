@@ -69,8 +69,26 @@
         </ul>
     </div>
     <div class="navbar-text navbar-right">
-        <span class="glyphicon glyphicon-user"></span> admin | <a href="#">退出登录</a>
+        <span class="glyphicon glyphicon-user"></span> {{userName}} | <a href="javascript:;" @click="loginOut">退出登录</a>
     </div>
 </nav>
 
 </template>
+
+<script type="text/javascript">
+    export default{
+        data(){
+            return{
+                userName:$.cookie('userName')||''
+            }
+        },
+        methods:{
+            loginOut:function(){
+                $.cookie('userName', '',{ path: "/"});
+                $.cookie('token', '',{ path: "/"});
+                $.cookie('loginTag', 0,{ path: "/"});
+                window.location.href="/login"
+            }
+        }
+    }
+</script>

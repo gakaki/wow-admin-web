@@ -1,9 +1,15 @@
+<style media="screen">
+    .bodybg{
+        padding:0px;
+        background:#404040;
+    }
+</style>
 <template>
-    <div id="app" @click="closeDropdownsAndPopovers" class="container-fluid" style="padding:0px; background:#404040;">
-        <Topnav></Topnav>
-        <leftsider></leftsider>
+    <div id="app" v-bind:class="{'bodybg':loginTag==true}" @click="closeDropdownsAndPopovers" class="container-fluid">
+        <Topnav v-if="loginTag==true"></Topnav>
+        <leftsider v-if="loginTag==true"></leftsider>
         <div class="layout-main">
-            <breadcrumb></breadcrumb>
+            <breadcrumb v-if="loginTag==true"></breadcrumb>
             <div class="containerPadding"><router-view keep-alive></router-view></div>
         </div>
     </div>
@@ -21,6 +27,11 @@ export default {
         Topnav,
         Leftsider,
         Breadcrumb
+    },
+    data(){
+        return{
+            loginTag:$.cookie('loginTag')||false
+        }
     },
     methods:{
         closeDropdownsAndPopovers:function(){

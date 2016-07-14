@@ -14,11 +14,13 @@
     <div class="attribute_box">
         <div class="row">
             <div class="col-md-12">
-                <ul class="nav nav-tabs">
-                   <li v-bind:class={'active':$index==tablisttag} v-for="item in tablist">
-                       <a @click="tabcall($index,item.value)" href="javascript:;">{{item.name}}</a>
-                   </li>
-                </ul>
+                <div>
+                    <ul class="nav nav-tabs">
+                       <li v-bind:class="{'active':$index==tablisttag}" v-for="item in tablist">
+                           <a @click="tabcall($index,item.value)" href="javascript:;">{{item.name}}</a>
+                       </li>
+                    </ul>
+                </div>
                 <div class="btn-group attribute_head_left">
                     <button @click="addshowmodal=true" type="button" class="btn btn-default">新增属性</button>
                 </div>

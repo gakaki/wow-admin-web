@@ -55,6 +55,9 @@ export default {
         this.orderlist({page: '1',status: this.status})
     },
     route: {
+        activate: function(transition) {
+            transition.next();
+        },
         data({
             to: {
                 params: {

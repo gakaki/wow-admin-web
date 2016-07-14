@@ -6,6 +6,12 @@ export default function(router) {
                 require(['./views/Nopage'], resolve)
             }
         },
+        '/login': {
+            breadcrumb: '登录',
+            component(resolve) {
+                require(['./views/Login'], resolve)
+            }
+        },
         '/index': {
             breadcrumb: '网站首页',
             component(resolve) {
@@ -120,26 +126,35 @@ export default function(router) {
         }
     })
 
-    // router.beforeEach(({
-    //     to,
-    //     from,
-    //     next
-    // }) => {
-    //     let toPath = to.path
-    //     let fromPath = from.path
-    //     console.log('to: ' + toPath + ' from: ' + fromPath)
-    //     if (toPath.replace(/[^/]/g, '').length > 1) {
-    //         router.app.isIndex = false
-    //     } else {
-    //         let depath = toPath === '/' || toPath === '/invite' || toPath === '/rank'
-    //         router.app.isIndex = depath ? 0 : 1
-    //     }
-    //     next()
-    // })
-    //
-    // router.afterEach(function({
-    //     to
-    // }) {
-    //     console.log(`成功浏览到: ${to.path}`)
-    // })
+
+    router.beforeEach(({
+        to,
+        from,
+        next
+    }) => {
+        if ($.cookie('token')==''||$.cookie('token')==undefined||$.cookie('loginTag')==0||$.cookie('loginTag')==undefined||$.cookie('loginTag')=='') {
+            router.go('/login')
+            console.log(to.path);
+            if (to.path=='/login') {
+                next()
+            }
+            return
+        }
+        let toPath = to.path
+        let fromPath = from.path
+        //console.log('to: ' + toPath + ' from: ' + fromPath)
+        if (toPath.replace(/[^/]/g, '').length > 1) {
+            router.app.isIndex = false
+        } else {
+            let depath = toPath === '/' || toPath === '/invite' || toPath === '/rank'
+            router.app.isIndex = depath ? 0 : 1
+        }
+        next()
+    })
+
+    router.afterEach(function({
+        to
+    }) {
+        //console.log(`成功浏览到: ${to.path}`)
+    })
 }

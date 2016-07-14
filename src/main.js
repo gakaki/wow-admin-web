@@ -16,6 +16,11 @@ Vue.filter('byteFormat', require('components/common/filter/ZeroFill.js'));
 
 //使用VueResource
 Vue.use(VueResource)
+// Vue.http.options.crossOrigin = true;
+// Vue.http.options.credentials = true;
+// Vue.http.options.emulateJSON = true;
+Vue.http.headers.common['Content-Type'] = 'application/json;charset=UTF-8';
+Vue.http.options.emulateJSON = true
 
 Vue.use(VueRouter)
 const router = new VueRouter({
