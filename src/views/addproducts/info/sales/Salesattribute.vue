@@ -206,6 +206,7 @@
         data(){
             return{
                 labeltest:14,
+                testMap:null,
             }
         },
         computed: {
@@ -219,6 +220,9 @@
         },
         created(){
             this.$set('productsalesattribute.colorSelect',this.myLanguages);
+              console.log(this.testMap);
+
+
         },
         watch:{
             'myLanguages':function(val,oldval){
