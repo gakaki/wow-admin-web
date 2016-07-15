@@ -1,4 +1,8 @@
 <style media="screen">
+    .alert-box{
+        position: relative;
+        z-index: 999999;
+    }
     .alert-fixed{
         position: fixed;
         left: 0px;

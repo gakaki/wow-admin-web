@@ -36,10 +36,9 @@
         border-top: 1px dashed #eee;
     }
     .addproduct-box-html-color-box{
-        background: #fff;
         display: inline-block;
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
         border: 1px solid #ddd;
         vertical-align: middle;
         margin-top: -3px;
@@ -140,7 +139,7 @@
 
     <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
         <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
-        <Salesattribute></Salesattribute>
+        <Salesattribute :productsalesattribute="productSalesAttribute"></Salesattribute>
         <Productdetails></Productdetails>
         <!-- <Other></Other> -->
         <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
@@ -156,11 +155,11 @@
 <script type="text/javascript">
     import Steps                from    './Steps'
     import Selectcategory       from    './Selectcategory'
-    import {productBasiInfo}    from    './model'
-    import Basicinformation     from    './info/Basicinformation'
-    import Salesattribute       from    './info/Salesattribute'
-    import Productdetails       from    './info/Productdetails'
-    import Other                from    './info/Other'
+    import {productBasiInfo,productSalesAttribute}    from    './model'
+    import Basicinformation     from    './info/basic/Basicinformation'
+    import Salesattribute       from    './info/sales/Salesattribute'
+    import Productdetails       from    './info/details/Productdetails'
+    import Other                from    './info/ther/Other'
     export default{
         components:{
             Steps,
@@ -173,6 +172,7 @@
         data(){
             return{
                 productBasiInfo:productBasiInfo,
+                productSalesAttribute:productSalesAttribute,
                 list:[
                     {
                         name:'选择分类',
@@ -187,8 +187,8 @@
                         state:'3'
                     }
                 ],
-                state:'1',
-                nowtag:'1'
+                state:'2',
+                nowtag:'2'
             }
         },
         methods:{
@@ -197,7 +197,8 @@
                 this.$set('nowtag','2');
             },
             saveProducts:function(){
-                console.log(this.productBasiInfo)
+                console.log(this.productBasiInfo);
+                console.log(this.productSalesAttribute)
             }
         },
         events:{

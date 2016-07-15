@@ -1,50 +1,47 @@
+<style media="screen">
+    .multi-color{
+        background:-webkit-linear-gradient(left,#f00 50%,#fed533 50%), -webkit-linear-gradient(left,#1790c8 50%,#7bba3c 50%);
+        background-repeat:no-repeat;
+        background-position:left top,left bottom;
+        background-size:100% 50%;
+        border: 0px;
+        width: 12px;
+        height: 12px;
+    }
+    .color-label{
+        width: 120px;
+        min-height: 24px;
+    }
+    .color-label input[type=checkbox]{
+        position: relative;
+        display: inline-block;
+        top: -1px;
+    }
+    .color-label input[type=text]{
+        display: inline;
+        width: 80px;
+    }
+</style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">销售属性</div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
             <div class="col-sm-7 bg-muted">
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i class="addproduct-box-html-color-box"></i>
-                    白色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#d5d5d5;" class="addproduct-box-html-color-box"></i>
-                    银色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#919191;" class="addproduct-box-html-color-box"></i>
-                    灰色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#000;" class="addproduct-box-html-color-box"></i>
-                    黑色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#ff0000;" class="addproduct-box-html-color-box"></i>
-                    红色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#fed533;" class="addproduct-box-html-color-box"></i>
-                    黄色
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <i style="background:#1790c8;" class="addproduct-box-html-color-box"></i>
-                    蓝色
+                <label v-for="item in productsalesattribute.color" class="checkbox-inline color-label">
+                    <input type="checkbox" value="{{item.name}}" v-model='item.selected'>
+                    <i v-if="item.multi!=true" v-bind:style="{ background: item.color}" class="addproduct-box-html-color-box"></i>
+                    <i v-if="item.multi==true" class="multi-color addproduct-box-html-color-box"></i>
+                    <span v-if="item.selected==false">{{item.name}}</span>
+                    <input v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.name}}" v-model='item.name'>
                 </label>
             </div>
+            {{productsalesattribute.colorSelect|json}}
         </div>
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
             <div class="col-sm-7 bg-muted">
-                <label class="checkbox-inline" v-for="item in labeltest">
+                <label :productsalesattribute="productsalesattribute" class="checkbox-inline" v-for="item in labeltest">
                     <input type="checkbox" id="inlineCheckbox1" value="option1">
                     <input type="text" class="sales-attribute-table-text" placeholder="规格" value="">
                 </label>
@@ -59,7 +56,6 @@
                         <button type="button" class="btn btn-default btn-sm">售价</button>
                         <button type="button" class="btn btn-default btn-sm">活动价</button>
                         <button type="button" class="btn btn-default btn-sm">进货价</button>
-                        <button type="button" class="btn btn-default btn-sm">初始库存</button>
                         <button type="button" class="btn btn-default btn-sm">库存预警值</button>
                         <button type="button" class="btn btn-default btn-sm">重量</button>
                     </div>
@@ -84,7 +80,7 @@
             <tbody>
                 <tr>
                     <td rowspan="2">
-                        <img style="widht:70px; height:70px;" src="../../../assets/img/file_242_2.jpg" alt="" />
+                        <img style="widht:70px; height:70px;" src="../../../../assets/img/file_242_2.jpg" alt="" />
                     </td>
                     <td rowspan="2">
                         白色
@@ -144,7 +140,7 @@
             <tbody>
                 <tr>
                     <td rowspan="2">
-                        <img style="widht:70px; height:70px;" src="../../../assets/img/file_242_2.jpg" alt="" />
+                        <img style="widht:70px; height:70px;" src="../../../../assets/img/file_242_2.jpg" alt="" />
                     </td>
                     <td rowspan="2">
                         黑色
@@ -206,9 +202,27 @@
 </template>
 <script type="text/javascript">
     export default{
+        props:['productsalesattribute'],
         data(){
             return{
-                labeltest:14
+                labeltest:14,
+            }
+        },
+        computed: {
+            myLanguages: function () {
+                return this.productsalesattribute.color.filter(function (l) {
+                    return l.selected
+                }).map(function (l) {
+                    return l.name
+                })
+            }
+        },
+        created(){
+            this.$set('productsalesattribute.colorSelect',this.myLanguages);
+        },
+        watch:{
+            'myLanguages':function(val,oldval){
+                this.$set('productsalesattribute.colorSelect',this.myLanguages);
             }
         }
     }

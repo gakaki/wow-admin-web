@@ -15,25 +15,25 @@
                 <ul class="main-img-group text-left">
                     <li>
                         <p>
-                            <img src="../../../assets/img/file_242_2.jpg" alt="" />
+                            <img src="../../../../assets/img/file_242_2.jpg" alt="" />
                         </p>
                         正面图
                     </li>
                     <li>
                         <p>
-                            <img src="../../../assets/img/file_242_2.jpg" alt="" />
+                            <img src="../../../../assets/img/file_242_2.jpg" alt="" />
                         </p>
                         侧面图
                     </li>
                     <li>
                         <p>
-                            <img src="../../../assets/img/file_242_2.jpg" alt="" />
+                            <img src="../../../../assets/img/file_242_2.jpg" alt="" />
                         </p>
                         细节图
                     </li>
                     <li>
                         <p>
-                            <img src="../../../assets/img/file_242_2.jpg" alt="" />
+                            <img src="../../../../assets/img/file_242_2.jpg" alt="" />
                         </p>
                         细节图
                     </li>
@@ -66,7 +66,7 @@
                 <ul class="details-img-group bg-muted">
                     <li>
                         <p>
-                            <img src="../../../assets/img/file_242_2.jpg" alt="" />
+                            <img src="../../../../assets/img/file_242_2.jpg" alt="" />
                         </p>
                         <textarea placeholder="商品详情" class="form-control" rows="7"></textarea>
                     </li>

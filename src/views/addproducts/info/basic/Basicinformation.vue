@@ -5,7 +5,7 @@
             <label class="col-sm-2 control-label">所属分类</label>
             <div class="col-sm-10">
                 <p class="control-label text-muted">
-                    住宅家具>沙发类>沙发 <a @click="callStepsChange" href="javascript:;">重新选择</a>
+                    {{productbasiinfo.SelectcategoryName.one}} > {{productbasiinfo.SelectcategoryName.two}} > {{productbasiinfo.SelectcategoryName.three}} <a @click="callStepsChange" href="javascript:;">重新选择</a>
                 </p>
             </div>
         </div>
@@ -126,7 +126,7 @@
             </label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.scenarios" value="option1"> 客厅
+                    <input type="checkbox" v-model="productbasiinfo.scenarios" value="客厅"> 客厅
                 </label>
                 <label class="checkbox-inline">
                     <input type="checkbox" v-model="productbasiinfo.scenarios" value="option2"> 卧室
@@ -158,7 +158,7 @@
     </div>
 </template>
 <script type="text/javascript">
-    import Select2 from '../../../components/common/selecte2/Selecte2'
+    import Select2 from '../../../../components/common/selecte2/Selecte2'
     import Designers from './Designers'
     export default{
         props:['productbasiinfo'],

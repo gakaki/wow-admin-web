@@ -28,8 +28,8 @@
     <hr v-if="itemlength>1&&itemlength==index+1">
 </template>
 <script type="text/javascript">
-    import {productBasiInfo} from '../model'
-    import Select2 from '../../../components/common/selecte2/Selecte2'
+    import {productBasiInfo} from '../../model'
+    import Select2 from '../../../../components/common/selecte2/Selecte2'
     export default{
         props:['designersid','designers','index','itemlength'],
         components:{

@@ -120,7 +120,7 @@
                     this.$broadcast('hide::spinner');
                 }, (response) => {
                     // error callback
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网路错误',alertShow:true})
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
                 });
 
             },

@@ -55,7 +55,9 @@
 </style>
 <template>
     <div class="row">
+        <Alert :duration="3000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
         <div class="col-md-12">
+            <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
             <div style="width:740px; margin:0 auto;">
                 <div v-show="" class="form-inline" style="margin:40px 0px 30px 0px;">
                    <div class="form-group">
@@ -72,8 +74,8 @@
                     <div class="addproduct-category-box">
                         <h5>一级分类</h5>
                         <ul>
-                            <li v-bind:class="{'addproduct-category-box-current':currentTag==$index}" @click="listOne(item.id,$index)" v-for="item in one">
-                                {{item.text}}
+                            <li v-bind:class="{'addproduct-category-box-current':currentTag==$index}" @click="listOne(item.id,$index,item.categoryName)" v-for="item in one">
+                                {{item.categoryName}}
                             </li>
                         </ul>
                     </div>
@@ -81,11 +83,11 @@
                         <h5>二级分类</h5>
                         <ul>
                              <p v-if="two.length==0" class="text-center text-danger" style="margin-top:20px;">
-                                 请先选择一级分类
+                                 {{tipText}}
                                  <span class="glyphicon glyphicon-info-sign"></span>
                              </p>
-                            <li v-bind:class="{'addproduct-category-box-current':currentTags==$index}" @click="listTwo(item.id,$index)" v-for="item in two">
-                                {{item.text}}
+                            <li v-bind:class="{'addproduct-category-box-current':currentTags==$index}" @click="listTwo(item.id,$index,item.categoryName)" v-for="item in two">
+                                {{item.categoryName}}
                             </li>
                         </ul>
                     </div>
@@ -93,11 +95,11 @@
                         <h5>三级分类</h5>
                         <ul>
                             <p v-if="three.length==0" class="text-center text-danger" style="margin-top:20px;">
-                                请先选择二级分类
+                                {{tipText}}
                                 <span class="glyphicon glyphicon-info-sign"></span>
                             </p>
-                            <li v-bind:class="{'addproduct-category-box-current':currentTagss==$index}" @click="listThree(item.id,$index)" v-for="item in three">
-                                {{item.text}}
+                            <li v-bind:class="{'addproduct-category-box-current':currentTagss==$index}" @click="listThree(item.id,$index,item.categoryName)" v-for="item in three">
+                                {{item.categoryName}}
                             </li>
                         </ul>
                     </div>
@@ -109,79 +111,85 @@
 
 <script type="text/javascript">
     import {productBasiInfo} from './model'
+    import Alert from '../../components/common/alert/Alert'
     export default{
+        components:{
+            Alert
+        },
         data(){
             return{
                 productBasiInfo:productBasiInfo,
                 currentTag:null,
                 currentTags:null,
                 currentTagss:null,
-                twoTest:[
-                    {text:'二级分类1',id:111},
-                    {text:'二级分类2',id:12},
-                    {text:'二级分类3',id:332},
-                    {text:'二级分类4',id:314},
-                    {text:'二级分类5',id:11},
-                    {text:'二级分类6',id:22},
-                    {text:'二级分类7',id:3123}
-                ],
-                threeTest:[
-                    {text:'三级分类1',id:87},
-                    {text:'三级分类2',id:92},
-                    {text:'三级分类3',id:209},
-                    {text:'三级分类4',id:762},
-                    {text:'三级分类5',id:980},
-                    {text:'三级分类6',id:928},
-                    {text:'三级分类7',id:291},
-                    {text:'三级分类8',id:787},
-                    {text:'三级分类9',id:692},
-                    {text:'三级分类10',id:509},
-                    {text:'三级分类11',id:7162},
-                    {text:'三级分类12',id:2980},
-                    {text:'三级分类13',id:3928},
-                    {text:'三级分类14',id:4291},
-                    {text:'三级分类15',id:2387},
-                    {text:'三级分类16',id:3892},
-                    {text:'三级分类17',id:3209},
-                    {text:'三级分类18',id:1762},
-                    {text:'三级分类19',id:3980},
-                    {text:'三级分类20',id:1928},
-                    {text:'三级分类21',id:3291},
-                ],
-                one:[
-                    {text:'家纺',id:41},
-                    {text:'生活电器',id:22},
-                    {text:'户外运动',id:13},
-                    {text:'母婴',id:34},
-                    {text:'生活日用家庭清洁',id:25},
-                    {text:'家装建材以及五金',id:16},
-                    {text:'邮费',id:27}
-                ],
+                tipText:'该类目无子分类',
+                one:[],
                 two:[],
-                three:[]
+                three:[],
+                alertObj:{
+                    alertType:null,
+                    alertInfo:null,
+                    alertShow:false
+                },
             }
         },
         methods:{
-            listOne:function(id,index){
+            listOne:function(id,index,name){
                 this.$set('currentTag',index);
                 this.$set('currentTags',null);
                 this.$set('currentTagss',null);
-                this.$set('two',this.twoTest)
+                this.$set('productBasiInfo.SelectcategoryName.one',name);
                 this.$set('productBasiInfo.Selectcategory.one',id);
                 this.$set('productBasiInfo.Selectcategory.two',null);
                 this.$set('productBasiInfo.Selectcategory.three',null);
+                this.$set('two',[]);
+                this.$set('three',[]);
+                this.setList(id,'two');
             },
-            listTwo:function(id,index){
+            listTwo:function(id,index,name){
                 this.$set('currentTags',index);
                 this.$set('currentTagss',null);
-                this.$set('three',this.threeTest);
+                this.$set('productBasiInfo.SelectcategoryName.two',name);
                 this.$set('productBasiInfo.Selectcategory.two',id);
                 this.$set('productBasiInfo.Selectcategory.three',null);
+                this.$set('three',[]);
+                this.setList(id,'three');
             },
-            listThree:function(id,index){
+            listThree:function(id,index,name){
                 this.$set('currentTagss',index);
+                this.$set('productBasiInfo.SelectcategoryName.three',name);
                 this.$set('productBasiInfo.Selectcategory.three',id);
+            },
+            setList:function(id,list){
+                this.$set('tipText','正在获取分类')
+                let jsontext=JSON.stringify({"categoryId":id});
+                this.$http.get('http://10.0.60.72:9090/admin-api-dev/v1/category/sub-category',{paramJson:jsontext}).then((response) => {
+                    // success callback
+                    if (response.data.resCode==0) {
+                        this.$set(list,response.data.data);
+                    }else {
+                        this.$set(list,[]);
+                        this.$set('tipText','该类目无子分类')
+                    }
+                }, (response) => {
+                    // error callback
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                });
             }
+        },
+        ready(){
+            this.$http.get('http://10.0.60.72:9090/admin-api-dev/v1/category/first-level').then((response) => {
+                // success callback
+                if (response.data.resCode==0) {
+                    this.$set('alertObj',{alertType:'alert-success',alertInfo:'获取分类成功',alertShow:true})
+                    this.$set('one',response.data.data);
+                }else {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                }
+            }, (response) => {
+                // error callback
+                this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+            });
         }
     }
 </script>
