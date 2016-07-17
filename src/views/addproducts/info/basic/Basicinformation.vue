@@ -70,26 +70,26 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input v-model="productbasiinfo.size.long" type="text" class="form-control" placeholder="长">
+                    <input v-model="productbasiinfo.spec.long" type="text" class="form-control" placeholder="长">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.size.long}}
+                {{productbasiinfo.spec.long}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">宽</span>
-                    <input v-model="productbasiinfo.size.width" type="text" class="form-control" placeholder="宽">
+                    <input v-model="productbasiinfo.spec.width" type="text" class="form-control" placeholder="宽">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.size.width}}
+                {{productbasiinfo.spec.width}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">高</span>
-                    <input v-model="productbasiinfo.size.height" type="text" class="form-control" placeholder="高">
+                    <input v-model="productbasiinfo.spec.height" type="text" class="form-control" placeholder="高">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.size.height}}
+                {{productbasiinfo.spec.height}}
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">若为系列商品，按尺寸最大的填写</div>

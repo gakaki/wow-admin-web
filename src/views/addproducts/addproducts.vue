@@ -139,7 +139,7 @@
 
     <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
         <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
-        <Salesattribute :productsalesattribute="productSalesAttribute"></Salesattribute>
+        <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
         <Productdetails></Productdetails>
         <!-- <Other></Other> -->
         <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
@@ -155,7 +155,7 @@
 <script type="text/javascript">
     import Steps                from    './Steps'
     import Selectcategory       from    './Selectcategory'
-    import {productBasiInfo,productSalesAttribute}    from    './model'
+    import {productBasiInfo,productSalesAttribute,specTbodyList}    from    './model'
     import Basicinformation     from    './info/basic/Basicinformation'
     import Salesattribute       from    './info/sales/Salesattribute'
     import Productdetails       from    './info/details/Productdetails'
@@ -173,6 +173,7 @@
             return{
                 productBasiInfo:productBasiInfo,
                 productSalesAttribute:productSalesAttribute,
+                specTbodyList:specTbodyList,
                 list:[
                     {
                         name:'选择分类',

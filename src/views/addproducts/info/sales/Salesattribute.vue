@@ -41,11 +41,12 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
             <div class="col-sm-7 bg-muted">
-                <label :productsalesattribute="productsalesattribute" class="checkbox-inline" v-for="item in labeltest">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1">
-                    <input type="text" class="sales-attribute-table-text" placeholder="规格" value="">
+                <label class="checkbox-inline" v-for="item in spectbodylist">
+                    <input type="checkbox" value="{{item.spec}}" v-model='item.selected'>
+                    <input type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
                 </label>
             </div>
+            {{specListS | json }}
         </div>
         <div class="form-group" style="margin-top:40px;">
             <label for="firstname" class="col-sm-2 control-label"></label>
@@ -77,157 +78,53 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td rowspan="2">
-                        <img style="widht:70px; height:70px;" src="../../../../assets/img/file_242_2.jpg" alt="" />
-                    </td>
-                    <td rowspan="2">
-                        白色
-                    </td>
-                    <td>
-                        L
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" >
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        p21233244
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-sm">禁用</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        XL
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        p21233502
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-sm">禁用</button>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody>
-                <tr>
-                    <td rowspan="2">
-                        <img style="widht:70px; height:70px;" src="../../../../assets/img/file_242_2.jpg" alt="" />
-                    </td>
-                    <td rowspan="2">
-                        黑色
-                    </td>
-                    <td>
-                        L
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" >
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0">
-                    </td>
-                    <td>
-                        p21233244
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-sm">禁用</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        XL
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" disabled="disabled">
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" disabled="disabled">
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" disabled="disabled">
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" disabled="disabled">
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <input type="text" class="form-control sales-attribute-table-text" placeholder="0" disabled="disabled">
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        p21233502
-                    </td>
-                    <td class="sales-attribute-disabled">
-                        <button type="button" class="btn btn-default btn-sm">启用</button>
-                    </td>
-                </tr>
+            <tbody :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody">
             </tbody>
         </table>
     </div>
 </template>
 <script type="text/javascript">
+    import Spectbody from './Spectbody'
     export default{
-        props:['productsalesattribute'],
+        props:['productsalesattribute','spectbodylist'],
         data(){
             return{
                 labeltest:14,
-                testMap:null,
+                a:1,
+                testimg:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',
             }
         },
+        components:{
+            Spectbody
+        },
         computed: {
-            myLanguages: function () {
+            colorSelect: function () {
                 return this.productsalesattribute.color.filter(function (l) {
                     return l.selected
                 }).map(function (l) {
                     return l.name
                 })
+            },
+
+            specListS: function () {
+                return this.spectbodylist.filter(function (l) {
+                    return l.selected
+                }).map(function (l) {
+                    return l.spec
+                })
             }
         },
         created(){
-            this.$set('productsalesattribute.colorSelect',this.myLanguages);
-              console.log(this.testMap);
-
-
+            this.$set('productsalesattribute.colorSelect',this.colorSelect);
+            this.$set('productsalesattribute.specSelect',this.specListS);
+            console.log('默认选中的颜色：︾︾');
+            console.log(this.productsalesattribute.colorSelect);
         },
         watch:{
-            'myLanguages':function(val,oldval){
-                this.$set('productsalesattribute.colorSelect',this.myLanguages);
+            'colorSelect':function(val,oldval){
+                this.$set('productsalesattribute.colorSelect',this.colorSelect);
+                this.$set('productsalesattribute.specSelect',this.specListS);
             }
-        }
+        },
     }
 </script>

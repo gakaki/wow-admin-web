@@ -198,7 +198,7 @@
             </td>
             <td v-if="$index==0" v-bind:rowspan="item.list.length">
                 <p>
-                    <a href="javascript:void(0);">GRASSY小草收纳座</a>
+                    <a href="javascript:void(0);">{{item.name}}</a>
                 </p>
                 <p class="text-muted">
                     SPU：C02356652
@@ -250,24 +250,31 @@
                 listView:'spu',
                 skuArrView:[
                     {
+                        name:'名字1',
                         list:[1,2,3]
                     },
                     {
+                        name:'名字2',
                         list:[1,2]
                     },
                     {
+                        name:'名字3',
                         list:[1,2,3,4,5]
                     },
                     {
+                        name:'名字4',
                         list:[1,2,3,4,5,6,7]
                     },
                     {
+                        name:'名字5',
                         list:[1]
                     },
                     {
+                        name:'名字6',
                         list:[1,2,3]
                     },
                     {
+                        name:'名字7',
                         list:[1,2,3,4]
                     }
                 ]
