@@ -49,7 +49,7 @@ export const productSalesAttribute={
         {
             color:'#ffffff',
             name:'白色',
-            img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',
+            img:'',
             selected: true,
             specList:specTbodyList,
             specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
@@ -57,27 +57,32 @@ export const productSalesAttribute={
         {
             color:'#d5d5d5',
             name:'银色',
-            img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',
+            img:'',
             selected: true,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
             color:'#919191',
             name:'灰色',
-            img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',
+            img:'',
             selected: false,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
-        {color:'#000000',name:'黑色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#ff0000',name:'红色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#fed533',name:'黄色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#1790c8',name:'蓝色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#7bba3c',name:'绿色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#8d429f',name:'紫色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#cb8b44',name:'原木色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#941100',name:'棕色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {multi:true, color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
+        {color:'#000000',name:'黑色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#ff0000',name:'红色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#fed533',name:'黄色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#1790c8',name:'蓝色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#7bba3c',name:'绿色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {multi:true, color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
     ],
     colorSelect         :   [],
     specSelect          :   [],
+}
+
+export const imgIndex={
+    qiniuurl:'http://o7s1lyy5h.bkt.clouddn.com/',
+    color_img:''
 }

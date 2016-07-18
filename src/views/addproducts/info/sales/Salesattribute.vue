@@ -65,24 +65,26 @@
                 </div>
             </div>
         </div>
-        <table class="table order-list sales-attribute-table">
-            <thead>
-                <tr>
-                    <th>图片</th>
-                    <th>颜色</th>
-                    <th>规格</th>
-                    <th><span class="text-danger">*</span>售价</th>
-                    <th>活动价</th>
-                    <th><span class="text-danger">*</span>进货价</th>
-                    <th>到货周期</th>
-                    <th><span class="text-danger">*</span>重量(KG)</th>
-                    <th>SKU编码</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody :tbody_index="$index" :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody" :spec_select="productsalesattribute.specSelect">
-            </tbody>
-        </table>
+        <div id="clor-pic-box">
+            <table class="table order-list sales-attribute-table">
+                <thead>
+                    <tr>
+                        <th>图片</th>
+                        <th>颜色</th>
+                        <th>规格</th>
+                        <th><span class="text-danger">*</span>售价</th>
+                        <th>活动价</th>
+                        <th><span class="text-danger">*</span>进货价</th>
+                        <th>到货周期</th>
+                        <th><span class="text-danger">*</span>重量(KG)</th>
+                        <th>SKU编码</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody :tbody_index="$index" :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody" :spec_select="productsalesattribute.specSelect">
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 <script type="text/javascript">

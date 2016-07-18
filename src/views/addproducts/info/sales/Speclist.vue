@@ -9,11 +9,7 @@
 <template>
     <tr v-if="list.selected==true" v-bind:class="{'spec-disabled':lists.disabled==true}">
         <td v-if="index==0" v-bind:rowspan="speclength">
-            <div id="clor-pic-box">
-                <a href="javascript:;">
-                    <img style="widht:70px; height:70px;" v-bind:src="img" alt="" />
-                </a>
-            </div>
+            <Color-img :id="tbody_index" :imgsrc="img"></Color-mg>
         </td>
         <td v-if="index==0" v-bind:rowspan="speclength">
             {{name}}
@@ -47,8 +43,12 @@
 </template>
 <script type="text/javascript">
     import {productSalesAttribute} from '../../model'
+    import ColorImg from './Color_img'
     export default{
         props:['list','index','speclength','name','img','tbody_index','spec_index','lists','spec_select_length'],
+        components:{
+            ColorImg
+        },
         data(){
             return{
                 sell_price:'',
@@ -67,12 +67,7 @@
             },
             setVal:function(tbody_index,spec_index,val,name){
                 productSalesAttribute.color[tbody_index].specListVal[spec_index][name]=val;
-            },
-            color_img:function(tbody_index){
-                console.log(tbody_index);
             }
-        },
-        ready(){
         }
     }
 </script>

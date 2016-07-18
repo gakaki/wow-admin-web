@@ -155,11 +155,12 @@
 <script type="text/javascript">
     import Steps                from    './Steps'
     import Selectcategory       from    './Selectcategory'
-    import {productBasiInfo,productSalesAttribute,specTbodyList}    from    './model'
+    import {productBasiInfo,productSalesAttribute,specTbodyList,imgIndex}    from    './model'
     import Basicinformation     from    './info/basic/Basicinformation'
     import Salesattribute       from    './info/sales/Salesattribute'
     import Productdetails       from    './info/details/Productdetails'
     import Other                from    './info/other/Other'
+    import {uploadImgLoad}      from    '../../config'
     export default{
         components:{
             Steps,
@@ -171,6 +172,8 @@
         },
         data(){
             return{
+                loadingimg:uploadImgLoad,
+                uploader:null,
                 productBasiInfo:productBasiInfo,
                 productSalesAttribute:productSalesAttribute,
                 specTbodyList:specTbodyList,
@@ -207,6 +210,71 @@
                 this.$set('nowtag',msg);
                 this.$set('state',msg);
             }
+        },
+        ready(){
+            let _this=this;
+            let specColorPic_button=['Apickfiles0','Apickfiles1','Apickfiles2','Apickfiles3','Apickfiles4','Apickfiles5','Apickfiles6','Apickfiles7','Apickfiles8','Apickfiles9','Apickfiles10','Apickfiles11']
+            let specColorPic = {
+                runtimes: 'html5,flash,html4', //上传模式,依次退化
+                browse_button: specColorPic_button, //上传选择的点选按钮，**必需**
+                uptoken_url: 'http://apidev.dev.wowdsgn.com:8400/apiv1/qiniu/token', //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                uptoken: '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+                domain: 'http://o7s1lyy5h.bkt.clouddn.com', //bucket 域名，下载资源时用到，**必需**
+                get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
+                container: 'clor-pic-box', //上传区域DOM ID，默认是browser_button的父元素，
+                max_file_size: '1mb', //最大文件体积限制
+                flash_swf_url: 'http://cdn.bootcss.com/plupload/2.1.8/Moxie.swf', //引入flash,相对路径
+                max_retries: 3, //上传失败最大重试次数
+                dragdrop: false, //开启可拖曳上传
+                drop_element: 'clor-pic-box', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+                chunk_size: '4mb', //分块上传时，每片的体积
+                auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                init: {
+                    'FilesAdded': function(up, files) {
+                        console.log(_this);
+                        console.log($(this));
+                        plupload.each(files, function(file) {
+                            // 文件添加进队列后,处理相关的事情
+                            console.log(_this.loadingimg);
+                            console.log('#####################进入队列#######################');
+                            imgIndex.qiniuurl='';
+                            productSalesAttribute.color[imgIndex.color_img].img=_this.loadingimg;
+                        });
+                    },
+                    'BeforeUpload': function(up, file) {
+                        // 每个文件上传前,处理相关的事情
+                        console.log('#####################上传之前#######################');
+                    },
+                    'UploadProgress': function(up, file) {
+                        // 每个文件上传时,处理相关的事情
+                        console.log('#####################上传进行时#######################');
+                    },
+                    'FileUploaded': function(up, file, info) {
+                        // 每个文件上传成功后,处理相关的事情
+                        console.log('#####################上传成功#######################');
+                        let domain = up.getOption('domain');
+                        let res=$.parseJSON(info);
+                        let brandpicsrc=domain+'/'+encodeURI(res.key);
+                        console.log(domain+'/'+encodeURI(res.key))
+                        imgIndex.qiniuurl='http://o7s1lyy5h.bkt.clouddn.com/';
+                        productSalesAttribute.color[imgIndex.color_img].img=encodeURI(res.key);
+                    },
+                    'Error': function(up, err, errTip) {
+                        console.log(up);
+                        console.log(err);
+                        console.log(errTip);
+                        console.log('#####################上传出错#######################');
+                        //上传出错时,处理相关的事情
+                    },
+                    'UploadComplete': function() {
+                        console.log('#####################队列处理完毕#######################');
+                        //队列文件处理完毕后,处理相关的事情
+                    },
+                }
+            };
+            var uploader = Qiniu.uploader(specColorPic);
         }
     }
 </script>
