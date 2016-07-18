@@ -21,10 +21,13 @@
         display: inline;
         width: 80px;
     }
+    .spec-border-danger{
+        border:1px solid #ff0000;
+    }
 </style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
-        <div class="well well-sm">销售属性</div>
+        <div class="well well-sm">销售属性<span class="text-danger">［颜色／规格 *必选］</span></div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
             <div class="col-sm-7 bg-muted">
@@ -42,8 +45,8 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in spectbodylist">
-                    <input type="checkbox" value="{{item.spec}}" v-model='item.selected'>
-                    <input type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
+                    <input v-bind:disabled="$index==0"  type="checkbox" value="{{item.spec}}" v-model='item.selected'>
+                    <input v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
                 </label>
             </div>
             {{specListS | json }}
@@ -57,7 +60,6 @@
                         <button type="button" class="btn btn-default btn-sm">售价</button>
                         <button type="button" class="btn btn-default btn-sm">活动价</button>
                         <button type="button" class="btn btn-default btn-sm">进货价</button>
-                        <button type="button" class="btn btn-default btn-sm">库存预警值</button>
                         <button type="button" class="btn btn-default btn-sm">重量</button>
                     </div>
                 </div>
@@ -78,7 +80,7 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tbody :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody">
+            <tbody :tbody_index="$index" :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody" :spec_select="productsalesattribute.specSelect">
             </tbody>
         </table>
     </div>
@@ -105,11 +107,11 @@
                     return l.name
                 })
             },
-
             specListS: function () {
                 return this.spectbodylist.filter(function (l) {
                     return l.selected
                 }).map(function (l) {
+                    console.log(l);
                     return l.spec
                 })
             }
@@ -123,6 +125,8 @@
         watch:{
             'colorSelect':function(val,oldval){
                 this.$set('productsalesattribute.colorSelect',this.colorSelect);
+            },
+            'specListS':function(val,oldval){
                 this.$set('productsalesattribute.specSelect',this.specListS);
             }
         },

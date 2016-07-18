@@ -159,7 +159,7 @@
     import Basicinformation     from    './info/basic/Basicinformation'
     import Salesattribute       from    './info/sales/Salesattribute'
     import Productdetails       from    './info/details/Productdetails'
-    import Other                from    './info/ther/Other'
+    import Other                from    './info/other/Other'
     export default{
         components:{
             Steps,
