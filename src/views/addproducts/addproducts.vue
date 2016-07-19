@@ -80,8 +80,8 @@
         line-height: 90px;
     }
     .main-img-group img{
-        width: 90px;
-        height: 90px;
+        max-width: 90px;
+        max-height: 90px;
     }
     .details-img-group {
         padding: 10px;
@@ -102,10 +102,11 @@
         left: 0px;
         top: 0px;
         cursor:pointer;
+        text-align: center;
     }
     .details-img-group p img{
-        width: 138px;
-        height: 138px;
+        max-width: 138px;
+        max-height: 138px;
     }
     .details-img-group-nopic{
         line-height: 138px;
@@ -122,6 +123,7 @@
     }
 </style>
 <template>
+    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
     <div class="row">
         <div class="col-md-12" style="margin-top:20px;">
             <div style="width:740px; margin:0 auto;">
@@ -140,7 +142,7 @@
     <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
         <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
         <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
-        <Productdetails></Productdetails>
+        <Productdetails :productdetails="productDetails"></Productdetails>
         <!-- <Other></Other> -->
         <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
            <div class="row">
@@ -155,11 +157,12 @@
 <script type="text/javascript">
     import Steps                from    './Steps'
     import Selectcategory       from    './Selectcategory'
-    import {productBasiInfo,productSalesAttribute,specTbodyList,imgIndex}    from    './model'
+    import {productBasiInfo,productSalesAttribute,specTbodyList,imgIndex,productDetails}    from    './model'
     import Basicinformation     from    './info/basic/Basicinformation'
     import Salesattribute       from    './info/sales/Salesattribute'
     import Productdetails       from    './info/details/Productdetails'
     import Other                from    './info/other/Other'
+    import Alert                from    '../../components/common/alert/Alert'
     export default{
         components:{
             Steps,
@@ -167,14 +170,21 @@
             Basicinformation,
             Salesattribute,
             Productdetails,
-            Other
+            Other,
+            Alert
         },
         data(){
             return{
+                alertObj:{
+                    alertType:null,
+                    alertInfo:null,
+                    alertShow:false
+                },
                 uploader:null,
                 productBasiInfo:productBasiInfo,
                 productSalesAttribute:productSalesAttribute,
                 specTbodyList:specTbodyList,
+                productDetails:productDetails,
                 list:[
                     {
                         name:'选择分类',
@@ -200,7 +210,8 @@
             },
             saveProducts:function(){
                 console.log(this.productBasiInfo);
-                console.log(this.productSalesAttribute)
+                console.log(this.productSalesAttribute);
+                console.log(this.productDetails);
             }
         },
         events:{
@@ -210,6 +221,11 @@
             }
         },
         ready(){
+
+            /**
+             * [上传颜色图片初始化]
+             * start
+             */
             let _this=this;
             let specColorPic_button=['Apickfiles0','Apickfiles1','Apickfiles2','Apickfiles3','Apickfiles4','Apickfiles5','Apickfiles6','Apickfiles7','Apickfiles8','Apickfiles9','Apickfiles10','Apickfiles11']
             let specColorPic = {
@@ -231,44 +247,37 @@
                 auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
                 init: {
                     'FilesAdded': function(up, files) {
-                        console.log(_this);
-                        console.log($(this));
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
-                            console.log('#####################进入队列#######################');
-                            productSalesAttribute.color[imgIndex.color_img].img='loading.gif';
+                            productSalesAttribute.color[imgIndex.img_index].img='loading.gif';
                         });
                     },
                     'BeforeUpload': function(up, file) {
                         // 每个文件上传前,处理相关的事情
-                        console.log('#####################上传之前#######################');
                     },
                     'UploadProgress': function(up, file) {
                         // 每个文件上传时,处理相关的事情
-                        console.log('#####################上传进行时#######################');
                     },
                     'FileUploaded': function(up, file, info) {
                         // 每个文件上传成功后,处理相关的事情
-                        console.log('#####################上传成功#######################');
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        console.log(domain+'/'+encodeURI(res.key))
-                        productSalesAttribute.color[imgIndex.color_img].img=encodeURI(res.key);
+                        productSalesAttribute.color[imgIndex.img_index].img=encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
-                        console.log(up);
-                        console.log(err);
-                        console.log(errTip);
-                        console.log('#####################上传出错#######################');
+                        _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
                         //上传出错时,处理相关的事情
                     },
                     'UploadComplete': function() {
-                        console.log('#####################队列处理完毕#######################');
                         //队列文件处理完毕后,处理相关的事情
                     },
                 }
             };
             var uploader = Qiniu.uploader(specColorPic);
+            /**
+             * [上传颜色图片初始化]
+             * end
+             */
         }
     }
 </script>

@@ -1,6 +1,13 @@
 /**
  * 新增商品模型
  */
+
+ import {qiniuimgsrc} from '../../config'
+
+/**
+ * [productBasiInfo 商品公用字段]
+ * @type {Object}
+ */
 export const productBasiInfo = {
     SelectcategoryName  :   {one:null,two:null,three:null},
     Selectcategory      :   {one:null,two:null,three:null},
@@ -20,19 +27,22 @@ export const productBasiInfo = {
     material            :   [],
 }
 
-//定义属性对应的值
-export const  specTbodyListVal=[
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false}
-]
+/**
+ * [imgIndex 七牛展示图片地址超链接]
+ * @type {Object}
+ */
+export const imgIndex={
+    qiniuurl:qiniuimgsrc,
+    img_index:'',
+    set_img_index:function(index){
+        return this.img_index=index;
+    }
+}
 
-//定义规格预设值
+/**
+ * [specTbodyList 定义规格预设值：是否选中]
+ * @type {Array}
+ */
 export const specTbodyList=[
     {spec:'默认',selected: true},
     {spec:'默认2',selected: true},
@@ -44,6 +54,25 @@ export const specTbodyList=[
     {spec:'',selected: false}
 ]
 
+/**
+ * [specTbodyListVal 定义规格预留值：售价－活动价－进货价－到货周期－重量]
+ * @type {Array}
+ */
+export const  specTbodyListVal=[
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false}
+]
+
+/**
+ * [productSalesAttribute 商品销售属性简单模型，关联specTbodyList跟specTbodyListVal]
+ * @type {Object}
+ */
 export const productSalesAttribute={
     color               :  [
         {
@@ -82,7 +111,20 @@ export const productSalesAttribute={
     specSelect          :   [],
 }
 
-export const imgIndex={
-    qiniuurl:'http://o7s1lyy5h.bkt.clouddn.com/',
-    color_img:''
+/**
+ * [Productdetails 商品详情]
+ * @type {Object}
+ */
+export const productDetails={
+    primary_img:[
+        {tag:'正面图',img:'',is_primary:1,sort:0},
+        {tag:'侧面图',img:'',is_primary:1,sort:1},
+        {tag:'细节图',img:'',is_primary:1,sort:2},
+        {tag:'细节图',img:'',is_primary:1,sort:3},
+        {tag:'细节图',img:'',is_primary:1,sort:4}
+    ],
+    text_desc:'',
+    img_text_desc:[
+        {img:'',img_desc:'',sort:0},
+    ]
 }
