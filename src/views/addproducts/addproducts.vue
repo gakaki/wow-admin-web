@@ -160,7 +160,6 @@
     import Salesattribute       from    './info/sales/Salesattribute'
     import Productdetails       from    './info/details/Productdetails'
     import Other                from    './info/other/Other'
-    import {uploadImgLoad}      from    '../../config'
     export default{
         components:{
             Steps,
@@ -172,7 +171,6 @@
         },
         data(){
             return{
-                loadingimg:uploadImgLoad,
                 uploader:null,
                 productBasiInfo:productBasiInfo,
                 productSalesAttribute:productSalesAttribute,
@@ -237,10 +235,8 @@
                         console.log($(this));
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
-                            console.log(_this.loadingimg);
                             console.log('#####################进入队列#######################');
-                            imgIndex.qiniuurl='';
-                            productSalesAttribute.color[imgIndex.color_img].img=_this.loadingimg;
+                            productSalesAttribute.color[imgIndex.color_img].img='loading.gif';
                         });
                     },
                     'BeforeUpload': function(up, file) {
@@ -256,9 +252,7 @@
                         console.log('#####################上传成功#######################');
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        let brandpicsrc=domain+'/'+encodeURI(res.key);
                         console.log(domain+'/'+encodeURI(res.key))
-                        imgIndex.qiniuurl='http://o7s1lyy5h.bkt.clouddn.com/';
                         productSalesAttribute.color[imgIndex.color_img].img=encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
