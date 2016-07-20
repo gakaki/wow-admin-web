@@ -31,12 +31,12 @@
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品型号</label>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <input v-model="productbasiinfo.productId" type="text" class="form-control" placeholder="商品型号">
                 {{productbasiinfo.productId}}
             </div>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
             <div class="col-sm-2">
                 <Select2 :selected.sync="productbasiinfo.brandid" :options="brandlist"></Select2>
@@ -49,8 +49,40 @@
                     </button>
                 </div>
             </div>
+        </div> -->
+
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
+            <div class="col-sm-3">
+                <v-select label="full_name" :debounce="500" :on-search="get_brandlist" :value.sync="productbasiinfo.brandid" placeholder="搜索品牌" :options="brandlist"></v-select>
+            </div>
+            <div class="col-sm-4 control-label" style="padding-top:4px;" >
+                <div class="text-left text-muted">
+                    {{productbasiinfo.brandid}}
+                    <button type="button" class="btn btn-xs btn-default">
+                        <span class="glyphicon glyphicon-refresh"></span> 刷新
+                    </button>
+                </div>
+            </div>
         </div>
-        <Designers :index="$index" :itemlength="productbasiinfo.designersid.length" v-for="item in productbasiinfo.designersid" :designersid.sync="item.id" :designers="designers"></Designers>
+
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>设计师(可多选)</label>
+            <div class="col-sm-4">
+                <v-select multiple label="full_name" :debounce="500" :on-search="get_designers" :value.sync="productbasiinfo.designersid" placeholder="搜索设计师" :options="designers"></v-select>
+            </div>
+            <div class="col-sm-4 control-label" style="padding-top:4px;" >
+                <div class="text-left text-muted">
+                    {{productbasiinfo.designersid}}
+                    <button type="button" class="btn btn-xs btn-default">
+                        <span class="glyphicon glyphicon-refresh"></span> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <Designers :index="$index" :itemlength="productbasiinfo.designersid.length" v-for="item in productbasiinfo.designersid" :designersid.sync="item.id" :designers="designers"></Designers> -->
+
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地</label>
             <div class="col-sm-2">
@@ -160,53 +192,67 @@
 <script type="text/javascript">
     import Select2 from '../../../../components/common/selecte2/Selecte2'
     import Designers from './Designers'
+    import vSelect from '../../../../components/common/vue-select/src/index.js'
+
     export default{
         props:['productbasiinfo'],
         components:{
             Select2,
-            Designers
+            Designers,
+            vSelect
         },
         data(){
             return{
                 labeltest:14,
-                brandlist: [
-                    { id: 1, text: 'aida' },
-                    { id: 2, text: 'aim' },
-                    { id: 3, text: 'aless' },
-                    { id: 4, text: 'artis' },
-                    { id: 5, text: '匠物' },
-                    { id: 6, text: '本来设计' },
-                    { id: 7, text: '罗奇堡' },
-                    { id: 8, text: '旁白' },
-                    { id: 9, text: '木佰士' },
-                    { id: 10, text: '唯诗' },
-                    { id: 11, text: '有所' },
-                    { id: 12, text: '意外设计' },
-                    { id: 13, text: '晓器' },
-                    { id: 14, text: '造物' },
-                    { id: 15, text: '十八纸' },
-                    { id: 16, text: '东术' },
-                    { id: 17, text: '吾舍' },
-                    { id: 18, text: '自然家' },
-                    { id: 19, text: '本土创造' },
-                    { id: 20, text: '素生' },
-                    { id: 21, text: '玩物志' },
-                    { id: 22, text: '物应' },
-                    { id: 23, text: '明基' },
-                    { id: 24, text: '爱瓦' },
-                ],
-                designers:[
-                    { id: 1, text: '设计师1' },
-                    { id: 2, text: '设计师2' },
-                    { id: 3, text: '设计师3' },
-                    { id: 4, text: '设计师4' },
-                ]
+                brandlist:null,
+                designers:null,
             }
         },
         methods:{
             callStepsChange:function(){
                 this.$dispatch('callStepsChangeFater','1');
-            }
+            },
+            set_brandid:function(){
+                console.log('12323');
+                this.$set('productbasiinfo.brandid','1111');
+            },
+
+            /**
+             * [brandlist 搜索品牌]
+             */
+            get_brandlist(search, loading) {
+				loading(true)
+				this.$http.get('https://api.github.com/search/repositories', {q: search})
+				.then(resp => {
+					this.brandlist = resp.data.items
+					loading(false)
+				})
+				.catch(err => {
+					this.error = err.data
+					loading(false)
+				})
+			},
+
+            /**
+             * 搜索设计师
+             */
+             get_designers(search, loading) {
+ 				loading(true)
+ 				this.$http.get('https://api.github.com/search/repositories', {q: search})
+ 				.then(resp => {
+ 					this.designers = resp.data.items
+ 					loading(false)
+ 				})
+ 				.catch(err => {
+ 					this.error = err.data
+ 					loading(false)
+ 				})
+ 			}
+
+        },
+        ready(){
+
+
         }
     }
 </script>

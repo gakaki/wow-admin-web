@@ -14,10 +14,8 @@ export const productBasiInfo = {
     productName         :   '',
     sellingPoin         :   '',
     productId           :   '',
-    brandid             :   '',
-    designersid         :   [
-                                { id: ''},
-                            ],
+    brandid             :   null,
+    designersid         :   null,
     producer            :   '',
     style               :   '',
     spec                :   {long:'',width:'',height:''},
