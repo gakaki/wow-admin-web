@@ -62,14 +62,14 @@
             <div class="col-sm-10 control-label" id="primary-pic-box">
                 <ul class="main-img-group text-left products-primary-img">
                     <li id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sort' 1">
-                        <span v-if="item.img!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
-                        <p v-if="item.img!=''">
-                            <img v-bind:src="imgIndex.qiniuurl+item.img" alt="" />
+                        <span v-if="item.img_url!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
+                        <p v-if="item.img_url!=''">
+                            <img v-bind:src="imgIndex.qiniuurl+item.img_url" alt="" />
                         </p>
-                        <p v-if="item.img==''" class="main-img-group-nopic">
+                        <p v-if="item.img_url==''" class="main-img-group-nopic">
                             添加图片
                         </p>
-                        {{item.tag}}
+                        {{item.img_desc}}
                     </li>
                 </ul>
             </div>
@@ -78,11 +78,11 @@
             <label class="col-sm-2 control-label">商品描述</label>
             <div class="col-sm-7">
                 <p class="control-label text-muted">
-                    <textarea v-model="productdetails.text_desc" placeholder="商品描述" class="form-control" rows="5"></textarea>
+                    <textarea v-model="productdetails.detail_description" placeholder="商品描述" class="form-control" rows="5"></textarea>
                 </p>
             </div>
             <span class="col-sm-3 control-label">
-                <div class="text-left text-muted">{{productdetails.text_desc.length}}/200</div>
+                <div class="text-left text-muted">{{productdetails.detail_description.length}}/200</div>
             </span>
         </div>
         <div class="form-group">
@@ -186,7 +186,7 @@
                     'FilesAdded': function(up, files) {
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
-                            _this.productdetails.primary_img[imgIndex.img_index].img='loading.gif';
+                            _this.productdetails.primary_img[imgIndex.img_index].img_url='loading.gif';
                         });
                     },
                     'BeforeUpload': function(up, file) {
@@ -199,7 +199,7 @@
                         // 每个文件上传成功后,处理相关的事情
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        _this.productdetails.primary_img[imgIndex.img_index].img=encodeURI(res.key);
+                        _this.productdetails.primary_img[imgIndex.img_index].img_url=encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
                         _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})

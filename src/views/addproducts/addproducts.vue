@@ -163,6 +163,7 @@
     import Productdetails       from    './info/details/Productdetails'
     import Other                from    './info/other/Other'
     import Alert                from    '../../components/common/alert/Alert'
+
     export default{
         components:{
             Steps,
@@ -178,7 +179,7 @@
                 alertObj:{
                     alertType:null,
                     alertInfo:null,
-                    alertShow:false
+                    alertShow:false,
                 },
                 uploader:null,
                 productBasiInfo:productBasiInfo,
@@ -221,7 +222,6 @@
             }
         },
         ready(){
-
             /**
              * [上传颜色图片初始化]
              * start
@@ -278,6 +278,113 @@
              * [上传颜色图片初始化]
              * end
              */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             let arr1=[
+             {
+                 name:'白色',
+                 selected: true,
+                 specList:[
+                     {spec:'L',selected: false},
+                     {spec:'XL',selected: true},
+                     {spec:'',selected: false}
+                 ],
+                 specListVal:[
+                     {spec:'',sell_price:1000,disabled:false},
+                     {spec:'',sell_price:2000,disabled:true},
+                     {spec:'',sell_price:'',disabled:true}
+                 ],
+             },
+             {
+                 name:'灰色',
+                 selected: true,
+                 specList:[
+                     {spec:'L',selected: true},
+                     {spec:'XL',selected: false},
+                     {spec:'',selected: false}
+                 ],
+                 specListVal:[
+                     {spec:'',sell_price:1100,disabled:true},
+                     {spec:'',sell_price:2200,disabled:false},
+                     {spec:'',sell_price:'',disabled:true}
+                 ],
+             },
+             {
+                 name:'银色',
+                 selected: false,
+                 specList:[
+                     {spec:'L',selected: true},
+                     {spec:'XL',selected: false},
+                     {spec:'',selected: false}
+                 ],
+                 specListVal:[
+                     {spec:'',sell_price:1100,disabled:true},
+                     {spec:'',sell_price:2200,disabled:false},
+                     {spec:'',sell_price:'',disabled:true}
+                 ],
+             }
+         ]
+        //  var arr2=[
+        //      {name:'白色',spec:'L',sell_price:1000,disabled:false},
+        //      {name:'白色',spec:'XL',sell_price:2000,disabled:true},
+        //      {name:'灰色',spec:'L',sell_price:1100,disabled:true},
+        //      {name:'灰色',spec:'XL',sell_price:2200,disabled:false}
+        //  ]
+
+        //过滤掉没选中的颜色
+        let arr2=[];
+        for (let val of arr1) {
+            if (val.selected==true) {
+                arr2.push(val);
+            }
+        }
+        console.log(arr2);
+        let arr3=[];
+        for(let a=0;a<arr2.length;a++){
+            //console.log(arr2[i].specList);
+        }
+
+        // for (let a of arr2) {
+        //     for (let b of a.specList) {
+        //         if (b.selected==true) {
+        //             console.log(a.specListVal);
+        //         }
+        //     }
+        // }
+
+
+        // for (let a of arr2) {
+        //     for (let b of a.specListVal) {
+        //         if (b.selected==true) {
+        //             console.log(b);
+        //         }
+        //     }
+        // }
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 </script>

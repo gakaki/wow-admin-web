@@ -9,20 +9,22 @@
  * @type {Object}
  */
 export const productBasiInfo = {
-    SelectcategoryName  :   {one:null,two:null,three:null},
-    Selectcategory      :   {one:null,two:null,three:null},
-    productName         :   '',
-    sellingPoin         :   '',
-    productId           :   '',
-    brandid             :   null,
-    designersid         :   null,
-    producer            :   '',
-    style               :   '',
-    spec                :   {long:'',width:'',height:''},
-    intendedFor         :   '',
-    customized          :   '',
-    scenarios           :   [],
-    material            :   [],
+    SelectcategoryName      :   {one:null,two:null,three:null}, //分类显示文字
+    Selectcategory          :   {one:null,two:null,three:null}, //分类id
+    product_name            :   '', //产品名字
+    selling_point           :   '', //产品卖点
+    product_model           :   '', //商品型号
+    brand_id                :   '', //品牌ID
+    product_designer        :   [], //需要设置一个is_primary字段标示是否主设计师
+    origin_city             :   '', //产地
+    style                   :   '', //风格
+    long                    :   '', //长度
+    width                   :   '', //宽度
+    height                  :   '', //高度
+    applicable_people       :   '', //适用人群
+    can_customize           :   '', //是否可定制
+    applicable_scene_text   :   [], //适用场景
+    material_text           :   [], //材质
 }
 
 /**
@@ -43,7 +45,7 @@ export const imgIndex={
  */
 export const specTbodyList=[
     {spec:'默认',selected: true},
-    {spec:'默认2',selected: true},
+    {spec:'默认2',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
@@ -57,14 +59,14 @@ export const specTbodyList=[
  * @type {Array}
  */
 export const  specTbodyListVal=[
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',sku:'',disabled:false}
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false}
 ]
 
 /**
@@ -85,7 +87,7 @@ export const productSalesAttribute={
             color:'#d5d5d5',
             name:'银色',
             img:'',
-            selected: true,
+            selected: false,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
@@ -115,13 +117,13 @@ export const productSalesAttribute={
  */
 export const productDetails={
     primary_img:[
-        {tag:'正面图',img:'',is_primary:1,sort:0},
-        {tag:'侧面图',img:'',is_primary:1,sort:1},
-        {tag:'细节图',img:'',is_primary:1,sort:2},
-        {tag:'细节图',img:'',is_primary:1,sort:3},
-        {tag:'细节图',img:'',is_primary:1,sort:4}
+        {img_desc:'正面图',img_url:'',sort_order:0},
+        {img_desc:'侧面图',img_url:'',sort_order:1},
+        {img_desc:'细节图',img_url:'',sort_order:2},
+        {img_desc:'细节图',img_url:'',sort_order:3},
+        {img_desc:'细节图',img_url:'',sort_order:4}
     ],
-    text_desc:'',
+    detail_description:'',
     img_text_desc:[
         {img:'',img_desc:'',sort:0},
     ]

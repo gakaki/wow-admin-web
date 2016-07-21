@@ -7,6 +7,7 @@ export const productBasiInfo = {
         /**
          * 分类文字 三级分类
          * Object
+         * 不用提交
          */
         "SelectcategoryName": {
             "one": "家什",
@@ -16,6 +17,7 @@ export const productBasiInfo = {
         /**
          * 分类id 三级分类
          * Object
+         * 提交的时候，只要第三级的分类id
          */
         "Selectcategory": {
             "one": 18,
@@ -40,53 +42,18 @@ export const productBasiInfo = {
         /**
          * 商品品牌
          * Object
+         * 这里只要一个id就够了
          */
-        "brandid": {
-            "_id": "62",
-            "cid": "62",
-            "parent_id": "7",
-            "level": 2,
-            "path": "1/2/7/62",
-            "name": "自然家",
-            "pinyin": "ziranjia",
-            "letter": "Z",
-            "image": "/media/catalog/category/_1.jpg",
-            "thumbnail": null,
-            "is_active": "1",
-            "is_anchor": "0",
-            "url": "brand/-1967.html",
-            "products": [{
-                "id": "974",
-                "name": "UFO吊灯",
-                "sku": "zir02020001"
-            }, {
-                "id": "1009",
-                "name": "同心台灯",
-                "sku": "zir02010019"
-            }, {
-                "id": "1027",
-                "name": "烤茶|竹节杯",
-                "sku": "zir04010003"
-            }],
-            "sum": 3,
-            "position": 111,
-            "is_in_menu": 1,
-            "desc": "自然家成立于2006年9月，由设计师易春友（BBKen）和谭雪娇（Corri）创办， 主要从事以天然素材为主的产品设计和室内软装工作。\r\n致力于发掘环保的天然素材与传统手工艺，以新的思考和设计表现，创作出适合现代生活的自 然家品。让自然环保的材料和传统手工艺融入现代生活方式，一直是其工作重点。其产品得到 大自然启发并手工制作，充满人性温暖，同时通过设计品生产和设计创新寻求传统手工艺可持 续发展的可能性。",
-            "page_title": "",
-            "meta_desc": "",
-            "meta_keyword": "",
-            "sort_method": ""
-        },
+        "brandid": 62,
         /**
          * designersid 商品设计师 可以多选
          * Array
+         * 需要加个字段标示是否主设计师
          */
         "designersid": [{
             "id": 11,
-            "name": "设计师名字1",
         }, {
             "id": 22,
-            "name": "设计是名字2",
         }],
         /**
          * 产地
@@ -102,12 +69,11 @@ export const productBasiInfo = {
          * spec 尺寸,单位cm
          * string
          * long-长度，width-宽度，height-高度
+         * 这里拆分为3个单独的字段
          */
-        "spec": {
-            "long": "100",
-            "width": "120",
-            "height": "130"
-        },
+        "long": "100",
+        "width": "120",
+        "height": "130"
         /**
          * intendedFor 适用人群
          * string
@@ -141,6 +107,38 @@ export const productBasiInfo = {
             "3",
             "4"
         ]
-    }
+    },
 
+    //修改销售属性数据结构
+    productSpecList:[
+        {
+            color_name:'白色',
+            color_url:1111,
+            spec:xl,
+        },
+        {
+            color_name:'白色',
+            color_url:1111,
+            spec:l,
+        },
+        {
+            color_name:'红色',
+            color_url:1111,
+            spec:xl,
+        },
+        {
+            color_name:'白色',
+            color_url:1111,
+            spec:l,
+        }
+    ],
+
+    //销售属性
+
+    //商品详情
+    //primary_img数组去掉is_primary字段
+    productArr:[
+        {name:'不锈钢随身杯',sellingPoin:'卖点1',productModel:'型号1',colorName:'白色',spec:L},
+        {name:'不锈钢随身杯',sellingPoin:'卖点1',productModel:'型号1',colorName:'银色',spec:L}
+    ]
 }

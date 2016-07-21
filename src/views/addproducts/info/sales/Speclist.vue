@@ -33,9 +33,6 @@
             <input @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="text" class="form-control sales-attribute-table-text" placeholder="0">
         </td>
         <td>
-            <input v-model="lists.sku" disabled="disabled" type="text" class="form-control sales-attribute-table-text" placeholder="系统">
-        </td>
-        <td>
             <button @click="specDisable()" v-if="lists.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>
             <button @click="specEnable()" v-if="lists.disabled==true" type="button" class="btn btn-success btn-sm">启用</button>
         </td>

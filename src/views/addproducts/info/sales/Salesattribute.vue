@@ -39,7 +39,6 @@
                     <input v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.name}}" v-model='item.name'>
                 </label>
             </div>
-            {{productsalesattribute.colorSelect|json}}
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
@@ -49,7 +48,6 @@
                     <input v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
                 </label>
             </div>
-            {{specListS | json }}
         </div>
         <div class="form-group" style="margin-top:40px;">
             <label for="firstname" class="col-sm-2 control-label"></label>
@@ -77,7 +75,6 @@
                         <th><span class="text-danger">*</span>进货价</th>
                         <th>到货周期</th>
                         <th><span class="text-danger">*</span>重量(KG)</th>
-                        <th>SKU编码</th>
                         <th>操作</th>
                     </tr>
                 </thead>
