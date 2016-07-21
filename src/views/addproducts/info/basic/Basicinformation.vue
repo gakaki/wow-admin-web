@@ -54,7 +54,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
             <div class="col-sm-3">
-                <v-select label="full_name" :debounce="500" :on-search="get_brandlist" :value.sync="productbasiinfo.brandid" placeholder="搜索品牌" :options="brandlist"></v-select>
+                <v-select label="name" :debounce="500" :on-search="get_brandlist" :value.sync="productbasiinfo.brandid" placeholder="搜索品牌" :options="brandlist"></v-select>
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
                 <div class="text-left text-muted">
@@ -74,7 +74,7 @@
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
                 <div class="text-left text-muted">
                     {{productbasiinfo.designersid}}
-                    <button type="button" class="btn btn-xs btn-default">
+                    <button @click="set_brandList_cache()" type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>
                 </div>
@@ -193,6 +193,8 @@
     import Select2 from '../../../../components/common/selecte2/Selecte2'
     import Designers from './Designers'
     import vSelect from '../../../../components/common/vue-select/src/index.js'
+    import {brandListData} from '../../../../brand_list_data.js'
+    import WebStorageCache from 'web-storage-cache'
 
     export default{
         props:['productbasiinfo'],
@@ -212,25 +214,35 @@
             callStepsChange:function(){
                 this.$dispatch('callStepsChangeFater','1');
             },
-            set_brandid:function(){
-                console.log('12323');
-                this.$set('productbasiinfo.brandid','1111');
+
+            /**
+             * 品牌数据，设置/读取本地缓存数据
+             */
+            set_brandList_cache:function(){
+                let wsCache = new WebStorageCache();
+                wsCache.set('brandListData', brandListData.data);
+            },
+            get_brandList_cache:function(){
+                let wsCache = new WebStorageCache();
+                this.brandlist = wsCache.get('brandListData');
             },
 
             /**
              * [brandlist 搜索品牌]
              */
             get_brandlist(search, loading) {
-				loading(true)
-				this.$http.get('https://api.github.com/search/repositories', {q: search})
-				.then(resp => {
-					this.brandlist = resp.data.items
-					loading(false)
-				})
-				.catch(err => {
-					this.error = err.data
-					loading(false)
-				})
+                this.get_brandList_cache();
+                return;
+				// loading(true)
+				// this.$http.get('https://api.github.com/search/repositories', {q: search})
+				// .then(resp => {
+				// 	this.brandlist = resp.data.items
+				// 	loading(false)
+				// })
+				// .catch(err => {
+				// 	this.error = err.data
+				// 	loading(false)
+				// })
 			},
 
             /**
@@ -251,8 +263,7 @@
 
         },
         ready(){
-
-
+            this.set_brandList_cache();
         }
     }
 </script>
