@@ -16,7 +16,8 @@ export const productBasiInfo = {
     product_model           :   '', //商品型号
     brand_id                :   '', //品牌ID
     product_designer        :   [], //需要设置一个is_primary字段标示是否主设计师
-    origin_city             :   '', //产地
+    origin_country          :   '', //产地国家
+    origin_city             :   '', //产地城市
     style                   :   '', //风格
     long                    :   '', //长度
     width                   :   '', //宽度
@@ -45,8 +46,8 @@ export const imgIndex={
  */
 export const specTbodyList=[
     {spec:'默认',selected: true},
-    {spec:'默认2',selected: false},
-    {spec:'',selected: false},
+    {spec:'默认2',selected: true},
+    {spec:'',selected: true},
     {spec:'',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
@@ -59,14 +60,14 @@ export const specTbodyList=[
  * @type {Array}
  */
 export const  specTbodyListVal=[
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',activity_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false}
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false}
 ]
 
 /**
@@ -76,6 +77,7 @@ export const  specTbodyListVal=[
 export const productSalesAttribute={
     color               :  [
         {
+            id:1,
             color:'#ffffff',
             name:'白色',
             img:'',
@@ -84,28 +86,30 @@ export const productSalesAttribute={
             specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
+            id:2,
             color:'#d5d5d5',
             name:'银色',
             img:'',
-            selected: false,
+            selected: true,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
+            id:3,
             color:'#919191',
             name:'灰色',
             img:'',
             selected: false,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
-        {color:'#000000',name:'黑色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#ff0000',name:'红色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#fed533',name:'黄色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#1790c8',name:'蓝色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#7bba3c',name:'绿色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {multi:true, color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
+        {id:4,color:'#000000',name:'黑色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:5,color:'#ff0000',name:'红色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:6,color:'#fed533',name:'黄色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:7,color:'#1790c8',name:'蓝色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:8,color:'#7bba3c',name:'绿色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:9,color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:10,color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:11,color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {id:12,multi:true,color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
     ],
     colorSelect         :   [],
     specSelect          :   [],
@@ -117,14 +121,14 @@ export const productSalesAttribute={
  */
 export const productDetails={
     primary_img:[
-        {img_desc:'正面图',img_url:'',sort_order:0},
-        {img_desc:'侧面图',img_url:'',sort_order:1},
-        {img_desc:'细节图',img_url:'',sort_order:2},
-        {img_desc:'细节图',img_url:'',sort_order:3},
-        {img_desc:'细节图',img_url:'',sort_order:4}
+        {img_desc:'正面图',img_url:'',sort_order:1,is_primary:1},
+        {img_desc:'侧面图',img_url:'',sort_order:2,is_primary:1},
+        {img_desc:'细节图',img_url:'',sort_order:3,is_primary:1},
+        {img_desc:'细节图',img_url:'',sort_order:4,is_primary:1},
+        {img_desc:'细节图',img_url:'',sort_order:5,is_primary:1}
     ],
     detail_description:'',
     img_text_desc:[
-        {img:'',img_desc:'',sort:0},
+        {img:'',img_desc:'',sort:1},
     ]
 }

@@ -1,3 +1,9 @@
+<style media="screen">
+    .origin_country .dropdown-toggle{
+        border-top-left-radius:0px !important;
+        border-bottom-left-radius:0px !important;
+    }
+</style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">基本信息</div>
@@ -95,15 +101,33 @@
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地</label>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <span class="input-group-addon">国家</span>
+                    <v-select class="origin_country" :on-change="setOriginCountryId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索国家" :options="originCountry"></v-select>
+                </div>
+                {{productbasiinfo.origin_country}}
+            </div>
             <div class="col-sm-2">
-                <input v-model="productbasiinfo.origin_city" type="text" class="form-control" placeholder="产地">
-                {{productbasiinfo.origin_city}}
+                <div class="input-group">
+                    <span class="input-group-addon">城市</span>
+                    <input v-model="productbasiinfo.origin_city" type="text" class="form-control" placeholder="城市">
+                </div>
             </div>
         </div>
+
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
             <div class="col-sm-2">
-                <input v-model="productbasiinfo.style" type="text" class="form-control" placeholder="风格">
+                <select v-model="productbasiinfo.style" class="form-control">
+                    <option value="" selected>请选择</option>
+                    <option v-bind:value="1">风格1</option>
+                    <option v-bind:value="2">风格2</option>
+                    <option v-bind:value="3">风格3</option>
+                    <option v-bind:value="4">风格4</option>
+                    <option v-bind:value="5">风格5</option>
+                    <option v-bind:value="6">风格6</option>
+                 </select>
                 {{productbasiinfo.style}}
             </div>
         </div>
@@ -142,12 +166,12 @@
             <div class="col-sm-2">
                 <select v-model="productbasiinfo.applicable_people" class="form-control">
                     <option value="" selected>请选择</option>
-                    <option v-bind:value="0">通用</option>
-                    <option v-bind:value="1">成人</option>
-                    <option v-bind:value="2">男性</option>
-                    <option v-bind:value="3">女性</option>
-                    <option v-bind:value="4">儿童</option>
-                    <option v-bind:value="5">老人</option>
+                    <option v-bind:value="1">通用</option>
+                    <option v-bind:value="2">成人</option>
+                    <option v-bind:value="3">男性</option>
+                    <option v-bind:value="4">女性</option>
+                    <option v-bind:value="5">儿童</option>
+                    <option v-bind:value="6">老人</option>
                  </select>
                  {{productbasiinfo.applicable_people}}
             </div>
@@ -168,22 +192,22 @@
             </label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="0"> 客厅
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="1"> 客厅
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="1"> 卧室
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="2"> 卧室
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="2"> 厨房
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="3"> 厨房
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="3"> 卫生间
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="4"> 卫生间
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="4"> 办公室
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="5"> 办公室
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="5"> 儿童房
+                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="6"> 儿童房
                 </label>
                 {{productbasiinfo.applicable_scene_text | json}}
             </div>
@@ -192,7 +216,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in labeltest">
-                    <input v-model="productbasiinfo.material_text" type="checkbox" value="{{$index}}"> 选项{{$index}}
+                    <input v-model="productbasiinfo.material_text" type="checkbox" value="{{$index+1}}"> 选项{{$index+1}}
                 </label>
                 {{productbasiinfo.material_text | json }}
             </div>
@@ -204,7 +228,7 @@
     import Designers from './Designers'
     import vSelect from '../../../../components/common/vue-select/src/index.js'
     import {brandListData} from '../../../../brand_list_data.js'
-    import {DesignersData} from '../../../../test.js'
+    import {DesignersData,Country} from '../../../../test.js'
     import WebStorageCache from 'web-storage-cache'
 
     export default{
@@ -219,6 +243,7 @@
                 labeltest:14,
                 brandlist:null,
                 designers:null,
+                originCountry:null,
             }
         },
         methods:{
@@ -292,11 +317,38 @@
                     }
                     this.$set('productbasiinfo.product_designer['+event.target.value+'].is_primary',1);
                 }
-            }
+            },
+
+            /**
+             * 国家操作
+             */
+            //国家数据，设置本地缓存数据
+            setOriginCountryCache:function(){
+                let wsCache = new WebStorageCache();
+                wsCache.set('Country', Country.data);
+            },
+            //国家数据，读取本地缓存数据
+            getOriginCountryCache:function(){
+                let wsCache = new WebStorageCache();
+                this.originCountry = wsCache.get('Country');
+            },
+            //搜索国家
+            getOriginCountry:function(search, loading) {
+                this.getOriginCountryCache();
+			},
+            //设置国家id的值
+            setOriginCountryId(val) {
+                if (!val) {
+                    this.$set('productbasiinfo.origin_country','')
+                    return;
+                }
+                this.$set('productbasiinfo.origin_country',val.id)
+            },
         },
         ready(){
             this.setBrandListCache();
             this.setDesignersCache();
+            this.setOriginCountryCache();
         }
     }
 </script>

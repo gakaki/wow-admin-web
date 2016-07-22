@@ -32,3 +32,38 @@ export const DesignersData={
         {id:30,name:'设计师30'},
     ]
 }
+
+export const Country={
+    data:[
+        {id:1,name:'国家1'},
+        {id:2,name:'国家2'},
+        {id:3,name:'国家3'},
+        {id:4,name:'国家4'},
+        {id:5,name:'国家5'},
+        {id:6,name:'国家6'},
+        {id:7,name:'国家7'},
+        {id:8,name:'国家8'},
+        {id:9,name:'国家9'},
+        {id:10,name:'国家10'},
+        {id:11,name:'国家11'},
+        {id:12,name:'国家12'},
+        {id:13,name:'国家13'},
+        {id:14,name:'国家14'},
+        {id:15,name:'国家15'},
+        {id:16,name:'国家16'},
+        {id:17,name:'国家17'},
+        {id:18,name:'国家18'},
+        {id:19,name:'国家19'},
+        {id:20,name:'国家20'},
+        {id:21,name:'国家21'},
+        {id:22,name:'国家22'},
+        {id:23,name:'国家23'},
+        {id:24,name:'国家24'},
+        {id:25,name:'国家25'},
+        {id:26,name:'国家26'},
+        {id:27,name:'国家27'},
+        {id:28,name:'国家28'},
+        {id:29,name:'国家29'},
+        {id:30,name:'国家30'},
+    ]
+}

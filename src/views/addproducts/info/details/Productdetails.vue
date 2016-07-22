@@ -61,7 +61,7 @@
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10 control-label" id="primary-pic-box">
                 <ul class="main-img-group text-left products-primary-img">
-                    <li id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sort' 1">
+                    <li v-if="item.is_primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sort' 1">
                         <span v-if="item.img_url!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p v-if="item.img_url!=''">
                             <img v-bind:src="imgIndex.qiniuurl+item.img_url" alt="" />
@@ -127,7 +127,7 @@
         },
         methods:{
             img_text_desc_add:function(){
-                this.productdetails.img_text_desc.push({img:'',img_desc:'',sort:this.productdetails.img_text_desc.length});
+                this.productdetails.img_text_desc.push({img:'',img_desc:'',sort:this.productdetails.img_text_desc.length+1});
             },
             img_text_desc_delete:function(index){
                 this.productdetails.img_text_desc.del(index);

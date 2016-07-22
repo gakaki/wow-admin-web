@@ -21,9 +21,6 @@
             <input @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="text" class="form-control sales-attribute-table-text" placeholder="0" >
         </td>
         <td>
-            <input @keyup="setVal(tbody_index,index,activity_price,'activity_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="activity_price" type="text" class="form-control sales-attribute-table-text" placeholder="0">
-        </td>
-        <td>
             <input @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="text" class="form-control sales-attribute-table-text" placeholder="0">
         </td>
         <td>

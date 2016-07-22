@@ -181,6 +181,11 @@
                     alertInfo:null,
                     alertShow:false,
                 },
+                productSpecList:{
+                    productBasiInfo:{},
+                    productSalesAttribute:{},
+                    productDetails:{}
+                },
                 uploader:null,
                 productBasiInfo:productBasiInfo,
                 productSalesAttribute:productSalesAttribute,
@@ -210,9 +215,71 @@
                 this.$set('nowtag','2');
             },
             saveProducts:function(){
-                console.log(this.productBasiInfo);
-                console.log(this.productSalesAttribute);
-                console.log(this.productDetails);
+                let product=this.productSalesAttribute;
+
+                //过滤掉没选中的颜色数组
+                let colorFilter = product.color.filter(function(a) {
+                    return a.selected == true;
+                })
+                this.$set('productSalesAttribute.color',colorFilter);
+
+                //给已选的对应的价格设置标示
+                for (let a = 0; a < product.color.length; a++) {
+                    for (var b = 0; b < product.color[a].specList.length; b++) {
+                        if (product.color[a].specList[b].selected==true) {
+                            this.$set('productSalesAttribute.color['+a+'].specListVal['+b+'].selected',true);
+                        }else {
+                            this.$set('productSalesAttribute.color['+a+'].specListVal['+b+'].selected',false);
+                        }
+                    }
+                }
+
+                //过滤掉没选的尺寸
+                for (let a = 0; a < product.color.length; a++) {
+                    let specListFilter=product.color[a].specList.filter(function(i) {
+                         return i.selected == true
+                    });
+                    this.$set('productSalesAttribute.color['+a+'].specList',specListFilter);
+                }
+
+                //过滤掉没选尺寸的价格
+                for (let a = 0; a < product.color.length; a++) {
+                    let specListFilter=product.color[a].specListVal.filter(function(i) {
+                         return i.selected == true
+                    });
+                    this.$set('productSalesAttribute.color['+a+'].specListVal',specListFilter);
+                }
+
+                /**
+                 * 设置最终提交到接口对象集
+                 */
+                this.$set('productSpecList.productBasiInfo',this.productBasiInfo);
+                this.$set('productSpecList.productSalesAttribute',this.productSalesAttribute.color);
+                this.$set('productSpecList.productDetails',this.productDetails);
+
+                //适用场景数组正序排列
+                this.productSpecList.productBasiInfo.applicable_scene_text.sort();
+
+                //材质数组正序排列
+                this.productSpecList.productBasiInfo.material_text.sort();
+
+                //过滤掉设计师的name字段
+                let product_designer=this.productSpecList.productBasiInfo.product_designer;
+                product_designer.filter(function(i) {return delete i.name;});
+
+                //把图片详情的数组并进去主图数组
+                let primary_img=this.productSpecList.productDetails.primary_img;
+                // let primaryImgFilter=primary_img.filter(function(i) {
+                //     return i.is_primary == 1
+                // })
+                // this.productSpecList.productDetails.primary_img=primaryImgFilter;
+
+                let img_text_desc=this.productSpecList.productDetails.img_text_desc;
+                for (let val of img_text_desc) {
+                    primary_img.push(val);
+                }
+
+                console.log(this.productSpecList);
             }
         },
         events:{
@@ -253,6 +320,7 @@
                         });
                     },
                     'BeforeUpload': function(up, file) {
+                        console.log(file);
                         // 每个文件上传前,处理相关的事情
                     },
                     'UploadProgress': function(up, file) {
@@ -278,112 +346,6 @@
              * [上传颜色图片初始化]
              * end
              */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-             let arr1=[
-             {
-                 name:'白色',
-                 selected: true,
-                 specList:[
-                     {spec:'L',selected: false},
-                     {spec:'XL',selected: true},
-                     {spec:'',selected: false}
-                 ],
-                 specListVal:[
-                     {spec:'',sell_price:1000,disabled:false},
-                     {spec:'',sell_price:2000,disabled:true},
-                     {spec:'',sell_price:'',disabled:true}
-                 ],
-             },
-             {
-                 name:'灰色',
-                 selected: true,
-                 specList:[
-                     {spec:'L',selected: true},
-                     {spec:'XL',selected: false},
-                     {spec:'',selected: false}
-                 ],
-                 specListVal:[
-                     {spec:'',sell_price:1100,disabled:true},
-                     {spec:'',sell_price:2200,disabled:false},
-                     {spec:'',sell_price:'',disabled:true}
-                 ],
-             },
-             {
-                 name:'银色',
-                 selected: false,
-                 specList:[
-                     {spec:'L',selected: true},
-                     {spec:'XL',selected: false},
-                     {spec:'',selected: false}
-                 ],
-                 specListVal:[
-                     {spec:'',sell_price:1100,disabled:true},
-                     {spec:'',sell_price:2200,disabled:false},
-                     {spec:'',sell_price:'',disabled:true}
-                 ],
-             }
-         ]
-        //  var arr2=[
-        //      {name:'白色',spec:'L',sell_price:1000,disabled:false},
-        //      {name:'白色',spec:'XL',sell_price:2000,disabled:true},
-        //      {name:'灰色',spec:'L',sell_price:1100,disabled:true},
-        //      {name:'灰色',spec:'XL',sell_price:2200,disabled:false}
-        //  ]
-
-        //过滤掉没选中的颜色
-        let arr2=[];
-        for (let val of arr1) {
-            if (val.selected==true) {
-                arr2.push(val);
-            }
-        }
-        console.log(arr2);
-        let arr3=[];
-        for(let a=0;a<arr2.length;a++){
-            //console.log(arr2[i].specList);
-        }
-
-        // for (let a of arr2) {
-        //     for (let b of a.specList) {
-        //         if (b.selected==true) {
-        //             console.log(a.specListVal);
-        //         }
-        //     }
-        // }
-
-
-        // for (let a of arr2) {
-        //     for (let b of a.specListVal) {
-        //         if (b.selected==true) {
-        //             console.log(b);
-        //         }
-        //     }
-        // }
-
-
-
-
-
-
-
-
-
-
-
 
         }
     }
