@@ -55,7 +55,6 @@
                 <p class="control-label text-muted">
                     5张商品图片，图片尺寸为800*800px以上，无品牌LOGO和其他网站水印，建议图片为白底
                 </p>
-                {{productdetails.primary_img | json}}
             </div>
         </div>
         <div class="form-group">
@@ -95,7 +94,6 @@
                 <div id="img-text-upload" style="display:none;">
                     <button id="img-text-upload-btn" type="button" name="button">图文上传按钮</button>
                 </div>
-                {{productdetails.img_text_desc | json}}
                 <ul class="details-img-group bg-muted">
                     <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
                         <p class="img-text-desc-file" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">

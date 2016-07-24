@@ -124,6 +124,8 @@
 </style>
 <template>
     <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
+    <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在提交数据">
+    </spinner>
     <div class="row">
         <div class="col-md-12" style="margin-top:20px;">
             <div style="width:740px; margin:0 auto;">
@@ -134,7 +136,6 @@
     <Selectcategory v-show="nowtag=='1'"></Selectcategory>
     <div class="row" v-show="nowtag=='1'">
         <div class="text-center col-md-12" style="margin-top:30px;">
-            {{productBasiInfo.Selectcategory | json}}
             <button v-bind:disabled="productBasiInfo.Selectcategory.one==null||productBasiInfo.Selectcategory.two==null||productBasiInfo.Selectcategory.three==null" @click="nextSteps" class="btn btn-primary">下一步</button>
         </div>
     </div>
@@ -163,6 +164,8 @@
     import Productdetails       from    './info/details/Productdetails'
     import Other                from    './info/other/Other'
     import Alert                from    '../../components/common/alert/Alert'
+    import spinner              from    '../../components/common/spinner/Spinner'
+    import {API_ROOT}           from    '../../config'
 
     export default{
         components:{
@@ -172,10 +175,13 @@
             Salesattribute,
             Productdetails,
             Other,
-            Alert
+            Alert,
+            spinner
         },
         data(){
             return{
+                spinnerFixed: true,
+                spinnerSize: 'lg',
                 alertObj:{
                     alertType:null,
                     alertInfo:null,
@@ -331,25 +337,27 @@
                         }
                     }
                 }
-                console.log(this.productSpecList);
-                console.log(addProductOb);
-                
+
                 let jsontext=JSON.stringify(addProductOb);
-                this.$http.post('http://10.0.60.72:9090/admin-api-dev/v1/product/create',{paramJson:jsontext}).then((response) => {
+                this.$broadcast('show::spinner');
+                this.$http.post(API_ROOT+'admin-api-dev/v1/product/create',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
-                        // this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
+                        this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
+                        setTimeout(() => {
+                            this.$broadcast('hide::spinner');
+                            window.location.href="/goods/addproducts"
+                        }, 2000);
                     }else{
-                        // this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                        this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                        setTimeout(() => {
+                            this.$broadcast('hide::spinner');
+                        }, 1000);
                     }
-                    alert(response.data.resMsg)
-                    // this.$broadcast('hide::spinner');
                 }, (response) => {
+                    this.$broadcast('hide::spinner');
                     // error callback
-                    // this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
-                    // this.$broadcast('hide::spinner');
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
                 });
-
-
             }
         },
         events:{

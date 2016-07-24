@@ -63,9 +63,12 @@
 </template>
 
 <script type="text/javascript">
-    import spinner from '../components/common/spinner/Spinner';
-    import Alert from '../components/common/alert/Alert'
-    import Vue from 'vue'
+
+    import spinner      from    '../components/common/spinner/Spinner';
+    import Alert        from    '../components/common/alert/Alert'
+    import Vue          from    'vue'
+    import {API_ROOT}   from    '../config'
+
     export default{
         components:{
             spinner,
@@ -107,7 +110,7 @@
                 }
                 this.$broadcast('show::spinner');
 
-                this.$http.post('http://10.0.60.72:9090/admin-api-dev/v1/session/login',{paramJson:jsontext}).then((response) => {
+                this.$http.post(API_ROOT+'admin-api-dev/v1/session/login',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
                         $.cookie('userName', response.data.data.realName,{ path: "/"});

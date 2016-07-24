@@ -56,8 +56,9 @@
 <template>
     <div class="row">
         <Alert :duration="3000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
+        <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在加载数据">
+        </spinner>
         <div class="col-md-12">
-            <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
             <div style="width:740px; margin:0 auto;">
                 <div v-show="" class="form-inline" style="margin:40px 0px 30px 0px;">
                    <div class="form-group">
@@ -84,7 +85,8 @@
                         <ul>
                              <p v-if="two.length==0" class="text-center text-danger" style="margin-top:20px;">
                                  {{tipText}}
-                                 <span class="glyphicon glyphicon-info-sign"></span>
+                                 <img v-if="tipText=='正在获取分类'" v-bind:src="imgLoad" alt="" />
+                                 <span v-if="tipText=='该类目无子分类'" class="glyphicon glyphicon-info-sign"></span>
                              </p>
                             <li v-bind:class="{'addproduct-category-box-current':currentTags==$index}" @click="listTwo(item.id,$index,item.categoryName)" v-for="item in two">
                                 {{item.categoryName}}
@@ -96,7 +98,8 @@
                         <ul>
                             <p v-if="three.length==0" class="text-center text-danger" style="margin-top:20px;">
                                 {{tipText}}
-                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <img v-if="tipText=='正在获取分类'" v-bind:src="imgLoad" alt="" />
+                                <span v-if="tipText=='该类目无子分类'" class="glyphicon glyphicon-info-sign"></span>
                             </p>
                             <li v-bind:class="{'addproduct-category-box-current':currentTagss==$index}" @click="listThree(item.id,$index,item.categoryName)" v-for="item in three">
                                 {{item.categoryName}}
@@ -110,14 +113,21 @@
 </template>
 
 <script type="text/javascript">
-    import {productBasiInfo} from './model'
-    import Alert from '../../components/common/alert/Alert'
+    import {productBasiInfo}    from    './model'
+    import Alert                from    '../../components/common/alert/Alert'
+    import {API_ROOT, uploadImgLoad}           from    '../../config'
+    import spinner              from    '../../components/common/spinner/Spinner'
+
     export default{
         components:{
-            Alert
+            Alert,
+            spinner
         },
         data(){
             return{
+                imgLoad:uploadImgLoad,
+                spinnerFixed: true,
+                spinnerSize: 'lg',
                 productBasiInfo:productBasiInfo,
                 currentTag:null,
                 currentTags:null,
@@ -163,7 +173,7 @@
             setList:function(id,list){
                 this.$set('tipText','正在获取分类')
                 let jsontext=JSON.stringify({"categoryId":id});
-                this.$http.get('http://10.0.60.72:9090/admin-api-dev/v1/category/sub-category',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'admin-api-dev/v1/category/sub-category',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
                         this.$set(list,response.data.data);
@@ -178,7 +188,9 @@
             }
         },
         ready(){
-            this.$http.get('http://10.0.60.72:9090/admin-api-dev/v1/category/first-level').then((response) => {
+            this.$broadcast('show::spinner');
+            this.$http.get(API_ROOT+'admin-api-dev/v1/category/first-level').then((response) => {
+                this.$broadcast('hide::spinner');
                 // success callback
                 if (response.data.resCode==0) {
                     this.$set('alertObj',{alertType:'alert-success',alertInfo:'获取分类成功',alertShow:true})
@@ -187,6 +199,7 @@
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
                 }
             }, (response) => {
+                this.$broadcast('hide::spinner');
                 // error callback
                 this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取分类错误',alertShow:true})
             });

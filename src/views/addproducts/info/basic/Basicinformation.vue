@@ -79,7 +79,6 @@
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
                 <div class="text-left text-muted">
-                    {{productbasiinfo.product_designer | json}}
                     <button @click="setDesignersCache()" type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>
@@ -209,7 +208,6 @@
                 <label class="checkbox-inline">
                     <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="6"> 儿童房
                 </label>
-                {{productbasiinfo.applicable_scene_text | json}}
             </div>
         </div>
         <div class="form-group">
@@ -218,7 +216,6 @@
                 <label class="checkbox-inline" v-for="item in labeltest">
                     <input v-model="productbasiinfo.material_text" type="checkbox" value="{{$index+1}}"> 选项{{$index+1}}
                 </label>
-                {{productbasiinfo.material_text | json }}
             </div>
         </div>
     </div>
