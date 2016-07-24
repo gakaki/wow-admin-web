@@ -47,7 +47,7 @@ export const imgIndex={
 export const specTbodyList=[
     {spec:'默认',selected: true},
     {spec:'默认2',selected: true},
-    {spec:'',selected: true},
+    {spec:'',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
@@ -77,7 +77,7 @@ export const  specTbodyListVal=[
 export const productSalesAttribute={
     color               :  [
         {
-            id:1,
+            colorId:1,
             color:'#ffffff',
             name:'白色',
             img:'',
@@ -86,7 +86,7 @@ export const productSalesAttribute={
             specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
-            id:2,
+            colorId:2,
             color:'#d5d5d5',
             name:'银色',
             img:'',
@@ -94,22 +94,22 @@ export const productSalesAttribute={
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
         {
-            id:3,
+            colorId:3,
             color:'#919191',
             name:'灰色',
             img:'',
             selected: false,
             specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
         },
-        {id:4,color:'#000000',name:'黑色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:5,color:'#ff0000',name:'红色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:6,color:'#fed533',name:'黄色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:7,color:'#1790c8',name:'蓝色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:8,color:'#7bba3c',name:'绿色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:9,color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:10,color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:11,color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {id:12,multi:true,color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
+        {colorId:4,color:'#000000',name:'黑色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:5,color:'#ff0000',name:'红色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:6,color:'#fed533',name:'黄色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:7,color:'#1790c8',name:'蓝色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:8,color:'#7bba3c',name:'绿色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:9,color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:10,color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:11,color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {colorId:12,multi:true,color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
     ],
     colorSelect         :   [],
     specSelect          :   [],
@@ -121,14 +121,14 @@ export const productSalesAttribute={
  */
 export const productDetails={
     primary_img:[
-        {img_desc:'正面图',img_url:'',sort_order:1,is_primary:1},
-        {img_desc:'侧面图',img_url:'',sort_order:2,is_primary:1},
-        {img_desc:'细节图',img_url:'',sort_order:3,is_primary:1},
-        {img_desc:'细节图',img_url:'',sort_order:4,is_primary:1},
-        {img_desc:'细节图',img_url:'',sort_order:5,is_primary:1}
+        {imgDesc:'正面图',imgUrl:'',sortOrder:1,primary:true},
+        {imgDesc:'侧面图',imgUrl:'',sortOrder:2,primary:true},
+        {imgDesc:'细节图',imgUrl:'',sortOrder:3,primary:true},
+        {imgDesc:'细节图',imgUrl:'',sortOrder:4,primary:true},
+        {imgDesc:'细节图',imgUrl:'',sortOrder:5,primary:true}
     ],
     detail_description:'',
     img_text_desc:[
-        {img:'',img_desc:'',sort:1},
+        {imgUrl:'',imgDesc:'',primary:false,sortOrder:1},
     ]
 }

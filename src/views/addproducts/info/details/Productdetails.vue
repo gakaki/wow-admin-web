@@ -55,21 +55,22 @@
                 <p class="control-label text-muted">
                     5张商品图片，图片尺寸为800*800px以上，无品牌LOGO和其他网站水印，建议图片为白底
                 </p>
+                {{productdetails.primary_img | json}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10 control-label" id="primary-pic-box">
                 <ul class="main-img-group text-left products-primary-img">
-                    <li v-if="item.is_primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sort' 1">
-                        <span v-if="item.img_url!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
-                        <p v-if="item.img_url!=''">
-                            <img v-bind:src="imgIndex.qiniuurl+item.img_url" alt="" />
+                    <li v-if="item.primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sortOrder' 1">
+                        <span v-if="item.imgUrl!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
+                        <p v-if="item.imgUrl!=''">
+                            <img v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
                         </p>
-                        <p v-if="item.img_url==''" class="main-img-group-nopic">
+                        <p v-if="item.imgUrl==''" class="main-img-group-nopic">
                             添加图片
                         </p>
-                        {{item.img_desc}}
+                        {{item.imgDesc}}
                     </li>
                 </ul>
             </div>
@@ -87,8 +88,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">
-                <span class="text-danger">*</span>
-                图文详情
+                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span>
             </label>
             <div class="col-sm-7">
                 <!-- 隐藏域，用于触发图文详情上传按钮 -->
@@ -97,15 +97,15 @@
                 </div>
                 {{productdetails.img_text_desc | json}}
                 <ul class="details-img-group bg-muted">
-                    <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sort' 1">
-                        <p class="img-text-desc-file" v-bind:class="{'details-img-group-nopic':item.img==''}" v-if="item-img!=''">
-                            <img v-if="item.img!=''" v-bind:src="imgIndex.qiniuurl+item.img" alt="" />
-                            <span v-if="item.img==''">添加图片</span>
+                    <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
+                        <p class="img-text-desc-file" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
+                            <img v-if="item.imgUrl!=''" v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
+                            <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
-                        <textarea v-model="item.img_desc" placeholder="商品详情" class="form-control" rows="7"></textarea>
+                        <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="7"></textarea>
                         <div class="details-img-group-right">
-                            <div @click="sort_push($index,item.sort)" class="img-text-desc-arrow-up" style="margin-bottom:15px;"></div>
-                            <div @click="sort_minus($index,item.sort)" class="img-text-desc-arrow-down" style="margin-bottom:60px;"></div>
+                            <div @click="sort_push($index,item.sortOrder)" class="img-text-desc-arrow-up" style="margin-bottom:15px;"></div>
+                            <div @click="sort_minus($index,item.sortOrder)" class="img-text-desc-arrow-down" style="margin-bottom:60px;"></div>
                             <div @click="img_text_desc_add()" v-if="$index==0" class="glyphicon glyphicon-plus-sign text-muted" style="margin-bottom:5px;"></div>
                             <div @click="img_text_desc_delete($index)" v-if="$index>0" class="glyphicon glyphicon-remove-sign text-danger"></div>
                         </div>
@@ -127,12 +127,15 @@
         },
         methods:{
             img_text_desc_add:function(){
-                this.productdetails.img_text_desc.push({img:'',img_desc:'',sort:this.productdetails.img_text_desc.length+1});
+                if (this.productdetails.img_text_desc.length>=10) {
+                    return false;
+                }
+                this.productdetails.img_text_desc.push({imgUrl:'',imgDesc:'',primary:false,sortOrder:this.productdetails.img_text_desc.length+1});
             },
             img_text_desc_delete:function(index){
                 this.productdetails.img_text_desc.del(index);
                 for(let i=0;i<this.productdetails.img_text_desc.length;i++){
-                    this.$set('productdetails.img_text_desc['+i+'].sort',i);
+                    this.$set('productdetails.img_text_desc['+i+'].sortOrder',i);
                 }
             },
             sort_push:function(index,sort){
@@ -140,10 +143,10 @@
                     return;
                 }
                 let indexS=index-1;
-                this.$set('productdetails.img_text_desc['+index+'].sort',sort-1);
-                this.$set('productdetails.img_text_desc['+indexS+'].sort',sort);
+                this.$set('productdetails.img_text_desc['+index+'].sortOrder',sort-1);
+                this.$set('productdetails.img_text_desc['+indexS+'].sortOrder',sort);
                 this.productdetails.img_text_desc.sort(function(a1, a2) {
-                    return a1.sort - a2.sort;
+                    return a1.sortOrder - a2.sortOrder;
                 });
             },
             sort_minus:function(index,sort){
@@ -151,10 +154,10 @@
                     return;
                 }
                 let indexS=index+1;
-                this.$set('productdetails.img_text_desc['+index+'].sort',sort+1);
-                this.$set('productdetails.img_text_desc['+indexS+'].sort',sort);
+                this.$set('productdetails.img_text_desc['+index+'].sortOrder',sort+1);
+                this.$set('productdetails.img_text_desc['+indexS+'].sortOrder',sort);
                 this.productdetails.img_text_desc.sort(function(a1, a2) {
-                    return a1.sort - a2.sort;
+                    return a1.sortOrder - a2.sortOrder;
                 });
             }
         },
@@ -186,7 +189,7 @@
                     'FilesAdded': function(up, files) {
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
-                            _this.productdetails.primary_img[imgIndex.img_index].img_url='loading.gif';
+                            _this.productdetails.primary_img[imgIndex.img_index].imgUrl='loading.gif';
                         });
                     },
                     'BeforeUpload': function(up, file) {
@@ -199,7 +202,7 @@
                         // 每个文件上传成功后,处理相关的事情
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        _this.productdetails.primary_img[imgIndex.img_index].img_url=encodeURI(res.key);
+                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl=encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
                         _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
@@ -245,7 +248,7 @@
                      'FilesAdded': function(up, files) {
                          plupload.each(files, function(file) {
                              // 文件添加进队列后,处理相关的事情
-                             _this.productdetails.img_text_desc[imgIndex.img_index].img='loading.gif';
+                             _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl='loading.gif';
                          });
                      },
                      'BeforeUpload': function(up, file) {
@@ -258,7 +261,7 @@
                          // 每个文件上传成功后,处理相关的事情
                          let domain = up.getOption('domain');
                          let res=$.parseJSON(info);
-                         _this.productdetails.img_text_desc[imgIndex.img_index].img=encodeURI(res.key);
+                         _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl=encodeURI(res.key);
                      },
                      'Error': function(up, err, errTip) {
                          _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})

@@ -79,7 +79,7 @@
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
                 <div class="text-left text-muted">
-                    {{productbasiinfo.product_designer}}
+                    {{productbasiinfo.product_designer | json}}
                     <button @click="setDesignersCache()" type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>
@@ -136,7 +136,7 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input v-model="productbasiinfo.long" type="text" class="form-control" placeholder="长">
+                    <input v-model="productbasiinfo.long" type="number" class="form-control" placeholder="长">
                     <span class="input-group-addon">cm</span>
                 </div>
                 {{productbasiinfo.long}}
@@ -144,7 +144,7 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">宽</span>
-                    <input v-model="productbasiinfo.width" type="text" class="form-control" placeholder="宽">
+                    <input v-model="productbasiinfo.width" type="number" class="form-control" placeholder="宽">
                     <span class="input-group-addon">cm</span>
                 </div>
                 {{productbasiinfo.width}}
@@ -152,7 +152,7 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">高</span>
-                    <input v-model="productbasiinfo.height" type="text" class="form-control" placeholder="高">
+                    <input v-model="productbasiinfo.height" type="number" class="form-control" placeholder="高">
                     <span class="input-group-addon">cm</span>
                 </div>
                 {{productbasiinfo.height}}
@@ -181,8 +181,8 @@
             <div class="col-sm-2">
                 <select v-model="productbasiinfo.can_customize" class="form-control">
                     <option selected value="">请选择</option>
-                    <option v-bind:value="1">可以定制</option>
-                    <option v-bind:value="0">不可以定制</option>
+                    <option v-bind:value=true>可以定制</option>
+                    <option v-bind:value=false>不可以定制</option>
                  </select>
                  {{productbasiinfo.can_customize}}
             </div>
@@ -309,13 +309,13 @@
             isPrimary:function(event){
                 if (event.target.value=='') {
                     for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
-                        delete this.productbasiinfo.product_designer[i].is_primary;
+                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
                     }
                 }else {
                     for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
-                        delete this.productbasiinfo.product_designer[i].is_primary;
+                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
                     }
-                    this.$set('productbasiinfo.product_designer['+event.target.value+'].is_primary',1);
+                    this.$set('productbasiinfo.product_designer['+event.target.value+'].primary',true);
                 }
             },
 

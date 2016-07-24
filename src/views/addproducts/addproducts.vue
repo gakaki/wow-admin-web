@@ -205,8 +205,8 @@
                         state:'3'
                     }
                 ],
-                state:'2',
-                nowtag:'2'
+                state:'1',
+                nowtag:'1'
             }
         },
         methods:{
@@ -267,19 +267,89 @@
                 let product_designer=this.productSpecList.productBasiInfo.product_designer;
                 product_designer.filter(function(i) {return delete i.name;});
 
-                //把图片详情的数组并进去主图数组
-                let primary_img=this.productSpecList.productDetails.primary_img;
-                // let primaryImgFilter=primary_img.filter(function(i) {
-                //     return i.is_primary == 1
-                // })
-                // this.productSpecList.productDetails.primary_img=primaryImgFilter;
+                //过滤掉多余的图片详情
+                this.productDetails.primary_img.splice(5,10)
 
+                //把图文详情并进主图数组
+                let primary_img=this.productSpecList.productDetails.primary_img;
                 let img_text_desc=this.productSpecList.productDetails.img_text_desc;
                 for (let val of img_text_desc) {
                     primary_img.push(val);
                 }
 
+                //去除多余的字段，最终提交的对象
+                let addProductOb={
+                    colorSpecVoList:[]
+                }
+
+                //设置提交的单个属性
+                addProductOb.categoryId=this.productSpecList.productBasiInfo.Selectcategory.three
+                addProductOb.productName=this.productSpecList.productBasiInfo.product_name
+                addProductOb.sellingPoint=this.productSpecList.productBasiInfo.selling_point
+                addProductOb.productModel=this.productSpecList.productBasiInfo.product_model
+                addProductOb.brandId=this.productSpecList.productBasiInfo.brand_id
+                addProductOb.designerVoList=this.productSpecList.productBasiInfo.product_designer
+                addProductOb.originCountryId=this.productSpecList.productBasiInfo.origin_country
+                addProductOb.originCity=this.productSpecList.productBasiInfo.origin_city
+                addProductOb.styleId=this.productSpecList.productBasiInfo.style
+                addProductOb.length=this.productSpecList.productBasiInfo.long
+                addProductOb.width=this.productSpecList.productBasiInfo.width
+                addProductOb.height=this.productSpecList.productBasiInfo.height
+                addProductOb.applicablePeople=this.productSpecList.productBasiInfo.applicable_people
+                addProductOb.canCustomized=this.productSpecList.productBasiInfo.can_customize
+                addProductOb.applicableSceneList=this.productSpecList.productBasiInfo.applicable_scene_text
+                addProductOb.materialList=this.productSpecList.productBasiInfo.material_text
+                addProductOb.detailDescription=this.productSpecList.productDetails.detail_description
+
+                //设置提交的图片数组
+                addProductOb.productImgVoList=this.productSpecList.productDetails.primary_img
+
+                //设置销售属性需要提交的数据遍历，字段改成后台需要的。
+                let colorSpecVoList=this.productSpecList.productSalesAttribute;
+                for (let a = 0; a < colorSpecVoList.length; a++) {
+                    //设置颜色属性
+                    addProductOb.colorSpecVoList.push({});
+                    addProductOb.colorSpecVoList[a].colorId=colorSpecVoList[a].colorId;
+                    addProductOb.colorSpecVoList[a].productColorImg=colorSpecVoList[a].img;
+                    addProductOb.colorSpecVoList[a].colorDisplayName=colorSpecVoList[a].name;
+                    addProductOb.colorSpecVoList[a].specVoList=[];
+                    for (var b = 0; b < colorSpecVoList[a].specListVal.length; b++) {
+                        addProductOb.colorSpecVoList[a].specVoList.push({});
+                        for (var c = 0; c < addProductOb.colorSpecVoList[a].specVoList.length; c++) {
+                            //设置颜色对应的尺码属性
+                            addProductOb.colorSpecVoList[a].specVoList[c].specName=colorSpecVoList[a].specList[c].spec
+                            addProductOb.colorSpecVoList[a].specVoList[c].sellPrice=colorSpecVoList[a].specListVal[c].sell_price
+                            addProductOb.colorSpecVoList[a].specVoList[c].costPrice=colorSpecVoList[a].specListVal[c].cost_price
+                            addProductOb.colorSpecVoList[a].specVoList[c].weight=colorSpecVoList[a].specListVal[c].weight
+                            addProductOb.colorSpecVoList[a].specVoList[c].arrivalLatency=colorSpecVoList[a].specListVal[c].arrivalPeriod
+                            if (colorSpecVoList[a].specListVal[c].disabled==false) {
+                                addProductOb.colorSpecVoList[a].specVoList[c].enabled=true;
+                            }else {
+                                addProductOb.colorSpecVoList[a].specVoList[c].enabled=false;
+                            }
+
+                        }
+                    }
+                }
                 console.log(this.productSpecList);
+                console.log(addProductOb);
+                
+                let jsontext=JSON.stringify(addProductOb);
+                this.$http.post('http://10.0.60.72:9090/admin-api-dev/v1/product/create',{paramJson:jsontext}).then((response) => {
+                    if (response.data.resCode==0) {
+                        // this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
+                    }else{
+                        // this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                    }
+                    alert(response.data.resMsg)
+                    // this.$broadcast('hide::spinner');
+                }, (response) => {
+                    // error callback
+                    // this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                    // this.$broadcast('hide::spinner');
+                });
+
+
             }
         },
         events:{
@@ -320,7 +390,6 @@
                         });
                     },
                     'BeforeUpload': function(up, file) {
-                        console.log(file);
                         // 每个文件上传前,处理相关的事情
                     },
                     'UploadProgress': function(up, file) {

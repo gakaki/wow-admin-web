@@ -173,7 +173,7 @@
                     }
                 }, (response) => {
                     // error callback
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取分类错误',alertShow:true})
                 });
             }
         },
@@ -188,7 +188,7 @@
                 }
             }, (response) => {
                 // error callback
-                this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取分类错误',alertShow:true})
             });
         }
     }

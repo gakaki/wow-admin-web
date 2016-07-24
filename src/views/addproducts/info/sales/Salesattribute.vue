@@ -108,7 +108,6 @@
                 return this.spectbodylist.filter(function (l) {
                     return l.selected
                 }).map(function (l) {
-                    console.log(l);
                     return l.spec
                 })
             }
