@@ -211,8 +211,8 @@
                         state:'3'
                     }
                 ],
-                state:'2',
-                nowtag:'2'
+                state:'1',
+                nowtag:'1'
             }
         },
         methods:{
