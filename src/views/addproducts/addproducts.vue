@@ -54,7 +54,7 @@
     .sales-attribute-table tbody td{
         padding:10px 3px !important;
     }
-    .sales-attribute-table tbody td input[type=text]{
+    .sales-attribute-table tbody td input[type=text],.sales-attribute-table tbody td input[type=number]{
         text-align: center;
     }
     .sales-attribute-table-text{
@@ -211,8 +211,8 @@
                         state:'3'
                     }
                 ],
-                state:'1',
-                nowtag:'1'
+                state:'2',
+                nowtag:'2'
             }
         },
         methods:{

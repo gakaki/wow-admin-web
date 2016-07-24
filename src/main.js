@@ -13,7 +13,6 @@ Vue.use(VueBreadcrumbs)
 //引入过滤器
 Vue.filter('byteFormat', require('components/common/filter/ZeroFill.js'));
 
-
 //使用VueResource
 Vue.use(VueResource)
 // Vue.http.options.crossOrigin = true;

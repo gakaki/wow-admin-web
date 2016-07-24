@@ -458,6 +458,13 @@ ul,li{
     color: #fff;
 }
 
+/*移除(去掉)HTML5 input在type="number"时的上下小箭头（加减号）  */
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+input[type="number"]{-moz-appearance:textfield;}
+
 /*
  *右边主题公用搜索表单
  */

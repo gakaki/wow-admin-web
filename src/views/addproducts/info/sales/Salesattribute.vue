@@ -115,8 +115,6 @@
         created(){
             this.$set('productsalesattribute.colorSelect',this.colorSelect);
             this.$set('productsalesattribute.specSelect',this.specListS);
-            console.log('默认选中的颜色：︾︾');
-            console.log(this.productsalesattribute.colorSelect);
         },
         watch:{
             'colorSelect':function(val,oldval){
