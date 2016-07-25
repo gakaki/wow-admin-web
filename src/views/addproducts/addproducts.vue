@@ -213,16 +213,16 @@
                         state:'3'
                     }
                 ],
-                state:'2',
-                nowtag:'2',
+                state:'1',
+                nowtag:'1',
                 imgTimeStamp:new Date().valueOf(),
                 userName:$.cookie('userName')||'',
             }
         },
         methods:{
             nextSteps:function(){
-                this.$set('state','1');
-                this.$set('nowtag','1');
+                this.$set('state','2');
+                this.$set('nowtag','2');
             },
             saveProducts:function(){
                 let product=this.productSalesAttribute;
