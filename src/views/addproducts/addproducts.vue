@@ -368,9 +368,9 @@
                         }, 1000);
                     }
                 }, (response) => {
-                    this.$broadcast('hide::spinner');
                     // error callback
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true});
+                    this.$broadcast('hide::spinner');
                 });
             }
         },

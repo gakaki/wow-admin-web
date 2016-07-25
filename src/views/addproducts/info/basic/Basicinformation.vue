@@ -141,10 +141,9 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input data-rule="required" name="length" v-model="productbasiinfo.length" type="number" class="form-control" placeholder="长">
+                    <input data-rule="required" name="length" v-model="productbasiinfo.long" type="number" class="form-control" placeholder="长">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.long}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
