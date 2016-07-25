@@ -24,11 +24,14 @@
     .spec-border-danger{
         border:1px solid #ff0000;
     }
+    #specSelected span.n-right, #colorSelected span.n-right{
+        top: -3px;
+    }
 </style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">销售属性<span class="text-danger">［颜色／规格 *必选］</span></div>
-        <div class="form-group">
+        <div class="form-group" id="colorSelected">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
             <div class="col-sm-7 bg-muted">
                 <label v-for="item in productsalesattribute.color" class="checkbox-inline color-label">
@@ -36,16 +39,26 @@
                     <i v-if="item.multi!=true" v-bind:style="{ background: item.color}" class="addproduct-box-html-color-box"></i>
                     <i v-if="item.multi==true" class="multi-color addproduct-box-html-color-box"></i>
                     <span v-if="item.selected==false">{{item.name}}</span>
-                    <input v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.name}}" v-model='item.name'>
+
+                    <div v-if="item.selected==true" style="display:inline-block">
+                        <input data-rule="required" name="{{'colorSelected'+$index}}" v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.name}}" v-model='item.name' placeholder="颜色">
+                    </div>
                 </label>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="specSelected">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in spectbodylist">
                     <input v-bind:disabled="$index==0"  type="checkbox" value="{{item.spec}}" v-model='item.selected'>
-                    <input v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
+
+                    <div v-if="item.selected==true" >
+                        <input data-rule="required" name="{{'specSelected'+$index}}" v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
+                    </div>
+
+                    <div v-if="item.selected!=true" >
+                        <input v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
+                    </div>
                 </label>
             </div>
         </div>

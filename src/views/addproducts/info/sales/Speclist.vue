@@ -18,13 +18,13 @@
             {{list.spec}}
         </td>
         <td>
-            <input @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
+            <input data-rule="required" name="{{'sellPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
         </td>
         <td>
-            <input @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="number" class="form-control sales-attribute-table-text" placeholder="进货价">
+            <input data-rule="required" name="{{'costPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="number" class="form-control sales-attribute-table-text" placeholder="进货价">
         </td>
         <td>
-            <input @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
+            <input data-rule="required" name="{{'weight'+tbody_index+index}}" @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
         </td>
         <td>
             <button @click="specDisable()" v-if="lists.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>
@@ -55,6 +55,7 @@
             },
             specDisable:function(){
                 this.$set('lists.disabled',true);
+                $('#add-product-from').validator('cleanUp');
             },
             setVal:function(tbody_index,spec_index,val,name){
                 productSalesAttribute.color[tbody_index].specListVal[spec_index][name]=val;

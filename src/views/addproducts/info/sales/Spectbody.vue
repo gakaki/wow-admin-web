@@ -1,5 +1,5 @@
 <template>
-    <tbody v-show="listobj.selected==true">
+    <tbody v-if="listobj.selected==true">
         <tr :tbody_index="tbody_index" :img.sync="listobj.img" :name="listobj.name" :index="$index" :speclength="listobj.specList.length" :list="items" v-for="items in listobj.specList" is="Speclist" :lists="listobj.specListVal[$index]" :spec_select_length="spec_select"></tr>
     </tbody>
 </template>

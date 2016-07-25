@@ -69,7 +69,6 @@
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
                 <div class="text-left text-muted">
-                    {{productbasiinfo.brand_id}}
                     <button @click="setBrandListCache()"  type="button" class="btn btn-xs btn-default">
                         <span class="glyphicon glyphicon-refresh"></span> 刷新
                     </button>

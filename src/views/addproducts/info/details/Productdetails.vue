@@ -21,7 +21,7 @@
         right: -64px;
         top: -10px;
         background: #f9f9f9;
-        height: 160px;
+        height: 165px;
         padding: 20px;
     }
     .img-text-desc-arrow-up{
@@ -47,6 +47,7 @@
     }
 </style>
 <template>
+    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
     <div class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">商品详情</div>
         <div class="form-group">
@@ -61,7 +62,8 @@
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10 control-label" id="primary-pic-box">
                 <ul class="main-img-group text-left products-primary-img">
-                    <li v-if="item.primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sortOrder' 1">
+                    <li v-bind:style="{ zIndex: productdetails.primary_img.length-$index}" class="add-product-hide-input" v-if="item.primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sortOrder' 1">
+                        <input data-rule="required" name={{'primaryImg'+$index}} v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
                         <span v-if="item.imgUrl!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p v-if="item.imgUrl!=''">
                             <img v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
@@ -78,7 +80,7 @@
             <label class="col-sm-2 control-label">商品描述</label>
             <div class="col-sm-7">
                 <p class="control-label text-muted">
-                    <textarea v-model="productdetails.detail_description" placeholder="商品描述" class="form-control" rows="5"></textarea>
+                    <textarea data-rule="required" name="detailDescription" v-model="productdetails.detail_description" placeholder="商品描述" class="form-control" rows="5"></textarea>
                 </p>
             </div>
             <span class="col-sm-3 control-label">
@@ -96,11 +98,15 @@
                 </div>
                 <ul class="details-img-group bg-muted">
                     <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
-                        <p class="img-text-desc-file" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
+                        <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
+                            <input data-rule="required" name={{'img_text_desc_src'+item.sortOrder}} v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
                             <img v-if="item.imgUrl!=''" v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
-                        <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="7"></textarea>
+                        <div class="add-product-hide-input">
+                            <input data-rule="required" name={{'img_text_desc_text'+item.sortOrder}} v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
+                            <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="7"></textarea>
+                        </div>
                         <div class="details-img-group-right">
                             <div @click="sort_push($index,item.sortOrder)" class="img-text-desc-arrow-up" style="margin-bottom:15px;"></div>
                             <div @click="sort_minus($index,item.sortOrder)" class="img-text-desc-arrow-down" style="margin-bottom:60px;"></div>
@@ -115,12 +121,22 @@
 </template>
 
 <script type="text/javascript">
-    import {imgIndex} from '../../model'
+    import {imgIndex}   from    '../../model'
+    import Alert        from    '../../../../components/common/alert/Alert'
+
     export default{
-        props:['productdetails'],
+        props:['productdetails','imgtimestamp','username'],
+        components:{
+            Alert
+        },
         data(){
             return{
-                imgIndex:imgIndex
+                imgIndex:imgIndex,
+                alertObj:{
+                    alertType:null,
+                    alertInfo:null,
+                    alertShow:false,
+                },
             }
         },
         methods:{
@@ -164,6 +180,10 @@
              * 商品主图上传实例
              * start
              */
+
+            var Qiniu1 = new QiniuJsSDK();
+            var Qiniu2 = new QiniuJsSDK();
+
             let _this=this;
             let primary_button=['primary0','primary1','primary2','primary3','primary4']
             let primaryImg = {
@@ -187,6 +207,7 @@
                     'FilesAdded': function(up, files) {
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
+                            $('#add-product-from').validator('cleanUp');
                             _this.productdetails.primary_img[imgIndex.img_index].imgUrl='loading.gif';
                         });
                     },
@@ -203,15 +224,27 @@
                         _this.productdetails.primary_img[imgIndex.img_index].imgUrl=encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
-                        _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
                         //上传出错时,处理相关的事情
+                        if (err.status==614) {
+                            _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
+                        }else {
+                            _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
+                        }
+                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl='';
                     },
                     'UploadComplete': function() {
                         //队列文件处理完毕后,处理相关的事情
                     },
+                    'Key': function(up, file) {
+                        // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                        // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                        var key = "product/"+_this.imgtimestamp+_this.username+'/'+file.name;
+                        // do something with key here
+                        return key
+                    }
                 }
             };
-            var uploader = Qiniu.uploader(primaryImg);
+            var uploader1 = Qiniu1.uploader(primaryImg);
             /**
              * 商品主图上传实例
              * end
@@ -246,6 +279,7 @@
                      'FilesAdded': function(up, files) {
                          plupload.each(files, function(file) {
                              // 文件添加进队列后,处理相关的事情
+                             $('#add-product-from').validator('cleanUp');
                              _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl='loading.gif';
                          });
                      },
@@ -262,15 +296,27 @@
                          _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl=encodeURI(res.key);
                      },
                      'Error': function(up, err, errTip) {
-                         _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
                          //上传出错时,处理相关的事情
+                         if (err.status==614) {
+                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
+                         }else {
+                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
+                         }
+                         _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl='';
                      },
                      'UploadComplete': function() {
                          //队列文件处理完毕后,处理相关的事情
                      },
+                     'Key': function(up, file) {
+                         // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                         // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                         var key = "product/"+_this.imgtimestamp+_this.username+'/'+file.name;
+                         // do something with key here
+                         return key
+                     }
                  }
              };
-             var uploader2 = Qiniu.uploader(ImgTextDesc);
+             var uploader2 = Qiniu2.uploader(ImgTextDesc);
              /**
               * 图文详情上传
               * end

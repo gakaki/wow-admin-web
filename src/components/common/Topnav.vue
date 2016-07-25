@@ -79,7 +79,7 @@
     export default{
         data(){
             return{
-                userName:$.cookie('userName')||''
+                userName:$.cookie('realName')||''
             }
         },
         methods:{
