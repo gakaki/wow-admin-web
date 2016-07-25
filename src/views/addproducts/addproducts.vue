@@ -125,7 +125,7 @@
 <template>
     <div id="add-product-from">
         <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
-        <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在提交数据">
+        <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="请稍后">
         </spinner>
         <div class="row">
             <div class="col-md-12" style="margin-top:20px;">
@@ -359,18 +359,21 @@
                         this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
                         setTimeout(() => {
                             this.$broadcast('hide::spinner');
+                            $("body").removeAttr("style");
                             window.location.href="/goods/addproducts"
                         }, 2000);
                     }else{
                         this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
                         setTimeout(() => {
                             this.$broadcast('hide::spinner');
+                            $("body").removeAttr("style");
                         }, 1000);
                     }
                 }, (response) => {
                     // error callback
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true});
                     this.$broadcast('hide::spinner');
+                    $("body").removeAttr("style");
                 });
             }
         },

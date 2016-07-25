@@ -63,7 +63,7 @@
             <div class="col-sm-10 control-label" id="primary-pic-box">
                 <ul class="main-img-group text-left products-primary-img">
                     <li v-bind:style="{ zIndex: productdetails.primary_img.length-$index}" class="add-product-hide-input" v-if="item.primary==1" id="primary{{$index}}" @click="imgIndex.set_img_index($index)" v-for="item in productdetails.primary_img | orderBy 'sortOrder' 1">
-                        <input data-rule="required" name={{'primaryImg'+$index}} v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
+                        <input data-rule="required" :name="'primaryImg'+$index" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
                         <span v-if="item.imgUrl!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p v-if="item.imgUrl!=''">
                             <img v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
@@ -99,12 +99,12 @@
                 <ul class="details-img-group bg-muted">
                     <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
                         <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
-                            <input data-rule="required" name={{'img_text_desc_src'+item.sortOrder}} v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
+                            <input data-rule="required" :name="'img_text_desc_src'+item.sortOrder" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
                             <img v-if="item.imgUrl!=''" v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
                         <div class="add-product-hide-input">
-                            <input data-rule="required" name={{'img_text_desc_text'+item.sortOrder}} v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
+                            <input data-rule="required" :name="'img_text_desc_text'+item.sortOrder" v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
                             <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="7"></textarea>
                         </div>
                         <div class="details-img-group-right">
