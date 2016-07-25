@@ -123,36 +123,38 @@
     }
 </style>
 <template>
-    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
-    <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在提交数据">
-    </spinner>
-    <div class="row">
-        <div class="col-md-12" style="margin-top:20px;">
-            <div style="width:740px; margin:0 auto;">
-                <Steps :stepsinfo="list" :stateinfo="state" :nowtag="nowtag"></Steps>
+    <div id="add-product-from">
+        <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
+        <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="正在提交数据">
+        </spinner>
+        <div class="row">
+            <div class="col-md-12" style="margin-top:20px;">
+                <div style="width:740px; margin:0 auto;">
+                    <Steps :stepsinfo="list" :stateinfo="state" :nowtag="nowtag"></Steps>
+                </div>
             </div>
         </div>
-    </div>
-    <Selectcategory v-show="nowtag=='1'"></Selectcategory>
-    <div class="row" v-show="nowtag=='1'">
-        <div class="text-center col-md-12" style="margin-top:30px;">
-            <button v-bind:disabled="productBasiInfo.Selectcategory.one==null||productBasiInfo.Selectcategory.two==null||productBasiInfo.Selectcategory.three==null" @click="nextSteps" class="btn btn-primary">下一步</button>
+        <Selectcategory v-show="nowtag=='1'"></Selectcategory>
+        <div class="row" v-show="nowtag=='1'">
+            <div class="text-center col-md-12" style="margin-top:30px;">
+                <button v-bind:disabled="productBasiInfo.Selectcategory.one==null||productBasiInfo.Selectcategory.two==null||productBasiInfo.Selectcategory.three==null" @click="nextSteps" class="btn btn-primary">下一步</button>
+            </div>
         </div>
-    </div>
 
-    <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
-        <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
-        <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
-        <Productdetails :productdetails="productDetails"></Productdetails>
-        <!-- <Other></Other> -->
-        <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
-           <div class="row">
-               <div class="col-md-12 text-center">
-                   <button @click="saveProducts()" type="button" class="btn btn-primary">保存商品</button>
-                   <button type="button" class="btn btn-warning">预览商品</button>
+        <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
+            <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
+            <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
+            <Productdetails :productdetails="productDetails"></Productdetails>
+            <!-- <Other></Other> -->
+            <nav class="addproductsFoot navbar navbar-fixed-bottom bg-warning" role="navigation">
+               <div class="row">
+                   <div class="col-md-12 text-center">
+                       <button id="app-product-button" type="button" class="btn btn-primary">保存商品</button>
+                       <button type="button" class="btn btn-warning">预览商品</button>
+                   </div>
                </div>
-           </div>
-        </nav>
+            </nav>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
@@ -327,7 +329,6 @@
                             addProductOb.colorSpecVoList[a].specVoList[c].sellPrice=colorSpecVoList[a].specListVal[c].sell_price
                             addProductOb.colorSpecVoList[a].specVoList[c].costPrice=colorSpecVoList[a].specListVal[c].cost_price
                             addProductOb.colorSpecVoList[a].specVoList[c].weight=colorSpecVoList[a].specListVal[c].weight
-                            addProductOb.colorSpecVoList[a].specVoList[c].arrivalLatency=colorSpecVoList[a].specListVal[c].arrivalPeriod
                             if (colorSpecVoList[a].specListVal[c].disabled==false) {
                                 addProductOb.colorSpecVoList[a].specVoList[c].enabled=true;
                             }else {
@@ -346,6 +347,9 @@
                     return;
                 }
 
+                /**
+                 * 发送请求后端录入
+                 */
                 let jsontext=JSON.stringify(addProductOb);
                 this.$broadcast('show::spinner');
                 this.$http.post(API_ROOT+'admin-api-dev/v1/product/create',{paramJson:jsontext}).then((response) => {
@@ -375,18 +379,47 @@
             }
         },
         ready(){
+
+            let _this=this;
+
+            $('#add-product-from').validator({
+                theme: "yellow_right",
+                stopOnError: true,
+                focusCleanup: true,
+                focusInvalid:false,
+                timely: 2,
+                // 获取display
+                display: function(el) {
+                    return el.getAttribute('placeholder') || '';
+                },
+                fields: {
+                    //必填项直接绑定表单的 data-rule="required"
+                    //复杂的验证正则放这处理
+                },
+                invalid: function(form, errors){
+                    //数据验证没通过
+                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-15},500);
+                },
+                valid: function(){
+                    //表单验证通过，提交表单到服务器
+                    console.log('验证通过1111111111111111111111111111');
+                }
+            })
+            .on("click", "#app-product-button", function(e){
+                $(e.delegateTarget).trigger("validate");
+            });
+
             /**
              * [上传颜色图片初始化]
              * start
              */
-            let _this=this;
             let specColorPic_button=['Apickfiles0','Apickfiles1','Apickfiles2','Apickfiles3','Apickfiles4','Apickfiles5','Apickfiles6','Apickfiles7','Apickfiles8','Apickfiles9','Apickfiles10','Apickfiles11']
             let specColorPic = {
                 runtimes: 'html5,flash,html4', //上传模式,依次退化
                 browse_button: specColorPic_button, //上传选择的点选按钮，**必需**
                 uptoken_url: 'http://apidev.dev.wowdsgn.com:8400/apiv1/qiniu/token', //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
                 uptoken: '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
-                unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
                 // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
                 domain: 'http://o7s1lyy5h.bkt.clouddn.com', //bucket 域名，下载资源时用到，**必需**
                 get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token

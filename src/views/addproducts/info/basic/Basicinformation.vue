@@ -3,6 +3,14 @@
         border-top-left-radius:0px !important;
         border-bottom-left-radius:0px !important;
     }
+    .add-product-hide-input span.msg-box{
+        position: absolute;
+        z-index: 999;
+    }
+    #add-product-from span.n-right{
+        top: 3px;
+        right: 0px;
+    }
 </style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
@@ -18,8 +26,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品名称</label>
             <div class="col-sm-4">
-                <input maxlength="30" v-model="productbasiinfo.product_name" type="text" class="form-control" placeholder="商品名称">
-                {{productbasiinfo.product_name}}
+                <input data-rule="required" name="productName" maxlength="30" v-model="productbasiinfo.product_name" type="text" class="form-control" placeholder="商品名称">
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">{{productbasiinfo.product_name.length}}/30</div>
@@ -28,8 +35,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>卖点</label>
             <div class="col-sm-4">
-                <input v-model="productbasiinfo.selling_point" type="text" class="form-control" placeholder="商店卖点">
-                {{productbasiinfo.selling_point}}
+                <input data-rule="required" name="sellingPoint" v-model="productbasiinfo.selling_point" type="text" class="form-control" placeholder="商店卖点">
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">{{productbasiinfo.selling_point.length}}/30</div>
@@ -38,8 +44,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品型号</label>
             <div class="col-sm-3">
-                <input v-model="productbasiinfo.product_model" type="text" class="form-control" placeholder="商品型号">
-                {{productbasiinfo.product_model}}
+                <input data-rule="required" name="productModel" v-model="productbasiinfo.product_model" type="text" class="form-control" placeholder="商品型号">
             </div>
         </div>
         <!-- <div class="form-group">
@@ -56,10 +61,10 @@
                 </div>
             </div>
         </div> -->
-
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
-            <div class="col-sm-3">
+            <div class="col-sm-3 add-product-hide-input">
+                <input data-rule="required" name="brandId" v-bind:value="productbasiinfo.brand_id" type="text" class="form-control hidden" placeholder="品牌">
                 <v-select :on-change="setBrandId" label="name" :debounce="500" :on-search="getBrandList" placeholder="搜索品牌" :options="brandlist"></v-select>
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
@@ -74,7 +79,8 @@
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>设计师(可多选)</label>
-            <div class="col-sm-4">
+            <div class="col-sm-4 add-product-hide-input">
+                <input data-rule="required" name="designerVoList" v-bind:value="productbasiinfo.product_designer" type="text" class="form-control hidden" placeholder="设计师">
                 <v-select multiple label="name" :debounce="500" :on-search="getDesigners" :value.sync="productbasiinfo.product_designer" placeholder="搜索设计师" :options="designers"></v-select>
             </div>
             <div class="col-sm-4 control-label" style="padding-top:4px;" >
@@ -88,7 +94,8 @@
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>主设计师</label>
-            <div class="col-sm-4">
+            <div class="col-sm-4 add-product-hide-input">
+                <input data-rule="required" name="PrimaryDesigner" v-bind:value="isPrimaryDesigner" type="text" class="form-control hidden" placeholder="主设计师">
                 <select @change="isPrimary($event)" class="form-control">
                     <option value="" selected>请选择主设计师</option>
                     <option v-for="item in productbasiinfo.product_designer" v-bind:value="$index">{{item.name}}</option>
@@ -101,23 +108,24 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地</label>
             <div class="col-sm-4">
-                <div class="input-group">
-                    <span class="input-group-addon">国家</span>
+                <div class="input-group add-product-hide-input">
+                    <input data-rule="required" name="originCountryId" v-bind:value="productbasiinfo.origin_country" type="text" class="form-control hidden" placeholder="国家">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">国家</span>
                     <v-select class="origin_country" :on-change="setOriginCountryId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索国家" :options="originCountry"></v-select>
                 </div>
-                {{productbasiinfo.origin_country}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">城市</span>
-                    <input v-model="productbasiinfo.origin_city" type="text" class="form-control" placeholder="城市">
+                    <input data-rule="required" name="originCity" v-model="productbasiinfo.origin_city" type="text" class="form-control" placeholder="城市">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
-            <div class="col-sm-2">
+            <div class="col-sm-2 add-product-hide-input">
+                <input data-rule="required" name="styleId" v-bind:value="productbasiinfo.style" type="text" class="form-control hidden" placeholder="风格">
                 <select v-model="productbasiinfo.style" class="form-control">
                     <option value="" selected>请选择</option>
                     <option v-bind:value="1">风格1</option>
@@ -127,7 +135,6 @@
                     <option v-bind:value="5">风格5</option>
                     <option v-bind:value="6">风格6</option>
                  </select>
-                {{productbasiinfo.style}}
             </div>
         </div>
         <div class="form-group">
@@ -135,7 +142,7 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input v-model="productbasiinfo.long" type="number" class="form-control" placeholder="长">
+                    <input data-rule="required" name="length" v-model="productbasiinfo.length" type="number" class="form-control" placeholder="长">
                     <span class="input-group-addon">cm</span>
                 </div>
                 {{productbasiinfo.long}}
@@ -143,18 +150,16 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">宽</span>
-                    <input v-model="productbasiinfo.width" type="number" class="form-control" placeholder="宽">
+                    <input data-rule="required" name="width" v-model="productbasiinfo.width" v-model="productbasiinfo.width" type="number" class="form-control" placeholder="宽">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.width}}
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">高</span>
-                    <input v-model="productbasiinfo.height" type="number" class="form-control" placeholder="高">
+                    <input data-rule="required" name="height" v-model="productbasiinfo.height" v-model="productbasiinfo.height" type="number" class="form-control" placeholder="高">
                     <span class="input-group-addon">cm</span>
                 </div>
-                {{productbasiinfo.height}}
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">若为系列商品，按尺寸最大的填写</div>
@@ -162,7 +167,8 @@
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>适用人群</label>
-            <div class="col-sm-2">
+            <div class="col-sm-2 add-product-hide-input">
+                <input data-rule="required" name="applicablePeople" v-bind:value="productbasiinfo.applicable_people" type="text" class="form-control hidden" placeholder="适用人群">
                 <select v-model="productbasiinfo.applicable_people" class="form-control">
                     <option value="" selected>请选择</option>
                     <option v-bind:value="1">通用</option>
@@ -172,18 +178,17 @@
                     <option v-bind:value="5">儿童</option>
                     <option v-bind:value="6">老人</option>
                  </select>
-                 {{productbasiinfo.applicable_people}}
             </div>
         </div>
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>是否可定制</label>
-            <div class="col-sm-2">
+            <div class="col-sm-2 add-product-hide-input">
+                <input data-rule="required" name="canCustomized" v-bind:value="productbasiinfo.can_customize" type="text" class="form-control hidden" placeholder="是否可以定制">
                 <select v-model="productbasiinfo.can_customize" class="form-control">
                     <option selected value="">请选择</option>
                     <option v-bind:value=true>可以定制</option>
                     <option v-bind:value=false>不可以定制</option>
                  </select>
-                 {{productbasiinfo.can_customize}}
             </div>
         </div>
         <div class="form-group">
@@ -191,22 +196,22 @@
             </label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="1"> 客厅
+                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="1"> 客厅
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="2"> 卧室
+                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="2"> 卧室
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="3"> 厨房
+                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="3"> 厨房
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="4"> 卫生间
+                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="4"> 卫生间
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="5"> 办公室
+                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="5"> 办公室
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" v-model="productbasiinfo.applicable_scene_text" value="6"> 儿童房
+                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="6"> 儿童房
                 </label>
             </div>
         </div>
@@ -214,7 +219,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in labeltest">
-                    <input v-model="productbasiinfo.material_text" type="checkbox" value="{{$index+1}}"> 选项{{$index+1}}
+                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{$index+1}}"> 选项{{$index+1}}
                 </label>
             </div>
         </div>
@@ -241,6 +246,7 @@
                 brandlist:null,
                 designers:null,
                 originCountry:null,
+                isPrimaryDesigner:''
             }
         },
         methods:{
@@ -272,7 +278,8 @@
                     this.$set('productbasiinfo.brand_id','')
                     return;
                 }
-                this.$set('productbasiinfo.brand_id',val.id)
+                this.$set('productbasiinfo.brand_id',val.id);
+                $('#add-product-from').data('validator').hideMsg('input[name="brandId"]');
             },
 
             /**
@@ -304,7 +311,9 @@
  			},
             //设置主设计师
             isPrimary:function(event){
+                console.log(event.target.value);
                 if (event.target.value=='') {
+                    this.$set('isPrimaryDesigner','');
                     for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
                         this.$set('productbasiinfo.product_designer['+i+'].primary',false);
                     }
@@ -313,6 +322,8 @@
                         this.$set('productbasiinfo.product_designer['+i+'].primary',false);
                     }
                     this.$set('productbasiinfo.product_designer['+event.target.value+'].primary',true);
+                    this.$set('isPrimaryDesigner',event.target.value);
+                    $('#add-product-from').data('validator').hideMsg('input[name="PrimaryDesigner"]');
                 }
             },
 
@@ -340,6 +351,7 @@
                     return;
                 }
                 this.$set('productbasiinfo.origin_country',val.id)
+                $('#add-product-from').data('validator').hideMsg('input[name="originCountryId"]');
             },
         },
         ready(){

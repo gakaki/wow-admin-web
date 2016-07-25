@@ -18,19 +18,13 @@
             {{list.spec}}
         </td>
         <td>
-            <input @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="0" >
+            <input @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
         </td>
         <td>
-           <input @keyup="setVal(tbody_index,index,activity_price,'activity_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="activity_price" type="text" class="form-control sales-attribute-table-text" placeholder="0">
-       </td>
-        <td>
-            <input @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="number" class="form-control sales-attribute-table-text" placeholder="0">
+            <input @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="number" class="form-control sales-attribute-table-text" placeholder="进货价">
         </td>
         <td>
-            <input onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" maxlength="2" @keyup="setVal(tbody_index,index,arrivalPeriod,'arrivalPeriod') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="arrivalPeriod" type="text" class="form-control sales-attribute-table-text" placeholder="天">
-        </td>
-        <td>
-            <input @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="数字">
+            <input @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
         </td>
         <td>
             <button @click="specDisable()" v-if="lists.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>

@@ -56,7 +56,6 @@
                     批量设置：
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm">售价</button>
-                        <button type="button" class="btn btn-default btn-sm">活动价</button>
                         <button type="button" class="btn btn-default btn-sm">进货价</button>
                         <button type="button" class="btn btn-default btn-sm">重量</button>
                     </div>
@@ -71,9 +70,7 @@
                         <th>颜色</th>
                         <th>规格</th>
                         <th><span class="text-danger">*</span>售价</th>
-                         <th>活动价</th>
                         <th><span class="text-danger">*</span>进货价</th>
-                        <th>到货周期</th>
                         <th><span class="text-danger">*</span>重量(KG)</th>
                         <th>操作</th>
                     </tr>

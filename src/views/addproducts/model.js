@@ -60,14 +60,14 @@ export const specTbodyList=[
  * @type {Array}
  */
 export const  specTbodyListVal=[
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false},
-    {spec:'',sell_price:'',cost_price:'',weight:'',arrivalPeriod:'',disabled:false}
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',cost_price:'',weight:'',disabled:false}
 ]
 
 /**
