@@ -211,8 +211,8 @@
                         state:'3'
                     }
                 ],
-                state:'1',
-                nowtag:'1'
+                state:'2',
+                nowtag:'2'
             }
         },
         methods:{
@@ -336,6 +336,14 @@
 
                         }
                     }
+                }
+
+                /**
+                 * 校验录入商品的信息
+                 */
+                if (addProductOb.categoryId==''||addProductOb.categoryId==null) {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'请选择分类',alertShow:true})
+                    return;
                 }
 
                 let jsontext=JSON.stringify(addProductOb);
