@@ -309,7 +309,6 @@
  			},
             //设置主设计师
             isPrimary:function(event){
-                console.log(event.target.value);
                 if (event.target.value=='') {
                     this.$set('isPrimaryDesigner','');
                     for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
