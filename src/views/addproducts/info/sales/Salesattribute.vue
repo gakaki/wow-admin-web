@@ -79,7 +79,7 @@
             <table class="table order-list sales-attribute-table">
                 <thead>
                     <tr>
-                        <th>图片</th>
+                        <th>图片<span class="text-danger">(比例1:1)</span></th>
                         <th>颜色</th>
                         <th>规格</th>
                         <th><span class="text-danger">*</span>售价</th>

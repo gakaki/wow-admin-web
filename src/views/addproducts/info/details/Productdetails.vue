@@ -54,7 +54,7 @@
             <label class="col-sm-2 control-label"><span class="text-danger">*</span>商品主图</label>
             <div class="col-sm-10">
                 <p class="control-label text-muted">
-                    5张商品图片，图片尺寸为800*800px以上，无品牌LOGO和其他网站水印，建议图片为白底
+                    5张商品图片，图片尺寸为<span class="text-danger">(800*800px)</span>以上，无品牌LOGO和其他网站水印，建议图片为白底
                 </p>
             </div>
         </div>
@@ -89,10 +89,11 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">
-                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span>
+                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span><br /><span class="text-danger">(图片比例2:3)</span>
             </label>
             <div class="col-sm-7">
                 <!-- 隐藏域，用于触发图文详情上传按钮 -->
+                <img class="testImg" alt="" style="display:none;">
                 <div id="img-text-upload" style="display:none;">
                     <button id="img-text-upload-btn" type="button" name="button">图文上传按钮</button>
                 </div>
@@ -196,12 +197,12 @@
                 domain: 'http://o7s1lyy5h.bkt.clouddn.com', //bucket 域名，下载资源时用到，**必需**
                 get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
                 container: 'primary-pic-box', //上传区域DOM ID，默认是browser_button的父元素，
-                max_file_size: '1mb', //最大文件体积限制
+                max_file_size: '500kb', //最大文件体积限制
                 flash_swf_url: 'http://cdn.bootcss.com/plupload/2.1.8/Moxie.swf', //引入flash,相对路径
                 max_retries: 3, //上传失败最大重试次数
                 dragdrop: false, //开启可拖曳上传
                 drop_element: 'primary-pic-box', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-                chunk_size: '4mb', //分块上传时，每片的体积
+                chunk_size: '500kb', //分块上传时，每片的体积
                 auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
                 init: {
                     'FilesAdded': function(up, files) {
@@ -213,6 +214,24 @@
                     },
                     'BeforeUpload': function(up, file) {
                         // 每个文件上传前,处理相关的事情
+                        let testImgSrc=file.getNative();
+                        let temUrl=window.URL.createObjectURL(testImgSrc);
+                        let objImg = document.querySelector('.testImg');
+                        objImg.src = temUrl;
+                        setTimeout(()=>{
+                            if (objImg.naturalWidth/100!=objImg.naturalHeight/100) {
+                                _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'您的图片比例不正确',alertShow:true})
+                                return;
+                            }
+                            if (objImg.naturalWidth<800) {
+                                _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'您的图片宽度小于800',alertShow:true})
+                                return;
+                            }
+                            if (objImg.naturalHeight<800) {
+                                _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'您的图片高度小于800',alertShow:true})
+                                return;
+                            }
+                        },100);
                     },
                     'UploadProgress': function(up, file) {
                         // 每个文件上传时,处理相关的事情
@@ -228,7 +247,7 @@
                         if (err.status==614) {
                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
                         }else {
-                            _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
+                            _this.$set('alertObj',{alertType:'alert-danger',alertInfo:errTip,alertShow:true})
                         }
                         _this.productdetails.primary_img[imgIndex.img_index].imgUrl='';
                     },
@@ -268,12 +287,12 @@
                  domain: 'http://o7s1lyy5h.bkt.clouddn.com', //bucket 域名，下载资源时用到，**必需**
                  get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
                  container: 'img-text-upload', //上传区域DOM ID，默认是browser_button的父元素，
-                 max_file_size: '1mb', //最大文件体积限制
+                 max_file_size: '500kb', //最大文件体积限制
                  flash_swf_url: 'http://cdn.bootcss.com/plupload/2.1.8/Moxie.swf', //引入flash,相对路径
                  max_retries: 3, //上传失败最大重试次数
                  dragdrop: false, //开启可拖曳上传
                  drop_element: 'img-text-upload', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
-                 chunk_size: '4mb', //分块上传时，每片的体积
+                 chunk_size: '500kb', //分块上传时，每片的体积
                  auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
                  init: {
                      'FilesAdded': function(up, files) {
@@ -284,7 +303,17 @@
                          });
                      },
                      'BeforeUpload': function(up, file) {
-                         // 每个文件上传前,处理相关的事情
+                        // 每个文件上传前,处理相关的事情
+                        let testImgSrc=file.getNative();
+                        let temUrl=window.URL.createObjectURL(testImgSrc);
+                        let objImg = document.querySelector('.testImg');
+                        objImg.src = temUrl;
+                        setTimeout(()=>{
+                            if (objImg.naturalWidth/objImg.naturalHeight!=1.5) {
+                                _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'您的图片比例不正确',alertShow:true})
+                                return;
+                            }
+                        },100);
                      },
                      'UploadProgress': function(up, file) {
                          // 每个文件上传时,处理相关的事情
@@ -300,7 +329,7 @@
                          if (err.status==614) {
                              _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
                          }else {
-                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:'上传失败',alertShow:true})
+                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:errTip,alertShow:true})
                          }
                          _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl='';
                      },
