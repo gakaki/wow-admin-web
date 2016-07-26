@@ -89,7 +89,7 @@
         },
         route: {
             activate: function(transition) {
-                if($.cookie('token')==''||$.cookie('token')==undefined||$.cookie('loginTag')==0||$.cookie('loginTag')==undefined||$.cookie('loginTag')=='') {
+                if($.cookie('token')==(''&&undefined)||$.cookie('userName')==(''&&undefined)) {
                     transition.newxt();
                     return
                 }else {
@@ -116,7 +116,6 @@
                         $.cookie('userName', response.data.data.userName,{ path: "/"});
                         $.cookie('realName', response.data.data.realName,{ path: "/"});
                         $.cookie('token', response.data.data.sessionToken,{ path: "/"});
-                        $.cookie('loginTag', 1,{ path: "/"});
                         window.location.href="/order"
                     }else{
                         this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})

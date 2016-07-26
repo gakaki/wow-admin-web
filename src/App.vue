@@ -30,7 +30,7 @@ export default {
     },
     data(){
         return{
-            loginTag:$.cookie('loginTag')||false
+            loginTag:null,
         }
     },
     methods:{
@@ -38,6 +38,14 @@ export default {
             this.$broadcast('hide::popover')
             this.$broadcast('hide::tooltip')
             this.$broadcast('hide::dropdown')
+        }
+    },
+    ready(){
+        if($.cookie('token')==(''&&undefined)||$.cookie('userName')==(''&&undefined)) {
+            this.loginTag=false;
+            return
+        }else {
+            this.loginTag=true;
         }
     },
     store // 在根组件加入 store，让它的子组件和 store 连接
