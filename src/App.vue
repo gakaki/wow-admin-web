@@ -41,7 +41,7 @@ export default {
         }
     },
     ready(){
-        if($.cookie('token')==(''&&undefined)||$.cookie('userName')==(''&&undefined)) {
+        if($.cookie('token')==null||$.cookie('token')==''||$.cookie('token')==undefined||$.cookie('userName')==undefined||$.cookie('userName')==''||$.cookie('userName')==null) {
             this.loginTag=false;
             return
         }else {
