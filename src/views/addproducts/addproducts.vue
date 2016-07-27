@@ -167,7 +167,8 @@
     import Other                from    './info/other/Other'
     import Alert                from    '../../components/common/alert/Alert'
     import spinner              from    '../../components/common/spinner/Spinner'
-    import {API_ROOT}           from    '../../config'
+    import {API_ROOT,imgNameSplit,qiNiu,qiniuimgsrc}           from    '../../config'
+    import md5                  from    'md5'
 
     export default{
         components:{
@@ -432,11 +433,11 @@
             let specColorPic = {
                 runtimes: 'html5,flash,html4', //上传模式,依次退化
                 browse_button: specColorPic_button, //上传选择的点选按钮，**必需**
-                uptoken_url: 'http://apidev.dev.wowdsgn.com:8400/apiv1/qiniu/token', //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                uptoken_url: qiNiu.uptokenUrl, //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
                 uptoken: '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
                 // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
                 // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
-                domain: 'http://o7s1lyy5h.bkt.clouddn.com/', //bucket 域名，下载资源时用到，**必需**
+                domain: qiniuimgsrc, //bucket 域名，下载资源时用到，**必需**
                 get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
                 container: 'clor-pic-box', //上传区域DOM ID，默认是browser_button的父元素，
                 max_file_size: '500kb', //最大文件体积限制
@@ -489,9 +490,10 @@
                         //队列文件处理完毕后,处理相关的事情
                     },
                     'Key': function(up, file) {
+                        let fileName=file.id+'.'+imgNameSplit(file.name);
                         // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
                         // 该配置必须要在 unique_names: false , save_key: false 时才生效
-                        let key = "product/spec/"+_this.imgTimeStamp+_this.userName+'/'+file.name;
+                        let key = "product/spec/"+md5(_this.imgTimeStamp+_this.userName)+'/'+fileName;
                         // do something with key here
                         return key
                     }

@@ -18,6 +18,18 @@ Array.prototype.del = function(i) {
     return this.splice( i, 1 )
 }
 
+/**
+ * [function getFileName]
+ * 图片上传之前，使用该方法对图片名字分割，进行md5混淆
+ */
+export function imgNameSplit(fileName,tag){
+    if(fileName){
+        let fileNameArr=fileName.split('.');
+        let nameLength=fileNameArr.length-1;
+        return fileNameArr[nameLength];
+    }
+}
+
 //判断登录
 export function islogin(response) {
     return{
