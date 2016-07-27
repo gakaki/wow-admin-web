@@ -287,7 +287,9 @@
                     primary_img.push(val);
                 }
 
-                //去除多余的字段，最终提交的对象
+                /**
+                 * 去除多余的字段，最终提交的对象
+                 */
                 let addProductOb={
                     colorSpecVoList:[]
                 }
@@ -337,6 +339,14 @@
                                 addProductOb.colorSpecVoList[a].specVoList[c].enabled=false;
                             }
 
+                        }
+                    }
+                }
+                //如果商品规格状态禁用，提交的数据里面删除这条数据
+                for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
+                    for (var b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {
+                        if (addProductOb.colorSpecVoList[a].specVoList[b].enabled==false) {
+                            addProductOb.colorSpecVoList[a].specVoList.del(b);
                         }
                     }
                 }
