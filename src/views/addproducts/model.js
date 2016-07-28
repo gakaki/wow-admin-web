@@ -17,6 +17,7 @@ export const productBasiInfo = {
     brand_id                :   '', //品牌ID
     product_designer        :   [], //需要设置一个is_primary字段标示是否主设计师
     origin_country          :   '', //产地国家
+    origin_province         :   '', //产地省份
     origin_city             :   '', //产地城市
     style                   :   '', //风格
     long                    :   '', //长度

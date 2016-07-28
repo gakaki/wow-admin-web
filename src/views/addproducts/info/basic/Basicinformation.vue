@@ -13,6 +13,7 @@
     }
 </style>
 <template>
+    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
     <div class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">基本信息</div>
         <div class="form-group">
@@ -105,7 +106,7 @@
         <!-- <Designers :index="$index" :itemlength="productbasiinfo.product_designer.length" v-for="item in productbasiinfo.product_designer" :designersid.sync="item.id" :designers="designers"></Designers> -->
 
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地</label>
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/国家</label>
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originCountryId" v-bind:value="productbasiinfo.origin_country" type="text" class="form-control hidden" placeholder="国家">
@@ -113,10 +114,29 @@
                     <v-select class="origin_country" :on-change="setOriginCountryId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索国家" :options="originCountry"></v-select>
                 </div>
             </div>
-            <div class="col-sm-2">
-                <div class="input-group">
-                    <span class="input-group-addon">城市</span>
-                    <input data-rule="required" name="originCity" v-model="productbasiinfo.origin_city" type="text" class="form-control" placeholder="城市">
+            <div class="col-sm-4 control-label" style="padding-top:4px;" >
+                <div class="text-left text-muted">
+                    <button @click="setOriginCountryCache()" type="button" class="btn btn-xs btn-default">
+                        <span class="glyphicon glyphicon-refresh"></span> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="productbasiinfo.origin_country==262" class="form-group">
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/省-市</label>
+            <div class="col-sm-4">
+                <div class="input-group add-product-hide-input">
+                    <input data-rule="required" name="originProvinceId" v-bind:value="productbasiinfo.origin_province" type="text" class="form-control hidden" placeholder="省份">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">省份</span>
+                    <v-select class="origin_country" :on-change="setOriginProvinceId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索省份" :options="originCountry"></v-select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="input-group add-product-hide-input">
+                    <input data-rule="required" name="originCityId" v-bind:value="productbasiinfo.origin_city" type="text" class="form-control hidden" placeholder="城市">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">城市</span>
+                    <v-select class="origin_country" :on-change="setOriginCityId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索城市" :options="originCountry"></v-select>
                 </div>
             </div>
         </div>
@@ -230,13 +250,16 @@
     import {brandListData} from '../../../../brand_list_data.js'
     import {DesignersData,Country} from '../../../../test.js'
     import WebStorageCache from 'web-storage-cache'
+    import Alert from '../../../../components/common/alert/Alert'
+    import {MOBILE_API_ROOT} from '../../../../config'
 
     export default{
         props:['productbasiinfo'],
         components:{
             Select2,
             Designers,
-            vSelect
+            vSelect,
+            Alert
         },
         data(){
             return{
@@ -244,7 +267,12 @@
                 brandlist:null,
                 designers:null,
                 originCountry:null,
-                isPrimaryDesigner:''
+                isPrimaryDesigner:'',
+                alertObj:{
+                    alertType:null,
+                    alertInfo:null,
+                    alertShow:false,
+                },
             }
         },
         methods:{
@@ -260,6 +288,19 @@
             setBrandListCache:function(){
                 let wsCache = new WebStorageCache();
                 wsCache.set('brandListData', brandListData.data);
+
+                this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/brand/list',{}).then((response) => {
+                    // success callback
+                    if (response.data.resCode==0) {
+                        console.log(response)
+                    }else {
+                    }
+                }, (response) => {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取品牌数据错误',alertShow:true})
+                });
+
+
+
             },
             //品牌数据，读取本地缓存数据
             getBrandListCache:function(){
@@ -330,7 +371,16 @@
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
                 let wsCache = new WebStorageCache();
-                wsCache.set('Country', Country.data);
+                // wsCache.set('Country', Country.data);
+                this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/brand/list',{}).then((response) => {
+                    // success callback
+                    if (response.data.resCode==0) {
+                        console.log(response)
+                    }else {
+                    }
+                }, (response) => {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取品牌数据错误',alertShow:true})
+                });
             },
             //国家数据，读取本地缓存数据
             getOriginCountryCache:function(){
@@ -347,14 +397,43 @@
                     this.$set('productbasiinfo.origin_country','')
                     return;
                 }
+                if(val!=262){
+                    this.$set('productbasiinfo.origin_province','');
+                    this.$set('productbasiinfo.origin_city','')
+                }
                 this.$set('productbasiinfo.origin_country',val.id)
                 $('#add-product-from').data('validator').hideMsg('input[name="originCountryId"]');
             },
+            setOriginProvinceId(val){
+                if (!val) {
+                    this.$set('productbasiinfo.origin_province','')
+                    return;
+                }
+                this.$set('productbasiinfo.origin_province',val.id)
+                $('#add-product-from').data('validator').hideMsg('input[name="originProvinceId"]');
+            },
+            setOriginCityId(val){
+                if (!val) {
+                    this.$set('productbasiinfo.origin_city','')
+                    return;
+                }
+                this.$set('productbasiinfo.origin_city',val.id)
+                $('#add-product-from').data('validator').hideMsg('input[name="originCityId"]');
+            }
         },
         ready(){
-            this.setBrandListCache();
-            this.setDesignersCache();
-            this.setOriginCountryCache();
+
+            /**
+             * 界面加载判断本地是否有缓存品牌数据，如果没有，就请求数据
+             */
+            let wsCache = new WebStorageCache();
+            if (!wsCache.get('brandListData')) {
+                this.setBrandListCache();
+            }
+
+            // this.setBrandListCache();
+            // this.setDesignersCache();
+            // this.setOriginCountryCache();
         }
     }
 </script>

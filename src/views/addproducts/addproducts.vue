@@ -303,6 +303,7 @@
                 addProductOb.brandId=this.productSpecList.productBasiInfo.brand_id
                 addProductOb.designerVoList=this.productSpecList.productBasiInfo.product_designer
                 addProductOb.originCountryId=this.productSpecList.productBasiInfo.origin_country
+                addProductOb.originProvinceId=this.productSpecList.productBasiInfo.origin_province
                 addProductOb.originCity=this.productSpecList.productBasiInfo.origin_city
                 addProductOb.styleId=this.productSpecList.productBasiInfo.style
                 addProductOb.length=this.productSpecList.productBasiInfo.long
