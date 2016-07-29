@@ -15,7 +15,7 @@ export const productBasiInfo = {
     selling_point           :   '', //产品卖点
     product_model           :   '', //商品型号
     brand_id                :   '', //品牌ID
-    product_designer        :   [], //需要设置一个is_primary字段标示是否主设计师
+    product_designer        :   [], //设计师，需要设置一个is_primary字段标示是否主设计师
     origin_country          :   '', //产地国家
     origin_province         :   '', //产地省份
     origin_city             :   '', //产地城市

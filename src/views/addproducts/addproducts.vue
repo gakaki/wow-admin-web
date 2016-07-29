@@ -424,6 +424,7 @@
                 }
             })
             .on("click", "#app-product-button", function(e){
+                console.log(_this.productBasiInfo.product_designer);
                 $(e.delegateTarget).trigger("validate");
             });
 

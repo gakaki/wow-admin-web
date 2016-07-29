@@ -325,7 +325,7 @@
                  let wsCache = new WebStorageCache();
                  this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
-                         wsCache.set('DesignersData', response.data.data.designerList);
+                         wsCache.set('DesignersData', response.data.data);
                      }else {
                      }
                  }, (response) => {
@@ -454,24 +454,18 @@
         ready(){
 
             /**
-             * 界面加载判断本地是否有对应缓存，如果没有，就请求数据
+             * 组件加载，获取对应对数据接口，就请求数据
              */
             let wsCache = new WebStorageCache();
 
             // 品牌
-            if (!wsCache.get('brandListData')) {
-                this.setBrandListCache();
-            }
+            this.setBrandListCache();
 
             // 设计师
-            if (!wsCache.get('DesignersData')) {
-                this.setDesignersCache();
-            }
+            this.setDesignersCache();
 
             // 国家
-            if (!wsCache.get('Country')) {
-                this.setOriginCountryCache();
-            }
+            this.setOriginCountryCache();
 
         }
     }
