@@ -214,8 +214,8 @@
                         state:'3'
                     }
                 ],
-                state:'2',
-                nowtag:'2',
+                state:'1',
+                nowtag:'1',
                 imgTimeStamp:new Date().valueOf(),
                 userName:$.cookie('userName')||'',
             }
@@ -349,6 +349,8 @@
                     for (var b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {
                         if (addProductOb.colorSpecVoList[a].specVoList[b].enabled==false) {
                             addProductOb.colorSpecVoList[a].specVoList.del(b);
+                        }else {
+                            delete addProductOb.colorSpecVoList[a].specVoList[b].enabled
                         }
                     }
                 }
@@ -423,8 +425,6 @@
                 }
             })
             .on("click", "#app-product-button", function(e){
-                console.log(_this.productBasiInfo.origin_province);
-                console.log(_this.productBasiInfo.origin_city);
                 $(e.delegateTarget).trigger("validate");
             });
 

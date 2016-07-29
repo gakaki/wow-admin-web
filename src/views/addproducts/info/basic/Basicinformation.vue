@@ -129,14 +129,14 @@
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originProvinceId" v-bind:value="productbasiinfo.origin_province" type="text" class="form-control hidden" placeholder="省份">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">省份</span>
-                    <v-select class="origin_country" :on-change="setOriginProvinceId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索省份" :options="originCountry"></v-select>
+                    <v-select class="origin_country" :on-change="setOriginProvinceId" label="areaName" :debounce="500" placeholder="搜索省份" :options="originProvince"></v-select>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originCityId" v-bind:value="productbasiinfo.origin_city" type="text" class="form-control hidden" placeholder="城市">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">城市</span>
-                    <v-select class="origin_country" :on-change="setOriginCityId" label="name" :debounce="500" :on-search="getOriginCountry" placeholder="搜索城市" :options="originCountry"></v-select>
+                    <v-select v-if="cityTag==0" class="origin_country" :on-change="setOriginCityId" label="areaName" :debounce="500" placeholder="搜索城市" :options="originCity"></v-select>
                 </div>
             </div>
         </div>
@@ -266,12 +266,15 @@
                 brandlist:null,
                 designers:null,
                 originCountry:null,
+                originProvince:[],
+                originCity:[],
                 isPrimaryDesigner:'',
                 alertObj:{
                     alertType:null,
                     alertInfo:null,
                     alertShow:false,
                 },
+                cityTag:0,
             }
         },
         methods:{
@@ -362,7 +365,6 @@
             setOriginCountryCache:function(){
                 let wsCache = new WebStorageCache();
                 this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/dictionary/query',{}).then((response) => {
-                    console.log(response);
                     if (response.data.resCode==0) {
                         wsCache.set('Country', response.data.data.dictionaryList);
                     }else {
@@ -386,28 +388,29 @@
                     this.$set('productbasiinfo.origin_country','')
                     return;
                 }
-                if(val.keyName!='"China"'){
+                if(val.keyName!='China'){
                     this.$set('productbasiinfo.origin_province','');
                     this.$set('productbasiinfo.origin_city','')
                 }
-                this.$set('productbasiinfo.origin_country',val.keyName)
+                if (val.keyName=='China') {
+                    this.searchProvince();
+                }
+                this.$set('productbasiinfo.origin_country',val.keyName);
                 $('#add-product-from').data('validator').hideMsg('input[name="originCountryId"]');
             },
-
-
-            // 	搜索省份
+            //搜索省份
  			searchProvince(){
-                let jsontext=JSON.stringify({"categoryId":id});
-            	loading(true)
- 				this.$http.get(API_ROOT+'admin-api-dev/v1/areas/subareas', {q: search})
- 				.then(resp => {
- 					this.designers = resp.data.items
- 					loading(false)
- 				})
- 				.catch(err => {
- 					this.error = err.data
- 					loading(false)
- 				})
+                let jsontext=JSON.stringify({"id":0});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/areas/subareas',{paramJson:jsontext}).then((response) => {
+                    // success callback
+                    if (response.data.resCode==0) {
+                        this.$set('originProvince',response.data.data);
+                    }else {
+                    }
+                }, (response) => {
+                    // error callback
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取省份数据错误',alertShow:true})
+                });
             },
             //设置省份的值
             setOriginProvinceId(val){
@@ -416,8 +419,29 @@
                     return;
                 }
                 this.$set('productbasiinfo.origin_province',val.id)
+                this.$set('productbasiinfo.origin_city','')
+                this.searchCity(val.id)
+                this.$set('cityTag',1);
+                setTimeout(() => {
+                    this.$set('cityTag',0);
+                }, 10);
                 $('#add-product-from').data('validator').hideMsg('input[name="originProvinceId"]');
             },
+            //搜索城市
+ 			searchCity(id){
+                let jsontext=JSON.stringify({"id":id});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/areas/subareas',{paramJson:jsontext}).then((response) => {
+                    // success callback
+                    if (response.data.resCode==0) {
+                        this.$set('originCity',response.data.data);
+                    }else {
+                    }
+                }, (response) => {
+                    // error callback
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取城市数据错误',alertShow:true})
+                });
+            },
+            //设置城市的值
             setOriginCityId(val){
                 if (!val) {
                     this.$set('productbasiinfo.origin_city','')
@@ -425,7 +449,7 @@
                 }
                 this.$set('productbasiinfo.origin_city',val.id)
                 $('#add-product-from').data('validator').hideMsg('input[name="originCityId"]');
-            }
+            },
         },
         ready(){
 
