@@ -371,15 +371,14 @@
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
                 let wsCache = new WebStorageCache();
-                // wsCache.set('Country', Country.data);
-                this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/brand/list',{}).then((response) => {
-                    // success callback
+                let jsontext=JSON.stringify({"keyGroupCon":"country_channel"});
+                this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/dictionary/query',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
-                        console.log(response)
+                        wsCache.set('Country', response.data.dictionaryList);
                     }else {
                     }
                 }, (response) => {
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取品牌数据错误',alertShow:true})
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取国家数据错误',alertShow:true})
                 });
             },
             //国家数据，读取本地缓存数据
@@ -424,11 +423,18 @@
         ready(){
 
             /**
-             * 界面加载判断本地是否有缓存品牌数据，如果没有，就请求数据
+             * 界面加载判断本地是否有对应缓存，如果没有，就请求数据
              */
             let wsCache = new WebStorageCache();
+
+            // 品牌数据
             if (!wsCache.get('brandListData')) {
                 this.setBrandListCache();
+            }
+
+            // 国家
+            if (!wsCache.get('Country')) {
+                this.setOriginCountryCache();
             }
 
             // this.setBrandListCache();
