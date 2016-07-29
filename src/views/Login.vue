@@ -11,6 +11,7 @@
 .login-table{
     display: table;
     height: 100%;
+    width: 100%;
 }
 .login-table-cell{
     display: table-cell;
