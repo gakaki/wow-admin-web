@@ -214,8 +214,8 @@
                         state:'3'
                     }
                 ],
-                state:'1',
-                nowtag:'1',
+                state:'2',
+                nowtag:'2',
                 imgTimeStamp:new Date().valueOf(),
                 userName:$.cookie('userName')||'',
             }
@@ -423,6 +423,8 @@
                 }
             })
             .on("click", "#app-product-button", function(e){
+                console.log(_this.productBasiInfo.origin_province);
+                console.log(_this.productBasiInfo.origin_city);
                 $(e.delegateTarget).trigger("validate");
             });
 
