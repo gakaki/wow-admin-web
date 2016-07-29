@@ -276,7 +276,7 @@
 
                 //过滤掉设计师的name字段
                 let product_designer=this.productSpecList.productBasiInfo.product_designer;
-                product_designer.filter(function(i) {return delete i.name;});
+                product_designer.filter(function(i) {return delete i.designerName;});
 
                 //过滤掉多余的图片详情
                 this.productDetails.primary_img.splice(5,10)
@@ -424,7 +424,6 @@
                 }
             })
             .on("click", "#app-product-button", function(e){
-                console.log(_this.productBasiInfo.product_designer);
                 $(e.delegateTarget).trigger("validate");
             });
 
