@@ -30,7 +30,7 @@ export default {
     },
     data(){
         return{
-            loginTag:null,
+            loginTag:$.cookie('loginTag')||false
         }
     },
     methods:{
@@ -41,12 +41,6 @@ export default {
         }
     },
     ready(){
-        if($.cookie('token')==null||$.cookie('token')==''||$.cookie('token')==undefined||$.cookie('userName')==undefined||$.cookie('userName')==''||$.cookie('userName')==null) {
-            this.loginTag=false;
-            return
-        }else {
-            this.loginTag=true;
-        }
     },
     store // 在根组件加入 store，让它的子组件和 store 连接
 }

@@ -132,7 +132,7 @@ export default function(router) {
         from,
         next
     }) => {
-        if($.cookie('token')=='null'||$.cookie('token')==''||$.cookie('token')==undefined||$.cookie('userName')==undefined||$.cookie('userName')==''||$.cookie('userName')=='null') {
+        if($.cookie('token')==''||$.cookie('token')==undefined||$.cookie('loginTag')==0||$.cookie('loginTag')==undefined||$.cookie('loginTag')=='') {
             router.go('/login')
             console.log(to.path);
             if (to.path=='/login') {

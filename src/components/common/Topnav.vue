@@ -84,9 +84,10 @@
         },
         methods:{
             loginOut:function(){
-                $.cookie('userName', null, { expires: -1 });
-                $.cookie('realName', null, { expires: -1 });
-                $.cookie('token', null, { expires: -1 });
+                $.cookie('realName', '',{ path: "/"});
+                $.cookie('userName', '',{ path: "/"});
+                $.cookie('token', '',{ path: "/"});
+                $.cookie('loginTag', 0,{ path: "/"});
                 window.location.href="/login"
             }
         }
