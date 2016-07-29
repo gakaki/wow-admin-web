@@ -83,7 +83,6 @@
                         <th>颜色</th>
                         <th>规格</th>
                         <th><span class="text-danger">*</span>售价</th>
-                        <th><span class="text-danger">*</span>进货价</th>
                         <th><span class="text-danger">*</span>重量(KG)</th>
                         <th>操作</th>
                     </tr>

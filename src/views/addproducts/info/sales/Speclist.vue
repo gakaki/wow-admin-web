@@ -21,9 +21,6 @@
             <input data-rule="required" name="{{'sellPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
         </td>
         <td>
-            <input data-rule="required" name="{{'costPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,cost_price,'cost_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="cost_price" type="number" class="form-control sales-attribute-table-text" placeholder="进货价">
-        </td>
-        <td>
             <input data-rule="required" name="{{'weight'+tbody_index+index}}" @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
         </td>
         <td>

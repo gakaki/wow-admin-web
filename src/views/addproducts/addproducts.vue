@@ -333,7 +333,6 @@
                             //设置颜色对应的尺码属性
                             addProductOb.colorSpecVoList[a].specVoList[c].specName=colorSpecVoList[a].specList[c].spec
                             addProductOb.colorSpecVoList[a].specVoList[c].sellPrice=colorSpecVoList[a].specListVal[c].sell_price
-                            addProductOb.colorSpecVoList[a].specVoList[c].costPrice=colorSpecVoList[a].specListVal[c].cost_price
                             addProductOb.colorSpecVoList[a].specVoList[c].weight=colorSpecVoList[a].specListVal[c].weight
                             if (colorSpecVoList[a].specListVal[c].disabled==false) {
                                 addProductOb.colorSpecVoList[a].specVoList[c].enabled=true;
