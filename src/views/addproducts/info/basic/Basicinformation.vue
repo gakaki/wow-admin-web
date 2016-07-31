@@ -112,12 +112,7 @@
                 <input data-rule="required" name="styleId" v-bind:value="productbasiinfo.style" type="text" class="form-control hidden" placeholder="风格">
                 <select v-model="productbasiinfo.style" class="form-control">
                     <option value="" selected>请选择</option>
-                    <option v-bind:value="1">风格1</option>
-                    <option v-bind:value="2">风格2</option>
-                    <option v-bind:value="3">风格3</option>
-                    <option v-bind:value="4">风格4</option>
-                    <option v-bind:value="5">风格5</option>
-                    <option v-bind:value="6">风格6</option>
+                    <option v-for="item in style" v-bind:value="item.keyName">{{item.keyValue}}</option>
                  </select>
             </div>
         </div>
@@ -154,12 +149,7 @@
                 <input data-rule="required" name="applicablePeople" v-bind:value="productbasiinfo.applicable_people" type="text" class="form-control hidden" placeholder="适用人群">
                 <select v-model="productbasiinfo.applicable_people" class="form-control">
                     <option value="" selected>请选择</option>
-                    <option v-bind:value="1">通用</option>
-                    <option v-bind:value="2">成人</option>
-                    <option v-bind:value="3">男性</option>
-                    <option v-bind:value="4">女性</option>
-                    <option v-bind:value="5">儿童</option>
-                    <option v-bind:value="6">老人</option>
+                    <option v-for="item in applicable_people" v-bind:value="item.keyName">{{item.keyValue}}</option>
                  </select>
             </div>
         </div>
@@ -178,23 +168,8 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>适用场景
             </label>
             <div class="col-sm-7 bg-muted">
-                <label class="checkbox-inline">
-                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="1"> 客厅
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="2"> 卧室
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="3"> 厨房
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="4"> 卫生间
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="5"> 办公室
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" value="6"> 儿童房
+                <label v-for="item in applicable_scene" class="checkbox-inline">
+                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" v-bind:value="item.keyName"> {{item.keyValue}}
                 </label>
             </div>
         </div>
@@ -240,12 +215,30 @@
                     alertShow:false,
                 },
                 cityTag:0,
+                style:[],
+                applicable_people:[],
+                applicable_scene:[]
             }
         },
         methods:{
             //重新选择分类
             callStepsChange:function(){
                 this.$dispatch('callStepsChangeFater','1');
+            },
+
+            //查询字典，需要查询的数据，传递对应的参数给后端
+            dictionarys:function(){
+                let jsontext=JSON.stringify({"keyGroups":["style","applicable_people","applicable_scene"]});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionarys',{paramJson:jsontext}).then((response) => {
+                    if (response.data.resCode==0) {
+                        this.$set('style',response.data.data.style);
+                        this.$set('applicable_people',response.data.data.applicable_people);
+                        this.$set('applicable_scene',response.data.data.applicable_scene)
+                    }else {
+                    }
+                }, (response) => {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取国家数据错误',alertShow:true})
+                });
             },
 
             /**
@@ -310,10 +303,10 @@
              */
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
-                // let wsCache = new WebStorageCache();
-                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionary/country',{}).then((response) => {
+                let jsontext=JSON.stringify({"keyGroups":["country"]});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionarys',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
-                        this.$set('originCountry',response.data.data.dictionaryList);
+                        this.$set('originCountry',response.data.data.country);
                     }else {
                     }
                 }, (response) => {
@@ -396,14 +389,17 @@
              */
             let wsCache = new WebStorageCache();
 
-            // 品牌
+            // 查询品牌
             this.setBrandListCache();
 
-            // 设计师
+            // 查询设计师
             this.setDesignersCache();
 
-            // 国家
+            // 查询国家
             this.setOriginCountryCache();
+
+            // 查询字典
+            this.dictionarys();
 
         }
     }
