@@ -55,7 +55,7 @@ export default {
         position:relative;
     }
     .containerPadding{
-        padding: 10px;
+        padding: 20px;
         background: #fff;
     }
 </style>

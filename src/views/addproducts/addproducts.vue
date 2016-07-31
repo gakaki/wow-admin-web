@@ -378,8 +378,10 @@
                         this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
                         setTimeout(() => {
                             this.$broadcast('hide::spinner');
-                            $("body").removeAttr("style");
                         }, 1000);
+                        setTimeout(() => {
+                            $("body").removeAttr("style");
+                        }, 1100);
                     }
                 }, (response) => {
                     // error callback

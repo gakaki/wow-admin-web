@@ -48,32 +48,11 @@
                 <input data-rule="required" name="productModel" v-model="productbasiinfo.product_model" type="text" class="form-control" placeholder="商品型号">
             </div>
         </div>
-        <!-- <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
-            <div class="col-sm-2">
-                <Select2 :selected.sync="productbasiinfo.brand_id" :options="brandlist"></Select2>
-            </div>
-            <div class="col-sm-4 control-label" style="padding-top:4px;" >
-                <div class="text-left text-muted">
-                    {{productbasiinfo.brand_id}}
-                    <button type="button" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-refresh"></span> 刷新
-                    </button>
-                </div>
-            </div>
-        </div> -->
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
             <div class="col-sm-3 add-product-hide-input">
                 <input data-rule="required" name="brandId" v-bind:value="productbasiinfo.brand_id" type="text" class="form-control hidden" placeholder="品牌">
-                <v-select :on-change="setBrandId" label="brandCname" :debounce="500" :on-search="getBrandList" placeholder="搜索品牌" :options="brandlist"></v-select>
-            </div>
-            <div class="col-sm-4 control-label" style="padding-top:4px;" >
-                <div class="text-left text-muted">
-                    <button @click="setBrandListCache()"  type="button" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-refresh"></span> 刷新
-                    </button>
-                </div>
+                <v-select :on-change="setBrandId" label="brandCname" :debounce="500" :on-search="setBrandListCache" placeholder="搜索品牌" :options="brandlist"></v-select>
             </div>
         </div>
 
@@ -81,14 +60,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>设计师(可多选)</label>
             <div class="col-sm-4 add-product-hide-input">
                 <input data-rule="required" name="designerVoList" v-bind:value="productbasiinfo.product_designer" type="text" class="form-control hidden" placeholder="设计师">
-                <v-select multiple label="designerName" :debounce="500" :on-search="getDesigners" :value.sync="productbasiinfo.product_designer" placeholder="搜索设计师" :options="designers"></v-select>
-            </div>
-            <div class="col-sm-4 control-label" style="padding-top:4px;" >
-                <div class="text-left text-muted">
-                    <button @click="setDesignersCache()" type="button" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-refresh"></span> 刷新
-                    </button>
-                </div>
+                <v-select multiple label="designerName" :debounce="500" :on-search="setDesignersCache" :value.sync="productbasiinfo.product_designer" placeholder="搜索设计师" :options="designers"></v-select>
             </div>
         </div>
 
@@ -111,14 +83,7 @@
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originCountryId" v-bind:value="productbasiinfo.origin_country" type="text" class="form-control hidden" placeholder="国家">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">国家</span>
-                    <v-select class="origin_country" :on-change="setOriginCountryId" label="keyValue" :debounce="500" :on-search="getOriginCountry" placeholder="搜索国家" :options="originCountry"></v-select>
-                </div>
-            </div>
-            <div class="col-sm-4 control-label" style="padding-top:4px;" >
-                <div class="text-left text-muted">
-                    <button @click="setOriginCountryCache()" type="button" class="btn btn-xs btn-default">
-                        <span class="glyphicon glyphicon-refresh"></span> 刷新
-                    </button>
+                    <v-select class="origin_country" :on-change="setOriginCountryId" label="keyValue" :debounce="500" :on-search="setOriginCountryCache" placeholder="搜索国家" :options="originCountry"></v-select>
                 </div>
             </div>
         </div>
@@ -129,14 +94,14 @@
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originProvinceId" v-bind:value="productbasiinfo.origin_province" type="text" class="form-control hidden" placeholder="省份">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">省份</span>
-                    <v-select class="origin_country" :on-change="setOriginProvinceId" label="areaName" :debounce="500" placeholder="搜索省份" :options="originProvince"></v-select>
+                    <v-select class="origin_country" :on-change="setOriginProvinceId" label="areaName" :debounce="500" placeholder="搜索省份" :options="originProvince"  :on-search="searchProvince"></v-select>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originCityId" v-bind:value="productbasiinfo.origin_city" type="text" class="form-control hidden" placeholder="城市">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">城市</span>
-                    <v-select v-if="cityTag==0" class="origin_country" :on-change="setOriginCityId" label="areaName" :debounce="500" placeholder="搜索城市" :options="originCity"></v-select>
+                    <v-select v-if="cityTag==0" class="origin_country" :on-change="setOriginCityId" label="areaName" :debounce="500" placeholder="搜索城市" :options="originCity" :on-search="searchCity"></v-select>
                 </div>
             </div>
         </div>
@@ -250,7 +215,7 @@
     import {DesignersData,Country} from '../../../../test.js'
     import WebStorageCache from 'web-storage-cache'
     import Alert from '../../../../components/common/alert/Alert'
-    import {API_ROOT,MOBILE_API_ROOT} from '../../../../config'
+    import {API_ROOT} from '../../../../config'
 
     export default{
         props:['productbasiinfo'],
@@ -291,22 +256,13 @@
                 let wsCache = new WebStorageCache();
                 this.$http.get(API_ROOT+'/admin-api-dev/v1/brand/queryAll',{}).then((response) => {
                     if (response.data.resCode==0) {
-                        wsCache.set('brandListData', response.data.data.brandList);
+                        this.$set('brandlist',response.data.data.brandList);
                     }else {
                     }
                 }, (response) => {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取品牌数据错误',alertShow:true})
                 });
             },
-            //品牌数据，读取本地缓存数据
-            getBrandListCache:function(){
-                let wsCache = new WebStorageCache();
-                this.brandlist = wsCache.get('brandListData');
-            },
-            //搜索品牌
-            getBrandList:function(search, loading) {
-                this.getBrandListCache();
-			},
             //设置品牌id的值
             setBrandId(val) {
                 if (!val) {
@@ -325,22 +281,13 @@
                  let wsCache = new WebStorageCache();
                  this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
-                         wsCache.set('DesignersData', response.data.data);
+                         this.$set('designers',response.data.data.designerList);
                      }else {
                      }
                  }, (response) => {
                      this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取设计师数据错误',alertShow:true})
                  });
              },
-             //设计师，读取本地缓存数据
-             getDesignersCache:function(){
-                 let wsCache = new WebStorageCache();
-                 this.designers = wsCache.get('DesignersData');
-             },
-            //搜索设计师
-            getDesigners:function(search, loading) {
-                this.getDesignersCache();
- 			},
             //设置主设计师
             isPrimary:function(event){
                 if (event.target.value=='') {
@@ -363,25 +310,16 @@
              */
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
-                let wsCache = new WebStorageCache();
-                this.$http.get(MOBILE_API_ROOT+'mobile-api-dev/v1/dictionary/query',{}).then((response) => {
+                // let wsCache = new WebStorageCache();
+                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionary/country',{}).then((response) => {
                     if (response.data.resCode==0) {
-                        wsCache.set('Country', response.data.data.dictionaryList);
+                        this.$set('originCountry',response.data.data.dictionaryList);
                     }else {
                     }
                 }, (response) => {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取国家数据错误',alertShow:true})
                 });
             },
-            //国家数据，读取本地缓存数据
-            getOriginCountryCache:function(){
-                let wsCache = new WebStorageCache();
-                this.originCountry = wsCache.get('Country');
-            },
-            //搜索国家
-            getOriginCountry:function(search, loading) {
-                this.getOriginCountryCache();
-			},
             //设置国家id的值
             setOriginCountryId(val) {
                 if (!val) {
@@ -400,11 +338,11 @@
             },
             //搜索省份
  			searchProvince(){
-                let jsontext=JSON.stringify({"id":0});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/areas/subareas',{paramJson:jsontext}).then((response) => {
+                let jsontext=JSON.stringify({"areaId":0});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/area/subarea',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
-                        this.$set('originProvince',response.data.data);
+                        this.$set('originProvince',response.data.data.areaList);
                     }else {
                     }
                 }, (response) => {
@@ -429,11 +367,11 @@
             },
             //搜索城市
  			searchCity(id){
-                let jsontext=JSON.stringify({"id":id});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/areas/subareas',{paramJson:jsontext}).then((response) => {
+                let jsontext=JSON.stringify({"areaId":id});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/area/subarea',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
-                        this.$set('originCity',response.data.data);
+                        this.$set('originCity',response.data.data.areaList);
                     }else {
                     }
                 }, (response) => {
