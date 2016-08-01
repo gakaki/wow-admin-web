@@ -2,7 +2,7 @@
  * 公用方法以及公用常量
  */
 //export const API_ROOT = 'http://apidev.dev.wowdsgn.com/';
-// export const API_ROOT = 'http://10.0.60.72:9090/';
+// export const API_ROOT = 'http://10.0.60.166:9090/';
 export const API_ROOT = 'http://10.0.60.121:9090/';
 // export const MOBILE_API_ROOT = 'http://10.0.60.121:8080/';
 

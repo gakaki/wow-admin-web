@@ -57,6 +57,16 @@
             setVal:function(tbody_index,spec_index,val,name){
                 productSalesAttribute.color[tbody_index].specListVal[spec_index][name]=val;
             }
+        },
+        events: {
+            'batchSellPrice': function (msg) {
+                this.$set('sell_price',msg.sellPrice);
+                this.setVal(this.tbody_index,this.index,this.sell_price,'sell_price')
+            },
+            'batchWeight': function (msg) {
+                this.$set('weight',msg.weight);
+                this.setVal(this.tbody_index,this.index,this.weight,'weight')
+            }
         }
     }
 </script>

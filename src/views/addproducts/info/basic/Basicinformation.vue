@@ -274,7 +274,7 @@
                  let wsCache = new WebStorageCache();
                  this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
-                         this.$set('designers',response.data.data.designerList);
+                         this.$set('designers',response.data.data);
                      }else {
                      }
                  }, (response) => {

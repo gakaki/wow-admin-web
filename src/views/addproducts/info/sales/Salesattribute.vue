@@ -68,9 +68,31 @@
                 <div class="text-left">
                     批量设置：
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm">售价</button>
-                        <button type="button" class="btn btn-default btn-sm">进货价</button>
-                        <button type="button" class="btn btn-default btn-sm">重量</button>
+                        <button @click="batchSellPrice=!batchSellPrice" v-if="batchWeight==false" type="button" class="btn btn-default btn-sm">售价</button>
+                        <div v-if="batchSellPrice==true" class="input-group input-group-sm" style="width:200px;">
+                           <input v-model="SellPrice" style="border-left:0px; border-radius:0px;" placeholder="批量设置售价" type="number" class="form-control">
+                           <span class="input-group-btn">
+                              <button @click="batch_sellPrice" class="btn btn-success" type="button">
+                                 确定
+                              </button>
+                              <button @click="batchSellPrice=!batchSellPrice" class="btn btn-danger" type="button">
+                                 取消
+                              </button>
+                           </span>
+                        </div>
+
+                        <button @click="batchWeight=!batchWeight" v-if="batchSellPrice==false" type="button" class="btn btn-default btn-sm">重量</button>
+                        <div v-if="batchWeight==true" class="input-group input-group-sm" style="width:200px;">
+                           <input v-model="weight" style="border-left:0px; border-radius:0px;" placeholder="批量设置重量" type="number" class="form-control">
+                           <span class="input-group-btn">
+                              <button @click="batch_weight" class="btn btn-success" type="button">
+                                 确定
+                              </button>
+                              <button @click="batchWeight=!batchWeight"  class="btn btn-danger" type="button">
+                                 取消
+                              </button>
+                           </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,6 +124,10 @@
                 labeltest:14,
                 a:1,
                 testimg:'http://localhost:8080/static/img/file_242_2.45181cb.jpg',
+                batchSellPrice:false,
+                batchWeight:false,
+                SellPrice:'',
+                weight:'',
             }
         },
         components:{
@@ -135,5 +161,23 @@
                 this.$set('productsalesattribute.specSelect',this.specListS);
             }
         },
+        methods:{
+            batch_sellPrice:function(){
+                if (this.SellPrice=='') {
+
+                }else {
+                    this.$broadcast('batchSellPrice', {sellPrice:Number(this.SellPrice)});
+                }
+                this.$set('batchSellPrice',!this.batchSellPrice)
+            },
+            batch_weight:function(){
+                if (this.weight=='') {
+                    
+                }else {
+                    this.$broadcast('batchWeight', {weight:Number(this.weight)})
+                }
+                this.$set('batchWeight',!this.batchWeight)
+            }
+        }
     }
 </script>
