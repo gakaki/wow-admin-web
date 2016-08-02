@@ -73,6 +73,7 @@
     border-radius: 3px;
     padding: 5px 10px;
     position: relative;
+    font-size: 12px;
 }
 
 .message-item .message-inner:before {
@@ -153,6 +154,12 @@
 .order-details-foot dd{
     margin-left: 70px;
 }
+.express-info-table th, .express-info-table td{
+    width: 10%;
+}
+.express-info-table th:first-child, .express-info-table td:first-child{
+    width: 40%;
+}
 
 </style>
 
@@ -165,31 +172,16 @@
                 </div>
                 <dl class="dl-horizontal">
                     <dt>订购时间</dt>
-                    <dd>{{details.created_at}}</dd>
+                    <dd>{{details.data.orderCreateTimeFormat}}</dd>
                     <dt>订单状态</dt>
-                    <dd>{{details.status_chs}}</dd>
-                    <dt>订购IP</dt>
-                    <dd>{{details.charge.client_ip}}</dd>
+                    <dd>{{details.data.orderStatusName}}</dd>
+                    <dt>订单类型</dt>
+                    <dd>普通订单</dd>
+                    <dt>客服备注</dt>
+                    <dd></dd>
                 </dl>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="code-box-meta">
-                <div class="code-box-title">
-                    <span><i class="glyphicon glyphicon-tags"></i>账号信息</span>
-                </div>
-                <dl class="dl-horizontal">
-                    <dt>顾客姓名</dt>
-                    <dd>{{details.address_username}}</dd>
-                    <dt>联系方式</dt>
-                    <dd>{{details.address_mobile}}</dd>
-                    <dt>顾客组别</dt>
-                    <dd>普通顾客</dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom:20px;">
         <div class="col-md-6">
             <div class="code-box-meta">
                 <div class="code-box-title">
@@ -197,14 +189,18 @@
                 </div>
                 <dl class="dl-horizontal">
                     <dt>收货人</dt>
-                    <dd>{{details.address_username}}</dd>
+                    <dd>{{details.data.receiverName}}</dd>
                     <dt>手机号码</dt>
-                    <dd>{{details.address_mobile}}</dd>
+                    <dd>{{details.data.receiverMobile}}</dd>
                     <dt>配送地址</dt>
-                    <dd>{{details.address_full}}</dd>
+                    <dd>{{details.data.receiverAddress}}</dd>
+                    <dt>买家留言</dt>
+                    <dd></dd>
                 </dl>
             </div>
         </div>
+    </div>
+    <div class="row" style="margin-bottom:20px;">
         <div class="col-md-6">
             <div class="code-box-meta">
                 <div class="code-box-title">
@@ -212,188 +208,253 @@
                 </div>
                 <dl class="dl-horizontal">
                     <dt>支付状态</dt>
-                    <dd>{{details.status_chs}}</dd>
-                    <dt>支付方式</dt>
-                    <dd>
-                        <span v-if="details.pay_method=='ali'">
-                            支付宝
-                        </span>
-                        <span v-if="details.pay_method=='weixin'">
-                            微信支付
-                        </span>
+                    <dd>{{details.data.paymentStatusName}}</dd>
+                    <dt>商品总额</dt>
+                    <dd>¥{{details.data.orderAmount}}.00
                     </dd>
-                    <dt>支付金额</dt>
-                    <dd>￥{{details.total}}.00</dd>
-                    <dt>流水号码</dt>
-                    <dd>{{details.charge.time_expire}}</dd>
+                    <dt>运费金额</dt>
+                    <dd>¥{{details.data.deliveryFee}}.00
+                    </dd>
+                    <dt>优惠金额</dt>
+                    <dd>¥
+                        <s>{{details.data.couponAmount}}.00</s>
+                    </dd>
+                    <dt>应付金额</dt>
+                    <dd>¥{{details.data.orderAmount}}.00</dd>
                 </dl>
             </div>
         </div>
     </div>
-    <div class="row" style="margin-bottom:20px;">
-        <div class="col-md-6">
-            <div class="code-box-meta">
-                <div class="code-box-title">
-                    <span><i class="glyphicon glyphicon-tags"></i>商品信息</span>
-                </div>
-                <div class="row">
-                    <div class="col-md-6" v-for="items in details.items">
-                        <div class="thumbnail">
-                            <img v-bind:src="items.image" alt="通用的占位符缩略图">
-                            <div class="caption">
-                                <h5 class="OrderdetailsItemTitle">{{items.name}}</h5>
-                                <p class="OrderdetailsItemTitle">
-                                    规格：{{items.sku_title}}
-                                </p>
-                                <p class="OrderdetailsItemTitle">
-                                    单价：￥{{items.price}}.00 * {{items.count}}件
-                                </p>
-                                <p class="OrderdetailsItemTitle">
-                                    优惠：<span v-if="original_price='undefined'">￥0.00</span><span v-if="original_price!='undefined'">￥{{original_price}}.00</span>
-                                </p>
-                                <p class="OrderdetailsItemTitle">
-                                    总价：￥{{items.total}}.00
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="code-box-meta">
-                <div class="code-box-title">
-                    <span><i class="glyphicon glyphicon-tags"></i>物流信息</span>
-                </div>
-                <dl class="dl-horizontal">
-                    <dt>送货方式</dt>
-                    <dd>普通快递</dd>
-                    <dt>承运公司</dt>
-                    <dd>顺丰速运</dd>
-                    <dt>货单运号</dt>
-                    <dd>201605012222</dd>
-                </dl>
-                <div class="qa-message-list">
-                    <div class="message-item message-list-active">
-                        <div class="message-inner">
-                            <div class="message-head clearfix">
-                                <div class="user-detail">
-                                    <h5 class="handle">已签收,感谢使用顺丰,期待再次为您服务</h5>
-                                    <div class="post-meta">
-                                        <div class="asker-meta">
-                                            <span>2016-05-06 18:38:54</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-item">
-                        <div class="message-inner">
-                            <div class="message-head clearfix">
-                                <div class="user-detail">
-                                    <h5 class="handle">已签收,感谢使用顺丰,期待再次为您服务</h5>
-                                    <div class="post-meta">
-                                        <div class="asker-meta">
-                                            <span>2016-05-06 18:38:54</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-item">
-                        <div class="message-inner">
-                            <div class="message-head clearfix">
-                                <div class="user-detail">
-                                    <h5 class="handle">已签收,感谢使用顺丰,期待再次为您服务</h5>
-                                    <div class="post-meta">
-                                        <div class="asker-meta">
-                                            <span>2016-05-06 18:38:54</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="message-item">
-                        <div class="message-inner">
-                            <div class="message-head clearfix">
-                                <div class="user-detail">
-                                    <h5 class="handle">已签收,感谢使用顺丰,期待再次为您服务</h5>
-                                    <div class="post-meta">
-                                        <div class="asker-meta">
-                                            <span>2016-05-06 18:38:54</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="margin-bottom:20px;">
+    <div v-if="details.data.deliveryOrders.length>0" class="row" style="margin-bottom:20px;">
         <div class="col-md-12">
             <div class="code-box-meta">
                 <div class="code-box-title">
-                    <span><i class="glyphicon glyphicon-tags"></i>信息总览</span>
+                    <span><i class="glyphicon glyphicon-tags"></i>已发货商品</span>
                 </div>
-                <div class="row order-details-foot">
-                    <div class="col-md-3">
-                        <h5>收货人信息</h3>
-                        <dl class="dl-horizontal">
-                            <dt>订购时间</dt>
-                            <dd>{{details.created_at}}</dd>
-                            <dt>订单状态</dt>
-                            <dd>{{details.status_chs}}</dd>
-                            <dt>订购IP</dt>
-                            <dd>{{details.charge.client_ip}}</dd>
-                        </dl>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>配送信息</h3>
-                        <dl class="dl-horizontal">
-                            <dt>配送方式</dt>
-                            <dd>普通快递</dd>
-                            <dt>运费</dt>
-                            <dd>￥0.00</dd>
-                        </dl>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>付款信息</h3>
-                        <dl class="dl-horizontal">
-                            <dt>付款方式</dt>
-                            <dd>在线支付</dd>
-                            <dt>商品总额</dt>
-                            <dd>￥{{details.total}}.00</dd>
-                            <dt>应付金额</dt>
-                            <dd>￥{{details.total}}.00</dd>
-                            <dt>运费金额</dt>
-                            <dd>￥0.00</dd>
-                            <dt>优惠金额</dt>
-                            <dd>￥0.00</dd>
-                        </dl>
-                    </div>
-                    <div class="col-md-3">
-                        <h5>发票信息</h3>
-                        <dl class="dl-horizontal">
-                            <dt>发票类型</dt>
-                            <dd>普通发票</dd>
-                            <dt>发票抬头</dt>
-                            <dd>个人</dd>
-                            <dt>发票内容</dt>
-                            <dd>明细</dd>
-                        </dl>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="express-info-table table order-list" style="margin-bottom:0px;">
+                            <thead>
+                                <tr>
+                                    <th>商品</th>
+                                    <th class="text-center">单价</th>
+                                    <th class="text-center">数量</th>
+                                    <th class="text-center">订单状态</th>
+                                    <th class="text-center">商品总额</th>
+                                    <th class="text-center">
+                                        运费
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table class="express-info-table table order-list" v-for="items in details.data.deliveryOrders">
+                            <thead>
+                                <tr>
+                                    <td class="tbodyHead" colspan="6">
+                                        <ul class="list-inline">
+                                            <li style=:width:70px;>
+                                                <b>包裹 - {{$index+1}}</b>
+                                            </li>
+                                            <li class="text-muted">{{items.deliveryCompanyName}} 运单号：{{items.deliveryOrderNo}}</li>
+                                            <li>
+                                                <span class="text-success">2016-07-20 12:57:05 [签收] 已签收,签收人是: 草签</span>
+                                                <a @click="getExpressInfo({code:items.deliveryCompanyName,number:items.deliveryOrderNo})" href="javascript:;">更多</a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--单件商品渲染-->
+                                <tr v-for="itemsList in items.orderItems" v-if="items.orderItems.length<=1">
+                                    <td>
+                                        <img class="pull-left" style="height:80px;margin-right:5px;" v-bind:src="itemsList.specImg">
+                                        <span class="pull-left">
+                                            <p>
+                                                <a href="javascript:void(0);">
+                                                    {{itemsList.productName}}
+                                                </a>
+                                            </p>
+                                            <p class="text-muted">
+                                                {{itemsList.specName}}
+                                            </p>
+                                            <p class="text-muted">
+                                                {{itemsList.color}}
+                                            </p>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.sellPrice}}.00</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.productQty}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>
+                                            {{details.data.paymentStatusName}}
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.productTotalAmount}}.00</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p v-if="details.data.deliveryFee==''">
+                                            免运费
+                                        </p>
+                                        <p v-if="details.data.deliveryFee!=''">
+                                            {{details.data.deliveryFee}}.00
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div v-if="details.data.unShipOutOrderItems.length>0" class="row" style="margin-bottom:20px;">
+        <div class="col-md-12">
+            <div class="code-box-meta">
+                <div class="code-box-title">
+                    <span><i class="glyphicon glyphicon-tags"></i>未发货商品</span>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="express-info-table table order-list" style="margin-bottom:0px;">
+                            <thead>
+                                <tr>
+                                    <th>商品</th>
+                                    <th class="text-center">单价</th>
+                                    <th class="text-center">数量</th>
+                                    <th class="text-center">订单状态</th>
+                                    <th class="text-center">商品总额</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="items in details.data.unShipOutOrderItems">
+                                    <td>
+                                        <img class="pull-left" style="height:80px;margin-right:5px;" v-bind:src="items.specImg">
+                                        <span class="pull-left">
+                                            <p>
+                                                <a href="javascript:void(0);">
+                                                    {{items.productName}}
+                                                </a>
+                                            </p>
+                                            <p class="text-muted">
+                                                {{items.specName}}
+                                            </p>
+                                            <p class="text-muted">
+                                                {{items.color}}
+                                            </p>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{items.sellPrice}}.00</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{items.productQty}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>
+                                            {{details.data.paymentStatusName}}
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{items.productTotalAmount}}.00</p>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <modal :show.sync="showmodal">
+        <h4 slot="header" class="modal-title">物流信息</h4>
+        <button slot="close" type="button" class="close" @click="showmodal=false">&times;</button>
+        <div slot="body">
+            <div class="row" style="max-height:400px; overflow:scroll">
+                <div class="col-md-12">
+                    <dl class="dl-horizontal">
+                        <dt>承运公司</dt>
+                        <dd>{{expressModalInfo.com}}</dd>
+                        <dt>货单运号</dt>
+                        <dd>{{expressModalInfo.nu}}</dd>
+                    </dl>
+                    <div class="qa-message-list">
+                        <div v-bind:class="{'message-list-active':$index==0}" class="message-item" v-for="item in expressModalInfo.list">
+                            <div class="message-inner">
+                                <div class="message-head clearfix">
+                                    <div class="user-detail">
+                                        <h5 class="handle">{{item.context}}</h5>
+                                        <div class="post-meta">
+                                            <div class="asker-meta">
+                                                <span>{{item.time}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div slot="footer">
+            <button @click="showmodal=false" type="button" class="btn btn-default expressButton">关闭</button>
+        </div>
+    </modal>
 </template>
 <script type="text/javascript">
+    import Modal from '../../components/common/Modal'
     export default{
-        props:['details']
+        props:['details'],
+        data(){
+            return{
+                showmodal:false,
+                expressModalInfo:{
+                    com:'',
+                    nu:'',
+                    list:[]
+                }
+            }
+        },
+        methods:{
+            //弹出层查询快递100物流接口
+            getExpressInfo:function(data){
+                this.$set('expressModalInfo.com',data.code);
+                this.$set('expressModalInfo.nu',data.number)
+                this.$set('showmodal',true);
+                this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:data.code,express_code:data.number}).then((response) => {
+                    console.log(response);
+                    this.$set('expressModalInfo.list',response.data.data.data)
+                }, (response) => {
+                });
+            },
+
+            //刚进入详情路由的时候查询快递接口
+            readyExpressInfo:function(index,data){
+                console.log(index);
+                console.log(data);
+            }
+        },
+        components:{
+            Modal
+        },
+        watch:{
+            'details':function(val,oldval){
+                if (val.data.deliveryOrders.length>0) {
+                    for (let a = 0; a < val.data.deliveryOrders.length; a++) {
+                        this.readyExpressInfo(a,{com:val.data.deliveryOrders[a].deliveryCompanyName,nu:val.data.deliveryOrders[a].deliveryOrderNo})
+                    }
+                }
+            }
+        }
     }
 </script>

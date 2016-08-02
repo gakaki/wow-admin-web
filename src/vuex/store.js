@@ -7,7 +7,11 @@ Vue.use(Vuex)
 // 创建一个 object 存储应用启动时的状态
 const state = {
     permissions:{},
-    orderlist:{},
+    orderlist:{
+        data:{
+            orderLists:[]
+        }
+    },
     expressobj:{
         tag:false,
         orderid:null,
@@ -17,9 +21,9 @@ const state = {
         itemlist:[]
     },
     orderdetails:{
-        charge:{
-            client_ip:null,
-            time_expire:null
+        data:{
+            deliveryOrders:[],
+            unShipOutOrderItems:[]
         }
     }
 }

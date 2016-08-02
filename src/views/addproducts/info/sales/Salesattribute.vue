@@ -68,9 +68,9 @@
                 <div class="text-left">
                     批量设置：
                     <div class="btn-group">
-                        <button @click="batchSellPrice=!batchSellPrice" v-if="batchWeight==false" type="button" class="btn btn-default btn-sm">售价</button>
+                        <button @click="batchSellPrice=!batchSellPrice" v-if="batchWeight==false" type="button" class="btn btn-primary btn-sm">售价</button>
                         <div v-if="batchSellPrice==true" class="input-group input-group-sm" style="width:200px;">
-                           <input v-model="SellPrice" style="border-left:0px; border-radius:0px;" placeholder="批量设置售价" type="number" class="form-control">
+                           <input v-focus="batchSellPrice" @keyup.enter="batch_sellPrice" v-model="SellPrice" style="border-left:0px; border-radius:0px;" placeholder="批量设置售价" type="number" class="form-control">
                            <span class="input-group-btn">
                               <button @click="batch_sellPrice" class="btn btn-success" type="button">
                                  确定
@@ -81,9 +81,9 @@
                            </span>
                         </div>
 
-                        <button @click="batchWeight=!batchWeight" v-if="batchSellPrice==false" type="button" class="btn btn-default btn-sm">重量</button>
+                        <button @click="batchWeight=!batchWeight" v-if="batchSellPrice==false" type="button" class="btn btn-primary btn-sm">重量</button>
                         <div v-if="batchWeight==true" class="input-group input-group-sm" style="width:200px;">
-                           <input v-model="weight" style="border-left:0px; border-radius:0px;" placeholder="批量设置重量" type="number" class="form-control">
+                           <input v-focus="batchWeight" @keyup.enter="batch_weight" v-model="weight" style="border-left:0px; border-radius:0px;" placeholder="批量设置重量" type="number" class="form-control">
                            <span class="input-group-btn">
                               <button @click="batch_weight" class="btn btn-success" type="button">
                                  确定
@@ -161,6 +161,16 @@
                 this.$set('productsalesattribute.specSelect',this.specListS);
             }
         },
+        directives: {
+			focus(value) {
+				if (!value) {
+					return
+				}
+				this.vm.$nextTick(() => {
+					this.el.focus()
+				})
+			}
+		},
         methods:{
             batch_sellPrice:function(){
                 if (this.SellPrice=='') {
@@ -172,7 +182,7 @@
             },
             batch_weight:function(){
                 if (this.weight=='') {
-                    
+
                 }else {
                     this.$broadcast('batchWeight', {weight:Number(this.weight)})
                 }

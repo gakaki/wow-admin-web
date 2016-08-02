@@ -188,7 +188,6 @@
     import Designers from './Designers'
     import vSelect from '../../../../components/common/vue-select/src/index.js'
     import {DesignersData,Country} from '../../../../test.js'
-    import WebStorageCache from 'web-storage-cache'
     import Alert from '../../../../components/common/alert/Alert'
     import {API_ROOT} from '../../../../config'
 
@@ -246,7 +245,6 @@
              */
             //品牌数据，设置本地缓存数据
             setBrandListCache:function(){
-                let wsCache = new WebStorageCache();
                 this.$http.get(API_ROOT+'/admin-api-dev/v1/brand/queryAll',{}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('brandlist',response.data.data.brandList);
@@ -271,7 +269,6 @@
              */
              //设计师，设置本地缓存数据
              setDesignersCache:function(){
-                 let wsCache = new WebStorageCache();
                  this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
                          this.$set('designers',response.data.data);
@@ -387,7 +384,6 @@
             /**
              * 组件加载，获取对应对数据接口，就请求数据
              */
-            let wsCache = new WebStorageCache();
 
             // 查询品牌
             this.setBrandListCache();

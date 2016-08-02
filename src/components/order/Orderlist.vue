@@ -11,115 +11,109 @@
                     <th class="text-center">实付金额</th>
                 </tr>
             </thead>
-            <tbody v-for="items in list.orders">
+            <tbody v-for="items in list.data.orderLists">
                 <tr>
                     <td style="border:0px;" colspan="5"></td>
                 </tr>
                 <tr>
                     <td class="tbodyHead" colspan="5">
                         <ul class="list-inline">
-                            <li>{{items.created_at}}</li>
-                            <li>订单号：<span class="text-primary">{{ items.id }}</span></li>
-                            <li class="pull-right"><a v-link='{ path: "/order/list/details/"+items.id}'>详情</a></li>
+                            <li>{{items.orderCreateTimeFormat}}</li>
+                            <li>订单号：<span class="text-primary">{{ items.orderCode }}</span></li>
+                            <li class="pull-right"><a v-link='{ path: "/order/list/details/"+items.orderCode}'>详情</a></li>
                             <li class="pull-right"><a href="javascript:void(0);">备注</a></li>
                         </ul>
                     </td>
                 </tr>
 
                 <!--单件商品渲染-->
-                <tr v-for="itemsList in items.items" v-if="items.items.length<=1">
+                <tr v-for="itemsList in items.orderItemVos" v-if="items.orderItemVos.length<=1">
                     <td style="border-right:1px solid #fff;">
-                        <img class="pull-left" style='width:80px' v-bind:src=itemsList.image />
+                        <img class="pull-left" style='height:80px; margin-right:5px;' v-bind:src=itemsList.specImg />
                         <span class="pull-left">
                             <p>
-                                <a href="javascript:void(0);">{{itemsList.name}}</a>
+                                <a href="javascript:void(0);">{{itemsList.productName}}</a>
                             </p>
                             <p class="text-muted">
-                                {{itemsList.sku_id}}
+                                {{itemsList.specName}}
                             </p>
                             <p class="text-muted">
-                                {{itemsList.sku_title}}
+                                {{itemsList.color}}
                             </p>
                         </span>
                     </td>
                     <td class="text-center">
                         <p>
-                            <s class="text-muted">
-                                {{itemsList.original_price =='undefined' ? '0' : itemsList.original_price}}.00
-                            </s>
+                            x {{itemsList.productQty}}
                         </p>
-                        <p>{{itemsList.total}}.00</p>
-                        <p>
-                            x {{itemsList.count}}
+                        <p class="text-muted">
+                            {{itemsList.sellPrice}}.00
                         </p>
+                        <p>{{itemsList.productTotalAmount}}.00</p>
                     </td>
                     <td class="text-center">
                         <address>
-                            <strong>{{items.address_username}}</strong><br />
-                            <abbr title="Phone">{{items.address_mobile}}</abbr>
+                            <strong>{{items.receiverName}}</strong><br />
+                            <abbr title="Phone">{{items.receiverMobile}}</abbr>
                         </address>
                     </td>
                     <td class="text-center">
                         <p>
-                            {{items.status_chs}}
+                            {{items.orderStatusName}}
                         </p>
                         <p>
-                            <button v-if="items.status==0" class="btn btn-warning btn-sm">取消订单</button>
                             <button v-if="items.status==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
                         </p>
                     </td>
                     <td class="text-center">
-                        <p>{{items.total}}.00</p>
-                        <p class="text-muted">含运费：0.00</p>
+                        <p>{{items.orderAmount}}.00</p>
+                        <p class="text-muted">含运费：{{items.deliveryFee}}.00</p>
                     </td>
                 </tr>
 
                 <!--多商品渲染-->
-                <tr v-for="itemsList in items.items" v-if="items.items.length>1">
+                <tr v-for="itemsList in items.orderItemVos" v-if="items.orderItemVos.length>1">
                     <td style="border-right:1px solid #fff;">
-                        <img class="pull-left" style='width:80px' v-bind:src=itemsList.image />
+                        <img class="pull-left" style='width:80px' v-bind:src=itemsList.specImg />
                         <span class="pull-left">
                             <p>
-                                <a href="javascript:void(0);">{{itemsList.name}}</a>
+                                <a href="javascript:void(0);">{{itemsList.productName}}</a>
                             </p>
                             <p class="text-muted">
-                                {{itemsList.sku_id}}
+                                {{itemsList.specName}}
                             </p>
                             <p class="text-muted">
-                                {{itemsList.sku_title}}
+                                {{itemsList.color}}
                             </p>
                         </span>
                     </td>
                     <td class="text-center">
                         <p>
-                            <s class="text-muted">
-                                {{itemsList.original_price =='undefined' ? '0' : itemsList.original_price}}.00
-                            </s>
+                            x {{itemsList.productQty}}
                         </p>
-                        <p>{{itemsList.total}}.00</p>
-                        <p>
-                            x {{itemsList.count}}
+                        <p class="text-muted">
+                            {{itemsList.sellPrice}}.00
                         </p>
+                        <p>{{itemsList.productTotalAmount}}.00</p>
                     </td>
-                    <td class="text-center" rowspan={{items.items.length}} v-if='$index==0'>
+                    <td class="text-center" rowspan={{items.orderItemVos.length}} v-if='$index==0'>
                         <address>
-                            <strong>{{items.address_username}}</strong><br />
-                            <abbr title="Phone">{{items.address_mobile}}</abbr>
+                            <strong>{{items.receiverName}}</strong><br />
+                            <abbr title="Phone">{{items.receiverMobile}}</abbr>
                         </address>
                     </td>
-                    <td class="text-center" rowspan={{items.items.length}} v-if='$index==0'>
+                    <td class="text-center" rowspan={{items.orderItemVos.length}} v-if='$index==0'>
                         <p>
-                            {{items.status_chs}}
+                            {{items.orderStatusName}}
                         </p>
                         <p>
-                            <button v-if="items.status==0" class="btn btn-warning btn-sm">取消订单</button>
                             <button v-if="items.status==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
                         </p>
 
                     </td>
-                    <td class="text-center" rowspan={{items.items.length}} v-if='$index==0'>
-                        <p>{{items.total}}.00</p>
-                        <p class="text-muted">含运费：0.00</p>
+                    <td class="text-center" rowspan={{items.orderItemVos.length}} v-if='$index==0'>
+                        <p>{{items.orderAmount}}.00</p>
+                        <p class="text-muted">含运费：{{items.deliveryFee}}.00</p>
                     </td>
                 </tr>
                 <tr>

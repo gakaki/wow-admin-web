@@ -15,15 +15,6 @@
                         <div class="form-group">
                             <my-datepicker :time.sync="endTime" :option="endTimeObj"></my-datepicker>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputName2">付款方式</label>
-                            <select class="form-control">
-                                <option>全部</option>
-                                <option>微信</option>
-                                <option>支付宝</option>
-                                <option>银行卡</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="clearfix">
                         <div class="form-group">
@@ -54,7 +45,7 @@
     </div>
     <Tab :name='tabname' @btn-click="setstatus"></Tab>
     <orderlist :list="orderList"></orderlist>
-    <Pager :cur.sync="cur" :all.sync='orderList.totalPages' @btn-click="listen"></Pager>
+    <Pager :cur.sync="cur" :all.sync='totalPage' @btn-click="listen"></Pager>
 </template>
 
 <script type="text/javascript">
@@ -65,20 +56,32 @@ import Pager                    from    '../../components/common/Pager'
 import {getOrderlist}           from    '../../vuex/getters'
 import {orderList, expressObj}  from    '../../vuex/actions'
 import myDatepicker             from    'vue-datepicker'
+import WebStorageCache          from    'web-storage-cache'
 
 export default {
     props: ['orderList'],
     data() {
         return {
+            search:{
+                orderCode:'',
+                beginDate:'',
+                endDate:'',
+                receiverName:'',
+                receiverMobile:'',
+                productName:''
+            },
             cur: 1,
-            status:'100',
+            status:'',
+            totalPage:'',
             tabname:[
-                {tab:'所有订单',key:'100'},
+                {tab:'所有订单',key:''},
                 {tab:'待付款',key:'0'},
                 {tab:'待发货',key:'1'},
                 {tab:'已发货',key:'2'},
-                {tab:'已完成',key:'3'},
-                {tab:'已关闭',key:'20'}
+                {tab:'待收货',key:'3'},
+                {tab:'已完成',key:'4'},
+                {tab:'已取消',key:'5'},
+                {tab:'交易关闭',key:'6'}
             ],
             /**日历数据 start**/
             dateText: '',
@@ -128,10 +131,10 @@ export default {
         setstatus:function(data){
             this.status=data.status;
             this.cur=1;
-            this.orderlist({page: '1',status: this.status})
+            this.orderlist({page: '1',status: this.status,pageSize:'2'})
         },
         listen: function(data) {
-            this.orderlist({page: data,status: this.status})
+            this.orderlist({page: data,status: this.status,pageSize:'2'})
         },
         searchOrder:function(){
             console.log(this.startTime)
@@ -139,7 +142,7 @@ export default {
         }
     },
     ready: function() {
-        this.orderlist({page: '1',status: this.status})
+        // this.orderlist({page: '1',status: this.status})
     },
     route: {
         activate: function(transition) {
@@ -153,8 +156,15 @@ export default {
             }
         }) {
             setTimeout(()=>{
-                this.Setexpressobj({tag: false})
+                this.orderlist({page: '1',status: Number(this.status),pageSize:'2'})
+                this.Setexpressobj({tag: false});
             },0)
+        }
+    },
+    watch:{
+        'orderList':function(val,oldval){
+            let wsCache = new WebStorageCache();
+            this.$set('totalPage',wsCache.get('oorderListTotalPage'));
         }
     }
 }

@@ -4,35 +4,43 @@
 
 import Vue from 'vue'
 import {API_ROOT} from '../config'
+import WebStorageCache from 'web-storage-cache'
 
 //订单列表
 export const orderList=function({dispatch, state},orderlist){
-    // POST
-     this.$http.post(API_ROOT+'adminapi/order/list', {page: orderlist.page,status:orderlist.status}).then((response) => {
-         // get status
-         response.status;
-         // get status text
-         response.statusText;
-         // get all headers
-         response.headers;
-         // get 'Expires' header
-         response.headers['Expires'];
-         // set data
-         dispatch('ORDERLIST',response.data.data);
-     }, (response) => {
-         // error callback
-     });
+    if (orderlist.status=='') {
+        var jsontext=JSON.stringify({"currentPage":orderlist.page,"pageSize":orderlist.pageSize});
+    }else {
+        var jsontext=JSON.stringify({"currentPage":orderlist.page,"pageSize":orderlist.pageSize,orderStatus:orderlist.status});
+    }
+    this.$http.post(API_ROOT+'admin-api-dev/v1/order/getList',{paramJson:jsontext}).then((response) => {
+        if (response.data.resCode=='0') {
+            if (response.data.data.totalPage!='0') {
+                let wsCache = new WebStorageCache();
+                wsCache.set('oorderListTotalPage', response.data.data.totalPage);
+            }
+            dispatch('ORDERLIST',response.data);
+        }
+    }, (response) => {
+    });
 }
 
 //订单详情
 export const orderDetails=function({dispatch, state},data){
-    Vue.http({url: API_ROOT+'/adminapi/order/detail', data:{order_id:data.orderid},method: 'post'})
-    .then(res =>
-        [dispatch('ORDERDETAILS',res.data.data)]
-    )
-    .catch(function(ex) {
-        console.log('parsing failed', ex)
-    })
+    let jsontext=JSON.stringify({"orderCode":"0414726434" });
+    this.$http.get(API_ROOT+'admin-api-dev/v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
+        if (response.data.resCode=='0') {
+            dispatch('ORDERDETAILS',response.data);
+        }
+    }, (response) => {
+    });
+    // Vue.http({url: API_ROOT+'/adminapi/order/detail', data:{order_id:data.orderid},method: 'post'})
+    // .then(res =>
+    //     [dispatch('ORDERDETAILS',res.data.data)]
+    // )
+    // .catch(function(ex) {
+    //     console.log('parsing failed', ex)
+    // })
 }
 
 //发货商品列表
