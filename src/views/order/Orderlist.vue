@@ -52,7 +52,6 @@
             </div>
         </div>
     </div>
-    {{search.orderStatus}}
     <Tab :curindex.sync="curIndex" :name='tabname' @btn-click="setstatus"></Tab>
     <orderlist :list="orderList"></orderlist>
     <Pager :cur.sync="cur" :all.sync='totalPage' @btn-click="listen"></Pager>
@@ -83,6 +82,7 @@ export default {
                 receiverMobile:'',
                 productName:'',
             },
+            searchObj:{},
             cur: 1,
             status:'',
             totalPage:'',
@@ -90,7 +90,7 @@ export default {
                 {tab:'所有订单',key:''},
                 {tab:'待付款',key:'0'},
                 {tab:'待发货',key:'1'},
-                {tab:'已发货',key:'2'},
+                {tab:'部分发货',key:'2'},
                 {tab:'待收货',key:'3'},
                 {tab:'已完成',key:'4'},
                 {tab:'已取消',key:'5'},
@@ -197,6 +197,8 @@ export default {
                 seacrObj.orderStatus=Number(status);
             }
             seacrObj.pageSize=this.pageSize;
+            let wsCache = new WebStorageCache();
+            wsCache.set('orderListSearch', seacrObj);
             return seacrObj;
         },
         searchReset:function(){
@@ -220,9 +222,7 @@ export default {
                 }
             }
         }) {
-            setTimeout(()=>{
-                this.Setexpressobj({tag: false});
-            },0)
+
         }
     },
     watch:{

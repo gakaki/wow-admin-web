@@ -22,6 +22,7 @@
     }
 </style>
 <template>
+    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
     <modal :show.sync="showbox" id="expressBox{{orderid}}" class="expressBox">
         <button slot="close" type="button" class="close" @click="closeMoadl()">&times;</button>
         <h5 slot="header" class="modal-title">商品发货-订单ID：{{orderid}}</h5>
@@ -30,40 +31,42 @@
                 <table class="table table-striped expressTable">
                     <thead>
                         <tr>
-                            <th>
-                            </th>
+                            <th></th>
                             <th>商品</th>
-                            <th class="text-center">物流公司</th>
-                            <th class="text-center">快递单号</th>
+                            <th class="text-center">数量</th>
+                            <th class="text-center">商品总计</th>
                         </tr>
                     </thead>
                     <tbody class="checkboxdo">
                         <tr v-for="item in itemslistarr">
-                            <td>
-                                <input v-if="item.item.length==1" type="checkbox" v-bind:value="item.item[0].product_id" v-bind:name="item.item[0].product_id+'name'+$index" v-model="checkedItems" v-bind:checked="item.expressinstatus==false" />
+                            <td style="position:relative" class="text-center">
+                                <input type="checkbox" v-bind:value="item.saleOrderItemId" v-bind:name="item.saleOrderItemId+'name'+$index" v-bind:id="item.saleOrderItemId+'name'+$index" v-model="checkedItems" v-bind:checked="item.expressinstatus==false" />
+                                <label style="cursor: pointer; position:absolute; left:0px; right:0px; top:0px; bottom:0px; height:100%;" for="{{item.saleOrderItemId+'name'+$index}}"></label>
                             </td>
                             <td style="width:45%;">
-                                <table v-for="items in item.item">
+                                <table>
                                     <tbody>
                                         <tr>
                                             <td style="width:60px;">
-                                                <img style="width:60px; margin-bottom:5px; border:1px solid #ccc;" v-bind:src=items.image alt="" />
+                                                <img style="width:70px; border:1px solid #ccc;" v-bind:src=item.specImg alt="" />
                                             </td>
                                             <td style="padding-left:15px; width:80%;">
-                                                <a target="_blank" class="clearfix" href="#">{{items.name}}</a>
+                                                <a target="_blank" class="clearfix">{{item.productName}}</a>
                                                 <span class="text-muted clearfix">
-                                                    {{items.sku_title}}
+                                                    {{item.color}}
                                                 </span>
                                                 <span class="clearfix">
-                                                    {{items.count}}件
+                                                    {{item.specName}}
                                                 </span>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </td>
-                            <td class="text-center"><span class="label label-success">{{item.expressinfo.company}}</span></td>
-                            <td class="text-center"><span class="label label-default">{{item.expressinfo.number}}</span></td>
+                            <td class="text-center"><span class="label label-success">{{item.productQty}}</span></td>
+                            <td class="text-center">
+                                <span class="label label-default">¥ {{item.productTotalAmount}}.00</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -104,20 +107,26 @@
     </modal>
 </template>
 <script type="text/javascript">
-import Modal from '../../components/common/Modal'
-import {expressObj} from '../../vuex/actions'
-import vSelect from '../common/selecte/Select'
+import Modal                        from    '../../components/common/Modal'
+import {expressObj}                 from    '../../vuex/actions'
+import vSelect                      from    '../common/selecte/Select'
+import WebStorageCache              from    'web-storage-cache'
+import {orderList,orderDetails}     from    '../../vuex/actions'
+import {API_ROOT}                   from    '../../config.js'
+import Alert                        from    '../../components/common/alert/Alert'
+
 export default{
     components:{
         Modal,
-        vSelect
+        vSelect,
+        Alert
     },
-    props:['orderid','orderstatus','address','mobile','name','showbox','itemslistarr'],
+    props:['orderid','orderstatus','address','mobile','name','showbox','itemslistarr','ordertag'],
     data() {
         return {
             fruitOptions: [
-                {value:'{"name":"顺丰速运","code":"shunfengsuyun"}', label:'顺丰速运'},
-                {value:'{"name":"日日顺","code":"ririshun"}', label:'日日顺'},
+                {value:'{"name":"顺丰速运","code":"shunfeng"}', label:'顺丰速运'},
+                {value:'{"name":"日日顺","code":"rrs"}', label:'日日顺'},
             ],
             checkedItems:[],
             expressinfo:{
@@ -126,31 +135,97 @@ export default{
             },
             needExpress:true,
             showModal: false,
+            alertObj:{
+                alertType:null,
+                alertInfo:null,
+                alertShow:false,
+            },
         }
     },
     vuex: {
         actions: {
-            Setexpressobj:expressObj
+            Setexpressobj:expressObj,
+            orderlist: orderList,
+            orderdetails: orderDetails,
+        }
+    },
+    watch:{
+        'expressinfo.arr':function(val,oldval){
+            $('#expressBox'+this.orderid).validator('cleanUp');
         }
     },
     methods:{
         setdata:function(){
+            //清空快递内存里面的值
             this.expressinfo.arr=[];
             this.expressinfo.number=null;
         },
         getdata:function(){
-            console.log('订单号码：'+this.orderid);
-            console.log('选中的商品ID：'+this.checkedItems);
+            //获取需要提交到接口的发货数据
             if (this.expressinfo.arr[0]==undefined||this.expressinfo.arr[0]=='undefined') {
             }else {
                 let expressinfoArr=JSON.parse(this.expressinfo.arr[0]);
-                console.log('快递公司：'+expressinfoArr.name);
-                console.log('快递代码：'+expressinfoArr.code);
-                console.log('快递号码：'+this.expressinfo.number);
+                // console.log('订单号码：'+this.orderid);
+                // console.log('选中的商品ID：'+this.checkedItems);
+                // console.log('快递公司：'+expressinfoArr.name);
+                // console.log('快递代码：'+expressinfoArr.code);
+                // console.log('快递号码：'+this.expressinfo.number);
+                var obj={
+                    saleOrderItemIds:this.checkedItems,
+                    deliveryCompanyCode:expressinfoArr.code,
+                    deliveryOrderNo:this.expressinfo.number,
+                    orderCode:this.orderid
+                }
+                let wsCache = new WebStorageCache();
+                var orderSearch=wsCache.get('orderListSearch');
+                if (this.itemslistarr.length<=1) {
+                    orderSearch.currentPage='1'
+                }
+                /**
+                 * 判断用户在哪个界面触发发货操作
+                 * 通过组件传过来的值ordertag判断是来自己列表还是详情页触发发货
+                 * list-订单列表，details-订单详情
+                 */
+                if (this.ordertag=='list') {
+                    let jsontext=JSON.stringify(obj);
+                    this.$http.post(API_ROOT+'admin-api-dev/v1/order/deliver',{paramJson:jsontext}).then((response) => {
+                        if (response.data.resCode=='0') {
+                            let wsCache = new WebStorageCache();
+                            this.orderListRes(orderSearch);
+                            this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
+                        }else {
+                            this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                        }
+                    }, (response) => {
+                        this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络请求失败',alertShow:true})
+                    });
+                }else if(this.ordertag=='details'){
+                    let jsontext=JSON.stringify(obj);
+                    this.$http.post(API_ROOT+'admin-api-dev/v1/order/deliver',{paramJson:jsontext}).then((response) => {
+                        if (response.data.resCode=='0') {
+                            this.orderdetails({orderCode: this.orderid});
+                            this.closeMoadl();
+                            this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
+                        }else {
+                            this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
+                        }
+                    }, (response) => {
+                        this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络请求失败',alertShow:true})
+                    });
+                }
             }
         },
+        orderListRes:function(data){
+            //在订单列表发货操作成功后，重新请求对应的订单列表数据
+            this.orderlist(data)
+            this.closeMoadl();
+        },
         closeMoadl:function(){
-            this.Setexpressobj({tag:false})
+            //关闭发货弹出层，清空内存里面的值
+            this.$set('checkedItems',[])
+            this.expressinfo.arr=[];
+            this.expressinfo.number=null;
+            this.Setexpressobj({tag:false});
         }
     },
     ready(){

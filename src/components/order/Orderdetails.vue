@@ -154,6 +154,9 @@
 .order-details-foot dd{
     margin-left: 70px;
 }
+.express-info-table{
+    margin-bottom: 10px;
+}
 .express-info-table th, .express-info-table td{
     width: 10%;
 }
@@ -431,6 +434,7 @@
                 this.$set('expressModalInfo.com',data.code);
                 this.$set('expressModalInfo.nu',data.number)
                 this.$set('showmodal',true);
+                this.$set('expressModalInfo.list','');
                 this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:data.code,express_code:data.number}).then((response) => {
                     console.log(response);
                     this.$set('expressModalInfo.list',response.data.data.data)
@@ -447,6 +451,9 @@
         },
         components:{
             Modal
+        },
+        detached(){
+            this.$set('showmodal',false);
         },
         watch:{
             'details':function(val,oldval){
