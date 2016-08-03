@@ -62,7 +62,7 @@
                             {{items.orderStatusName}}
                         </p>
                         <p>
-                            <button v-if="items.status==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
+                            <button v-if="items.orderStatus==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
                         </p>
                     </td>
                     <td class="text-center">
@@ -107,7 +107,7 @@
                             {{items.orderStatusName}}
                         </p>
                         <p>
-                            <button v-if="items.status==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
+                            <button v-if="items.orderStatus==1" @click="modalShow({tag:true,orderid:items.id,name:items.address_username,phone:items.address_mobile,address:items.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
                         </p>
 
                     </td>

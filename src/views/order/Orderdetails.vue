@@ -1,12 +1,12 @@
 <template>
-
+    {{orderDetails|json}}
     <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
     <p class="text-primary pull-left"><span class="glyphicon glyphicon-list-alt"></span> 订单ID：{{$route.params.orderid}}</p>
     <p class="pull-right">
-        <button v-if="orderDetails.status==1" @click="modalShow({tag:true,orderid:$route.params.orderid,name:orderDetails.address_username,phone:orderDetails.address_mobile,address:orderDetails.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
+        <button v-if="orderDetails.orderStatus==1" @click="modalShow({tag:true,orderid:$route.params.orderid,name:orderDetails.address_username,phone:orderDetails.address_mobile,address:orderDetails.address_full,itemlist:testitem})" class="btn btn-info btn-sm">物流发货</button>
     </p>
     <Express :showbox="Getexpressobj.tag" :orderid="Getexpressobj.orderid" :address="Getexpressobj.address" :mobile="Getexpressobj.phone" :name="Getexpressobj.name" :itemslistarr="Getexpressobj.itemlist"></Express>
-    <Steps :steps="steps" :status="orderDetails.status"></Steps>
+    <Steps :steps="steps" :status="orderDetails.orderStatus"></Steps>
     <Orderdetails :details="orderDetails"></Orderdetails>
 
 </template>
@@ -79,7 +79,7 @@ export default {
         },
         data({ to: { params: {orderid}}}) {
             window.scrollTo(0, 0);
-            this.orderdetails({orderid: orderid});
+            this.orderdetails({orderCode: orderid});
             setTimeout(()=>{
                 this.Setexpressobj({tag: false})
             },0)

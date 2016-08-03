@@ -225,7 +225,7 @@
             </div>
         </div>
     </div>
-    <div v-if="details.data.deliveryOrders.length>0" class="row" style="margin-bottom:20px;">
+    <div v-if="details.data.deliveryOrders!=undefined&&details.data.deliveryOrders.length>0" class="row" style="margin-bottom:20px;">
         <div class="col-md-12">
             <div class="code-box-meta">
                 <div class="code-box-title">
@@ -440,6 +440,7 @@
 
             //刚进入详情路由的时候查询快递接口
             readyExpressInfo:function(index,data){
+                console.log('######查询收货内容#####');
                 console.log(index);
                 console.log(data);
             }
@@ -449,9 +450,11 @@
         },
         watch:{
             'details':function(val,oldval){
-                if (val.data.deliveryOrders.length>0) {
-                    for (let a = 0; a < val.data.deliveryOrders.length; a++) {
-                        this.readyExpressInfo(a,{com:val.data.deliveryOrders[a].deliveryCompanyName,nu:val.data.deliveryOrders[a].deliveryOrderNo})
+                if (val.data.deliveryOrders!=undefined) {
+                    if (val.data.deliveryOrders.length>0) {
+                        for (let a = 0; a < val.data.deliveryOrders.length; a++) {
+                            this.readyExpressInfo(a,{com:val.data.deliveryOrders[a].deliveryCompanyName,nu:val.data.deliveryOrders[a].deliveryOrderNo})
+                        }
                     }
                 }
             }

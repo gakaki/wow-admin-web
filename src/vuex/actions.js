@@ -9,9 +9,9 @@ import WebStorageCache from 'web-storage-cache'
 //订单列表
 export const orderList=function({dispatch, state},orderlist){
     if (orderlist.status=='') {
-        var jsontext=JSON.stringify({"currentPage":orderlist.page,"pageSize":orderlist.pageSize});
+        var jsontext=JSON.stringify(orderlist);
     }else {
-        var jsontext=JSON.stringify({"currentPage":orderlist.page,"pageSize":orderlist.pageSize,orderStatus:orderlist.status});
+        var jsontext=JSON.stringify(orderlist);
     }
     this.$http.post(API_ROOT+'admin-api-dev/v1/order/getList',{paramJson:jsontext}).then((response) => {
         if (response.data.resCode=='0') {
@@ -27,7 +27,7 @@ export const orderList=function({dispatch, state},orderlist){
 
 //订单详情
 export const orderDetails=function({dispatch, state},data){
-    let jsontext=JSON.stringify({"orderCode":"0414726434" });
+    let jsontext=JSON.stringify(data);
     this.$http.get(API_ROOT+'admin-api-dev/v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
         if (response.data.resCode=='0') {
             dispatch('ORDERDETAILS',response.data);
