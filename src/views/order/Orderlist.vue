@@ -220,7 +220,7 @@ export default {
     },
     ready: function() {
         this.showloading();
-        this.orderlist(this.getSearchObj('1',''))
+        this.orderlist(this.getSearchObj('1',''));
     },
     route: {
         activate: function (transition) {

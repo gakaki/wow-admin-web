@@ -497,17 +497,6 @@
                     this.$set('loadingOpen',false);
                 }, (response) => {
                 });
-            },
-
-            //刚进入详情路由的时候查询快递接口
-            readyExpressInfo:function(index,data){
-                // for (let a = 0; a < this.details.data.deliveryOrders.length; a++) {
-                //     this.details.data.deliveryOrders[a].expressLastInfo=111;
-                // }
-                // console.log(this.details.data.deliveryOrders);
-                // console.log('######查询收货内容#####');
-                // console.log(index);
-                // console.log(data);
             }
         },
         components:{
