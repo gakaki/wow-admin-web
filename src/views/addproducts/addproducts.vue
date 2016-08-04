@@ -183,6 +183,7 @@
         },
         data(){
             return{
+                spinnerFixed:true,
                 spinnerSize: 'lg',
                 alertObj:{
                     alertType:null,
@@ -221,6 +222,16 @@
         },
         methods:{
             nextSteps:function(){
+                let categoryId=productBasiInfo.Selectcategory.three
+                let jsontext=JSON.stringify({"categoryId":categoryId});
+                this.$http.get(API_ROOT+'admin-api-dev/v1/material/queryCategoryMaterial',{paramJson:jsontext}).then((response) => {
+                    if (response.data.resCode==0) {
+                        this.$set('productBasiInfo.material_list',response.data.materialList)
+                    }else {
+                    }
+                }, (response) => {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取分类属性错误',alertShow:true})
+                });
                 this.$set('state','2');
                 this.$set('nowtag','2');
             },

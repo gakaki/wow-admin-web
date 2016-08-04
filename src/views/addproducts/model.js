@@ -27,6 +27,7 @@ export const productBasiInfo = {
     can_customize           :   '', //是否可定制
     applicable_scene_text   :   [], //适用场景
     material_text           :   [], //材质
+    material_list           :   [], //获取材质的内容数组
 }
 
 /**

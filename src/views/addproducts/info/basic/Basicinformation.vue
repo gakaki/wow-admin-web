@@ -176,8 +176,8 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
-                <label class="checkbox-inline" v-for="item in labeltest">
-                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{$index+1}}"> 选项{{$index+1}}
+                <label class="checkbox-inline" v-for="item in productbasiinfo.material_list">
+                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{item.id}}"> 选项{{item.material}}
                 </label>
             </div>
         </div>
@@ -201,7 +201,6 @@
         },
         data(){
             return{
-                labeltest:14,
                 brandlist:null,
                 designers:null,
                 originCountry:null,
