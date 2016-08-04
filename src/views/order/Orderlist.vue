@@ -1,5 +1,6 @@
 <template>
     <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
+    <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
     <pre class="bg-danger" style="font-weight:bold;">
         提示：测试数据的订单只有三个订单能查询到真实的物流数据。<br />
         订单1：0142564175<br />
@@ -71,11 +72,19 @@ import {orderList, expressObj}  from    '../../vuex/actions'
 import myDatepicker             from    'vue-datepicker'
 import WebStorageCache          from    'web-storage-cache'
 import spinner                  from    '../../components/common/spinner/Spinner';
+import Alert                    from    '../../components/common/alert/Alert'
+import moment                   from    'moment'
+moment.locale('zh-cn');
 
 export default {
     props: ['orderList'],
     data() {
         return {
+            alertObj:{
+                alertType:null,
+                alertInfo:null,
+                alertShow:false,
+            },
             curIndex:0,
             pageSize:'2',
             search:{
@@ -133,7 +142,8 @@ export default {
         Pager,
         Tab,
         myDatepicker,
-        spinner
+        spinner,
+        Alert
     },
     vuex: {
         getters: {
@@ -174,6 +184,15 @@ export default {
             this.orderlist(this.getSearchObj(data.toString(),orderPageStatus))
         },
         searchOrder:function(){
+
+            let beginDateNumber=moment(this.search.beginDate).format('X');
+            let endDateNumber=moment(this.search.endDate).format('X');
+            let today=moment().format('X');
+            if (beginDateNumber>endDateNumber) {
+                this.$set('alertObj',{alertType:'alert-danger',alertInfo:'开始时间不能大于结束时间',alertShow:true})
+                return false;
+            }
+
             //点击搜索按钮切换到对应的tab
             if (this.search.orderStatus=='') {
                 var orderStatus=this.search.orderStatus;
