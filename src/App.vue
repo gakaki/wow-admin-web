@@ -19,7 +19,11 @@
 
 $(function(){
     $(".layout-main").css("min-height", $(window).height());
+    $(window).resize(function() {
+      $(".layout-main").css("min-height", $(window).height());
+    });
 })
+
 
 import Topnav from './components/common/Topnav'
 import Leftsider from './components/common/Leftsider'

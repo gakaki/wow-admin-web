@@ -260,14 +260,17 @@
                                             </li>
                                             <li class="text-muted">{{items.deliveryCompanyName}} 运单号：{{items.deliveryOrderNo}}</li>
                                             <li>
-                                                <span class="text-success">2016-07-20 12:57:05 [签收] 已签收,签收人是: 草签</span>
-                                                <button @click="getExpressInfo({code:items.deliveryCompanyName,number:items.deliveryOrderNo})" type="button" class="btn btn-info btn-xs">更多</button>
+                                                <span class="text-success">
+                                                    {{items.expressLastInfo}}
+                                                </span>
+                                                <button @click="getExpressInfo({code:items.deliveryCompanyCode,number:items.deliveryOrderNo,name:items.deliveryCompanyName})" type="button" class="btn btn-info btn-xs">物流详情</button>
                                             </li>
                                         </ul>
                                     </td>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <!--单件商品渲染-->
                                 <tr v-for="itemsList in items.orderItems" v-if="items.orderItems.length<=1">
                                     <td>
@@ -309,6 +312,49 @@
                                         </p>
                                     </td>
                                 </tr>
+
+                                <!-- 多件商品渲染 -->
+                                <tr v-for="itemsList in items.orderItems" v-if="items.orderItems.length>1">
+                                    <td>
+                                        <img class="pull-left" style="height:80px;margin-right:5px;" v-bind:src="itemsList.specImg">
+                                        <span class="pull-left">
+                                            <p>
+                                                <a href="javascript:void(0);">
+                                                    {{itemsList.productName}}
+                                                </a>
+                                            </p>
+                                            <p class="text-muted">
+                                                {{itemsList.specName}}
+                                            </p>
+                                            <p class="text-muted">
+                                                {{itemsList.color}}
+                                            </p>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.sellPrice}}.00</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.productQty}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>
+                                            {{details.data.paymentStatusName}}
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p>{{itemsList.productTotalAmount}}.00</p>
+                                    </td>
+                                    <td class="text-center" rowspan={{items.orderItems.length}} v-if='$index==0'>
+                                        <p v-if="details.data.deliveryFee==''">
+                                            免运费
+                                        </p>
+                                        <p v-if="details.data.deliveryFee!=''">
+                                            {{details.data.deliveryFee}}.00
+                                        </p>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -382,7 +428,7 @@
         <div slot="header" class="modal-title" style="relative">
             <div class="row" style="position:absolute;left:0px; right:40px;">
                 <div class="col-md-12">
-                    <span class="text-muted" style="padding-left:20px;">公司：{{expressModalInfo.com}}</span>
+                    <span class="text-muted" style="padding-left:20px;">公司：{{expressModalInfo.name}}</span>
                     <span class="text-muted" style="padding-left:20px;">运单号：{{expressModalInfo.nu}}</span>
                 </div>
             </div>
@@ -392,7 +438,7 @@
             <p class="text-center">
                 <img v-show="loadingOpen" v-bind:src="loadingSrc" alt="" />
             </p>
-            <div v-show="!loadingOpen" class="row" style="max-height:400px; overflow:scroll">
+            <div v-show="!loadingOpen" class="row expressInfoModal" style="max-height:400px; overflow:scroll">
                 <div class="col-md-12">
                     <div class="qa-message-list">
                         <div v-bind:class="{'message-list-active':$index==0}" class="message-item" v-for="item in expressModalInfo.list">
@@ -430,6 +476,7 @@
                 loadingOpen:false,
                 showmodal:false,
                 expressModalInfo:{
+                    name:'',
                     com:'',
                     nu:'',
                     list:[]
@@ -441,6 +488,7 @@
             getExpressInfo:function(data){
                 this.$set('loadingOpen',true);
                 this.$set('showmodal',true);
+                this.$set('expressModalInfo.name',data.name);
                 this.$set('expressModalInfo.com',data.code);
                 this.$set('expressModalInfo.nu',data.number)
                 this.$set('expressModalInfo.list','');
@@ -453,9 +501,13 @@
 
             //刚进入详情路由的时候查询快递接口
             readyExpressInfo:function(index,data){
-                console.log('######查询收货内容#####');
-                console.log(index);
-                console.log(data);
+                // for (let a = 0; a < this.details.data.deliveryOrders.length; a++) {
+                //     this.details.data.deliveryOrders[a].expressLastInfo=111;
+                // }
+                // console.log(this.details.data.deliveryOrders);
+                // console.log('######查询收货内容#####');
+                // console.log(index);
+                // console.log(data);
             }
         },
         components:{
@@ -465,14 +517,23 @@
             this.$set('showmodal',false);
         },
         watch:{
+            //详情数据有变化的时候，查询快递接口更新对应的快递信息
             'details':function(val,oldval){
                 if (val.data.deliveryOrders!=undefined) {
                     if (val.data.deliveryOrders.length>0) {
-                        for (let a = 0; a < val.data.deliveryOrders.length; a++) {
-                            this.readyExpressInfo(a,{com:val.data.deliveryOrders[a].deliveryCompanyName,nu:val.data.deliveryOrders[a].deliveryOrderNo})
+                        for (let a = 0; a < this.details.data.deliveryOrders.length; a++) {
+                            this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:this.details.data.deliveryOrders[a].deliveryCompanyCode,express_code:this.details.data.deliveryOrders[a].deliveryOrderNo}).then((response) => {
+                                this.$set('details.data.deliveryOrders['+a+'].expressLastInfo',response.data.data.data[0].context)
+                            }, (response) => {
+                            });
                         }
                     }
                 }
+            },
+            'expressModalInfo.list':function(val,oldval){
+                setTimeout(()=>{
+                    $('.expressInfoModal').scrollTop(0);
+                },100)
             }
         }
     }

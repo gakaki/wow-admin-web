@@ -49,7 +49,7 @@ const mutations = {
     },
     //获取访问菜单
     PERMISSIONS(state,res){
-        console.log(res);
+        //console.log(res);
         state.permissions=res;
     }
 }

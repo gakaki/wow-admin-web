@@ -1,6 +1,6 @@
 <template>
     <div class="containerPadding">
-        首页模板
+        暂无内容
     </div>
 </template>
 <script type="text/javascript">

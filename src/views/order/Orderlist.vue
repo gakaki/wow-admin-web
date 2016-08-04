@@ -1,5 +1,11 @@
 <template>
     <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
+    <pre class="bg-danger" style="font-weight:bold;">
+        提示：测试数据的订单只有三个订单能查询到真实的物流数据。<br />
+        订单1：0142564175<br />
+        订单2：3721853231<br />
+        订单3：3570817321
+    </pre>
     <div class="well well-sm">
         <div class="row">
             <div class="col-md-12 right-head-search">
@@ -220,14 +226,10 @@ export default {
         activate: function (transition) {
             transition.next();
         },
-        data({
-            to: {
-                params: {
-                    orderlist
-                }
-            }
-        }) {
-
+        data({ to: { params: {orderlist}}}) {
+            setTimeout(function(){
+                window.scrollTo(0, 0);
+            },10)
         }
     },
     watch:{

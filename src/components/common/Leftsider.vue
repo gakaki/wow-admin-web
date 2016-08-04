@@ -84,11 +84,11 @@
                                 订单管理
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a v-link='{ path: "/order/refund"}'>
                                 退款处理
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
             </ul>
@@ -105,7 +105,7 @@
                                 新增商品
                             </a>
                         </li>
-                        <li class="menu-item-selected">
+                        <!-- <li class="menu-item-selected">
                             <a v-link='{ path: "/goods/list"}'>
                                 商品管理
                             </a>
@@ -151,7 +151,7 @@
                             <a v-link='{ path: "/goods/attribute"}'>
                                 商品属性
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
             </ul>

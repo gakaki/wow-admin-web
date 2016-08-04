@@ -31,7 +31,10 @@
                 <table class="table table-striped expressTable">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th style="position:relative" class="text-center">
+                                <input v-model="checkAll" type="checkbox" id="checkAllExpress" >
+                                <label style="cursor: pointer; position:absolute; left:0px; right:0px; top:0px; bottom:0px; height:100%;" for="checkAllExpress"></label>
+                            </th>
                             <th>商品</th>
                             <th class="text-center">数量</th>
                             <th class="text-center">商品总计</th>
@@ -40,7 +43,7 @@
                     <tbody class="checkboxdo">
                         <tr v-for="item in itemslistarr">
                             <td style="position:relative" class="text-center">
-                                <input type="checkbox" v-bind:value="item.saleOrderItemId" v-bind:name="item.saleOrderItemId+'name'+$index" v-bind:id="item.saleOrderItemId+'name'+$index" v-model="checkedItems" v-bind:checked="item.expressinstatus==false" />
+                                <input v-devchecked="checkAll" type="checkbox" v-bind:value="item.saleOrderItemId" v-bind:name="item.saleOrderItemId+'name'+$index" v-bind:id="item.saleOrderItemId+'name'+$index" v-model="checkedItems" v-bind:checked="item.expressinstatus==false" />
                                 <label style="cursor: pointer; position:absolute; left:0px; right:0px; top:0px; bottom:0px; height:100%;" for="{{item.saleOrderItemId+'name'+$index}}"></label>
                             </td>
                             <td style="width:45%;">
@@ -114,6 +117,19 @@ import WebStorageCache              from    'web-storage-cache'
 import {orderList,orderDetails}     from    '../../vuex/actions'
 import {API_ROOT}                   from    '../../config.js'
 import Alert                        from    '../../components/common/alert/Alert'
+import Vue                          from    'vue'
+
+Vue.directive( 'devchecked', function( val ){
+    this.el.checked = val;
+    if ("createEvent" in document) {
+        var evt = document.createEvent("HTMLEvents");
+        evt.initEvent("change", false, true);
+        this.el.dispatchEvent(evt);
+    }
+    else {
+        this.el.fireEvent("onchange");
+    }
+});
 
 export default{
     components:{
@@ -124,6 +140,7 @@ export default{
     props:['orderid','orderstatus','address','mobile','name','showbox','itemslistarr','ordertag','orderlistobj'],
     data() {
         return {
+            checkAll : false,
             fruitOptions: [
                 {value:'{"name":"顺丰速运","code":"shunfeng"}', label:'顺丰速运'},
                 {value:'{"name":"日日顺","code":"rrs"}', label:'日日顺'},

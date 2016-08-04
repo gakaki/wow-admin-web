@@ -26,7 +26,7 @@ export default {
             });
             if (transition.to.breadcrumb==='商品管理') {
                 setTimeout(function(){
-                    transition.redirect('/goods/list')
+                    transition.redirect('/goods/addproducts');
                 },0)
             }
         }
