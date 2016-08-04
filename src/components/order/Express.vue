@@ -79,7 +79,7 @@
             </h5>
             <h5 class="expressRadio">
                 发货方式：
-               <label class="checkbox-inline">
+               <label class="checkbox-inline" style="padding:0px;">
                   <input type="radio" name="expressRadios" value="true" checked="checked" v-model="needExpress"> 需要物流
                </label>
                <label class="checkbox-inline" v-show=''>
@@ -121,7 +121,7 @@ export default{
         vSelect,
         Alert
     },
-    props:['orderid','orderstatus','address','mobile','name','showbox','itemslistarr','ordertag'],
+    props:['orderid','orderstatus','address','mobile','name','showbox','itemslistarr','ordertag','orderlistobj'],
     data() {
         return {
             fruitOptions: [
@@ -178,8 +178,9 @@ export default{
                 }
                 let wsCache = new WebStorageCache();
                 var orderSearch=wsCache.get('orderListSearch');
-                if (this.itemslistarr.length<=1) {
-                    orderSearch.currentPage='1'
+                if (this.orderlistobj.data.orderLists.length<=1) {
+                    orderSearch.currentPage=Number(orderSearch.currentPage-1).toString();
+                    this.$dispatch('exprss-page', Number(orderSearch.currentPage-1))
                 }
                 /**
                  * 判断用户在哪个界面触发发货操作

@@ -1,7 +1,5 @@
 <template>
-    <pre>
-        {{search|json}}
-    </pre>
+    <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
     <div class="well well-sm">
         <div class="row">
             <div class="col-md-12 right-head-search">
@@ -66,6 +64,7 @@ import {getOrderlist}           from    '../../vuex/getters'
 import {orderList, expressObj}  from    '../../vuex/actions'
 import myDatepicker             from    'vue-datepicker'
 import WebStorageCache          from    'web-storage-cache'
+import spinner                  from    '../../components/common/spinner/Spinner';
 
 export default {
     props: ['orderList'],
@@ -127,7 +126,8 @@ export default {
         Orderlist,
         Pager,
         Tab,
-        myDatepicker
+        myDatepicker,
+        spinner
     },
     vuex: {
         getters: {
@@ -139,6 +139,9 @@ export default {
         }
     },
     methods: {
+        showloading:function(){
+            this.$broadcast('show::spinner');
+        },
         setstatus:function(data){
             /**
              * 订单列表的tab切换
@@ -182,6 +185,7 @@ export default {
              * 过滤并返回搜索条件
              * 调用该方法需要传入两个参数：页码／订单状态
              */
+            this.showloading();
             var seacrObj=JSON.parse(JSON.stringify(this.search));
             for (var item in seacrObj) {
                 if (item!='status') {
@@ -209,10 +213,11 @@ export default {
         }
     },
     ready: function() {
+        this.showloading();
         this.orderlist(this.getSearchObj('1',''))
     },
     route: {
-        activate: function(transition) {
+        activate: function (transition) {
             transition.next();
         },
         data({
@@ -229,8 +234,14 @@ export default {
         'orderList':function(val,oldval){
             let wsCache = new WebStorageCache();
             this.$set('totalPage',wsCache.get('oorderListTotalPage'));
+            this.$broadcast('hide::spinner');
         }
-    }
+    },
+    events: {
+        'exprss-page': function (msg) {
+            this.$set('cur',msg);
+        }
+    },
 }
 
 </script>

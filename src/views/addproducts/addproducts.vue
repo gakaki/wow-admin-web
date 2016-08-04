@@ -183,7 +183,6 @@
         },
         data(){
             return{
-                spinnerFixed: true,
                 spinnerSize: 'lg',
                 alertObj:{
                     alertType:null,

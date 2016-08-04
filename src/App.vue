@@ -17,6 +17,10 @@
 
 <script>
 
+$(function(){
+    $(".layout-main").css("min-height", $(window).height());
+})
+
 import Topnav from './components/common/Topnav'
 import Leftsider from './components/common/Leftsider'
 import Breadcrumb from './components/common/Breadcrumb'

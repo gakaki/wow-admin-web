@@ -1,13 +1,13 @@
 <style media="screen">
     .alert-box{
-        position: fixed;
+        position: absolute;
         z-index: 999999;
         left: 0px;
         right: 0px;
         top: 0px;
     }
     .alert-fixed{
-        position: fixed;
+        position: absolute;
         left: 0px;
         right: 0px;
         top: 0px;

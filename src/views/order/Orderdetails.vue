@@ -11,12 +11,13 @@
 </template>
 
 <script type="text/javascript">
-import Orderdetails from '../../components/order/Orderdetails'
-import Express from '../../components/order/Express'
-import Steps from '../../components/order/Steps'
-import {getOrderdetails,getExpressobj} from '../../vuex/getters'
-import {orderDetails,expressObj} from '../../vuex/actions'
-import spinner from '../../components/common/spinner/Spinner';
+import Orderdetails                     from    '../../components/order/Orderdetails'
+import Express                          from    '../../components/order/Express'
+import Steps                            from    '../../components/order/Steps'
+import {getOrderdetails,getExpressobj}  from    '../../vuex/getters'
+import {orderDetails,expressObj}        from    '../../vuex/actions'
+import spinner                          from    '../../components/common/spinner/Spinner';
+
 export default {
     components: {
         Orderdetails,
@@ -26,7 +27,6 @@ export default {
     },
     data() {
         return {
-            spinnerFixed: true,
             spinnerSize: 'lg',
             steps: [{
                 name: '待付款',

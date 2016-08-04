@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Express :ordertag="'list'" :showbox="Getexpressobj.tag" :orderid="Getexpressobj.orderid" :address="Getexpressobj.address" :mobile="Getexpressobj.phone" :name="Getexpressobj.name" :itemslistarr="Getexpressobj.itemlist"></Express>
+        <Express :orderlistobj="list" :ordertag="'list'" :showbox="Getexpressobj.tag" :orderid="Getexpressobj.orderid" :address="Getexpressobj.address" :mobile="Getexpressobj.phone" :name="Getexpressobj.name" :itemslistarr="Getexpressobj.itemlist"></Express>
         <table class="table order-list">
             <thead>
                 <tr>

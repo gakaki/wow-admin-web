@@ -261,7 +261,7 @@
                                             <li class="text-muted">{{items.deliveryCompanyName}} 运单号：{{items.deliveryOrderNo}}</li>
                                             <li>
                                                 <span class="text-success">2016-07-20 12:57:05 [签收] 已签收,签收人是: 草签</span>
-                                                <a @click="getExpressInfo({code:items.deliveryCompanyName,number:items.deliveryOrderNo})" href="javascript:;">更多</a>
+                                                <button @click="getExpressInfo({code:items.deliveryCompanyName,number:items.deliveryOrderNo})" type="button" class="btn btn-info btn-xs">更多</button>
                                             </li>
                                         </ul>
                                     </td>
@@ -379,17 +379,21 @@
     </div>
 
     <modal :show.sync="showmodal">
-        <h4 slot="header" class="modal-title">物流信息</h4>
+        <div slot="header" class="modal-title" style="relative">
+            <div class="row" style="position:absolute;left:0px; right:40px;">
+                <div class="col-md-12">
+                    <span class="text-muted" style="padding-left:20px;">公司：{{expressModalInfo.com}}</span>
+                    <span class="text-muted" style="padding-left:20px;">运单号：{{expressModalInfo.nu}}</span>
+                </div>
+            </div>
+        </div>
         <button slot="close" type="button" class="close" @click="showmodal=false">&times;</button>
         <div slot="body">
-            <div class="row" style="max-height:400px; overflow:scroll">
+            <p class="text-center">
+                <img v-show="loadingOpen" v-bind:src="loadingSrc" alt="" />
+            </p>
+            <div v-show="!loadingOpen" class="row" style="max-height:400px; overflow:scroll">
                 <div class="col-md-12">
-                    <dl class="dl-horizontal">
-                        <dt>承运公司</dt>
-                        <dd>{{expressModalInfo.com}}</dd>
-                        <dt>货单运号</dt>
-                        <dd>{{expressModalInfo.nu}}</dd>
-                    </dl>
                     <div class="qa-message-list">
                         <div v-bind:class="{'message-list-active':$index==0}" class="message-item" v-for="item in expressModalInfo.list">
                             <div class="message-inner">
@@ -415,11 +419,15 @@
     </modal>
 </template>
 <script type="text/javascript">
-    import Modal from '../../components/common/Modal'
+    import Modal                from    '../../components/common/Modal'
+    import {uploadImgLoad}      from    '../../config.js'
+
     export default{
         props:['details'],
         data(){
             return{
+                loadingSrc:uploadImgLoad,
+                loadingOpen:false,
                 showmodal:false,
                 expressModalInfo:{
                     com:'',
@@ -431,13 +439,14 @@
         methods:{
             //弹出层查询快递100物流接口
             getExpressInfo:function(data){
+                this.$set('loadingOpen',true);
+                this.$set('showmodal',true);
                 this.$set('expressModalInfo.com',data.code);
                 this.$set('expressModalInfo.nu',data.number)
-                this.$set('showmodal',true);
                 this.$set('expressModalInfo.list','');
                 this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:data.code,express_code:data.number}).then((response) => {
-                    console.log(response);
-                    this.$set('expressModalInfo.list',response.data.data.data)
+                    this.$set('expressModalInfo.list',response.data.data.data);
+                    this.$set('loadingOpen',false);
                 }, (response) => {
                 });
             },

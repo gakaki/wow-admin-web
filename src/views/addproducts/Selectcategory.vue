@@ -126,7 +126,6 @@
         data(){
             return{
                 imgLoad:uploadImgLoad,
-                spinnerFixed: true,
                 spinnerSize: 'lg',
                 productBasiInfo:productBasiInfo,
                 currentTag:null,
