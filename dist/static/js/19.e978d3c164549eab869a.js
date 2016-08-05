@@ -1,2 +1,0 @@
-webpackJsonp([19,20],{406:function(o,t){o.exports="<div class=containerPadding> 商品详情 </div>"},458:function(o,t,e){var p,s;s=e(406),o.exports=p||{},o.exports.__esModule&&(o.exports=o.exports["default"]),s&&(("function"==typeof o.exports?o.exports.options||(o.exports.options={}):o.exports).template=s)}});
-//# sourceMappingURL=19.e978d3c164549eab869a.js.map
