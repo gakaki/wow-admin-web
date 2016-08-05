@@ -192,7 +192,6 @@
                 this.$broadcast('hide::spinner');
                 // success callback
                 if (response.data.resCode==0) {
-                    this.$set('alertObj',{alertType:'alert-success',alertInfo:'获取分类成功',alertShow:true})
                     this.$set('one',response.data.data);
                 }else {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:response.data.resMsg,alertShow:true})
