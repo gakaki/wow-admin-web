@@ -187,7 +187,6 @@
     import Select2 from '../../../../components/common/selecte2/Selecte2'
     import Designers from './Designers'
     import vSelect from '../../../../components/common/vue-select/src/index.js'
-    import {DesignersData,Country} from '../../../../test.js'
     import Alert from '../../../../components/common/alert/Alert'
     import {API_ROOT} from '../../../../config'
 
