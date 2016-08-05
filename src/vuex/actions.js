@@ -6,41 +6,38 @@ import Vue from 'vue'
 import {API_ROOT} from '../config'
 import WebStorageCache from 'web-storage-cache'
 
-//订单列表
-export const orderList=function({dispatch, state},orderlist){
-    if (orderlist.status=='') {
-        var jsontext=JSON.stringify(orderlist);
-    }else {
-        var jsontext=JSON.stringify(orderlist);
+/**
+ * 简单包装数据请求方式，get/post
+ */
+export const httpRes={
+    get:function({dispatch, state},url,event,data){
+        let jsontext=JSON.stringify(data);
+        Vue.http({url: API_ROOT+url, data:{paramJson:jsontext},method: 'get'})
+        .then(res =>
+            [dispatch(event,res.data)]
+        )
+        .catch(function(ex) {
+        })
+    },
+    get:function({dispatch, state},url,event,data){
+        let jsontext=JSON.stringify(data);
+        Vue.http({url: API_ROOT+url, data:{paramJson:jsontext},method: 'post'})
+        .then(res =>
+            [dispatch(event,res.data)]
+        )
+        .catch(function(ex) {
+        })
     }
-    this.$http.post(API_ROOT+'admin-api-dev/v1/order/getList',{paramJson:jsontext}).then((response) => {
-        if (response.data.resCode=='0') {
-            if (response.data.data.totalPage!='0') {
-                let wsCache = new WebStorageCache();
-                wsCache.set('oorderListTotalPage', response.data.data.totalPage);
-            }
-            dispatch('ORDERLIST',response.data);
-        }
-    }, (response) => {
-    });
+}
+
+//订单列表
+export const orderList=function({dispatch, state},data){
+    httpRes.get({dispatch,state},'admin-api-dev/v1/order/getList','ORDERLIST',data);
 }
 
 //订单详情
 export const orderDetails=function({dispatch, state},data){
-    let jsontext=JSON.stringify(data);
-    this.$http.get(API_ROOT+'admin-api-dev/v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
-        if (response.data.resCode=='0') {
-            dispatch('ORDERDETAILS',response.data);
-        }
-    }, (response) => {
-    });
-    // Vue.http({url: API_ROOT+'/adminapi/order/detail', data:{order_id:data.orderid},method: 'post'})
-    // .then(res =>
-    //     [dispatch('ORDERDETAILS',res.data.data)]
-    // )
-    // .catch(function(ex) {
-    //     console.log('parsing failed', ex)
-    // })
+    httpRes.get({dispatch,state},'admin-api-dev/v1/order/orderDetail','ORDERDETAILS',data);
 }
 
 //发货商品列表
@@ -51,4 +48,10 @@ export const expressObj=function({dispatch, state},data){
 //获取访问菜单
 export const permissionsObj=function({dispatch, state},data){
     [dispatch('PERMISSIONS',data)]
+}
+
+//商品列表
+export const setProductList=function({dispatch, state},data){
+    console.log(data);
+    // dispatch('PRODUCTLIST',response.data);
 }

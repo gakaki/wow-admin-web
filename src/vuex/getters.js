@@ -21,3 +21,8 @@ export function getExpressobj (state) {
 export function getPermissions(state){
     return state.permissions
 }
+
+//商品列表
+export function getProductList(state){
+    return state.productlist
+}

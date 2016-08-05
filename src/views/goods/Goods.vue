@@ -197,9 +197,6 @@
                 <p>
                     <a href="javascript:void(0);">{{item.name}}</a>
                 </p>
-                <p class="text-muted">
-                    SPU：C02356652
-                </p>
             </td>
             <td>
                 {{$index}}
@@ -234,17 +231,23 @@
         </tr>
     </tbody>
 </table>
-<Pager :cur.sync="1" :all.sync='5'></Pager>
+<Pager :cur.sync="1" :all.sync='5' @btn-click="listen"></Pager>
 
 </template>
 
 <script type="text/javascript">
-    import Pager from '../../components/common/Pager'
+    import Pager                from    '../../components/common/Pager'
+    import {getProductList}     from    '../../vuex/getters.js'
+    import {setProductList}     from    '../../vuex/actions.js'
+
     export default{
         data(){
             return{
                 list:10,
                 listView:'sku',
+                search:{
+
+                },
                 skuArrView:[
                     {
                         name:'名字1',
@@ -279,6 +282,29 @@
         },
         components:{
             Pager
+        },
+        vuex:{
+            getters:{
+                vuex_getProductList:getProductList
+            },
+            actions:{
+                vuex_setProductList:setProductList
+            }
+        },
+        methods:{
+            listen: function(data) {
+                //商品列表分页点击后的回调
+                this.vuex_setProductList(data);
+                // if (this.status=='') {
+                //     var orderPageStatus=this.status;
+                // }else {
+                //     var orderPageStatus=Number(this.status);
+                // }
+                // this.orderlist(this.getSearchObj(data.toString(),orderPageStatus))
+            },
+            getSearchObj: function(page){
+
+            }
         }
     }
 </script>

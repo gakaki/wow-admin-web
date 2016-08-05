@@ -185,6 +185,8 @@ export default {
         },
         searchOrder:function(){
 
+            console.log(this.orderList);
+
             let beginDateNumber=moment(this.search.beginDate).format('X');
             let endDateNumber=moment(this.search.endDate).format('X');
             let today=moment().format('X');
@@ -254,6 +256,10 @@ export default {
     watch:{
         'orderList':function(val,oldval){
             let wsCache = new WebStorageCache();
+            if (this.orderList.data.totalPage!='0') {
+                let wsCache = new WebStorageCache();
+                wsCache.set('oorderListTotalPage', this.orderList.data.totalPage);
+            }
             this.$set('totalPage',wsCache.get('oorderListTotalPage'));
             this.$broadcast('hide::spinner');
         }
