@@ -9,7 +9,7 @@
         height: 12px;
     }
     .color-label{
-        width: 120px;
+        width: 80px;
         min-height: 24px;
     }
     .color-label input[type=checkbox]{
@@ -34,16 +34,17 @@
         <div class="form-group" id="colorSelected">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
             <div class="col-sm-7 bg-muted">
-                <label v-for="item in productsalesattribute.color" class="checkbox-inline color-label">
-                    <input type="checkbox" value="{{item.name}}" v-model='item.selected'>
-                    <i v-if="item.multi!=true" v-bind:style="{ background: item.color}" class="addproduct-box-html-color-box"></i>
-                    <i v-if="item.multi==true" class="multi-color addproduct-box-html-color-box"></i>
-                    <span v-if="item.selected==false">{{item.name}}</span>
-
-                    <div v-if="item.selected==true" style="display:inline-block">
+                <div v-for="item in productsalesattribute.color" style="display:inline-block; min-width:140px;">
+                    <label class="checkbox-inline" style="margin-right:0px;">
+                        <input type="checkbox" value="{{item.name}}" v-model='item.selected'>
+                        <i v-if="item.multi!=true" v-bind:style="{ background: item.color}" class="addproduct-box-html-color-box"></i>
+                        <i v-if="item.multi==true" class="multi-color addproduct-box-html-color-box"></i>
+                        <span v-if="item.selected==false">{{item.name}}</span>
+                    </label>
+                    <div class="color-label" v-if="item.selected==true" style="display:inline-block">
                         <input data-rule="required" name="{{'colorSelected'+$index}}" v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.name}}" v-model='item.name' placeholder="颜色">
                     </div>
-                </label>
+                </div>
             </div>
         </div>
         <div class="form-group" id="specSelected">
