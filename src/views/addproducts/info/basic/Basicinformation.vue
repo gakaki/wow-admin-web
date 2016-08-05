@@ -43,9 +43,9 @@
             </span>
         </div>
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品型号</label>
+            <label for="firstname" class="col-sm-2 control-label">商品型号</label>
             <div class="col-sm-3">
-                <input data-rule="required" name="productModel" v-model="productbasiinfo.product_model" type="text" class="form-control" placeholder="商品型号">
+                <input name="productModel" v-model="productbasiinfo.product_model" type="text" class="form-control" placeholder="商品型号">
             </div>
         </div>
         <div class="form-group">
@@ -57,17 +57,17 @@
         </div>
 
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>设计师(可多选)</label>
+            <label for="firstname" class="col-sm-2 control-label">设计师(可多选)</label>
             <div class="col-sm-4 add-product-hide-input">
-                <input data-rule="required" name="designerVoList" v-bind:value="productbasiinfo.product_designer" type="text" class="form-control hidden" placeholder="设计师">
+                <input name="designerVoList" v-bind:value="productbasiinfo.product_designer" type="text" class="form-control hidden" placeholder="设计师">
                 <v-select multiple label="designerName" :debounce="500" :on-search="setDesignersCache" :value.sync="productbasiinfo.product_designer" placeholder="搜索设计师" :options="designers"></v-select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>主设计师</label>
+            <label for="firstname" class="col-sm-2 control-label">主设计师</label>
             <div class="col-sm-4 add-product-hide-input">
-                <input data-rule="required" name="PrimaryDesigner" v-bind:value="isPrimaryDesigner" type="text" class="form-control hidden" placeholder="主设计师">
+                <input name="PrimaryDesigner" v-bind:value="isPrimaryDesigner" type="text" class="form-control hidden" placeholder="主设计师">
                 <select @change="isPrimary($event)" class="form-control">
                     <option value="" selected>请选择主设计师</option>
                     <option v-for="item in productbasiinfo.product_designer" v-bind:value="$index">{{item.designerName}}</option>
