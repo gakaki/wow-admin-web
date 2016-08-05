@@ -105,12 +105,12 @@
                                 新增商品
                             </a>
                         </li>
+                        <!--
                         <li class="menu-item-selected">
                             <a v-link='{ path: "/goods/list"}'>
                                 商品管理
                             </a>
                         </li>
-                            <!--
                         <li class="menu-item-selected">
                             <a v-link='{ path: "/goods/combination"}'>
                                 组合商品管理
