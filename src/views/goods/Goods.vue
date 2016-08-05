@@ -1,6 +1,9 @@
 <template>
 
-<div class="well well-sm">
+<div class="well well-sm" style="position:relative;">
+    <div style="position:absolute; right:0px; left:0px; top:0px; bottom:0px; background:#fff; opacity:.5; z-index:9;">
+
+    </div>
     <div class="row">
         <div class="col-md-12 right-head-search">
             <form class="form-inline">
@@ -90,18 +93,18 @@
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group pull-left">
-            <button type="button" class="btn btn-default">上架</button>
-            <button type="button" class="btn btn-default">下架</button>
-            <button type="button" class="btn btn-default">导出Excel</button>
-            <button type="button" class="btn btn-default">删除</button>
+            <button type="button" class="btn btn-default disabled">上架</button>
+            <button type="button" class="btn btn-default disabled">下架</button>
+            <button type="button" class="btn btn-default disabled">导出Excel</button>
+            <button type="button" class="btn btn-default disabled">删除</button>
         </div>
         <div class="btn-group pull-right">
-            <button @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default">SPU视图</button>
-            <button @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default">SKU视图</button>
+            <button @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default disabled">SPU视图</button>
+            <button @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default disabled">SKU视图</button>
         </div>
     </div>
 </div>
-<table class="table order-list table-thead-center table-tbody-center table-hover" v-if="listView=='spu'">
+<!-- <table class="table order-list table-thead-center table-tbody-center table-hover" v-if="listView=='spu'">
     <thead>
         <tr>
             <th>
@@ -167,14 +170,11 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
 
 <table class="table order-list table-thead-center table-tbody-center table-tbody-hover" v-if="listView=='sku'">
     <thead>
         <tr>
-            <th>
-                <input type="checkbox" value="1077" name="1077name1">
-            </th>
             <th>图片</th>
             <th>商品名称</th>
             <th>品牌</th>
@@ -190,9 +190,6 @@
     </thead>
     <tbody v-for="item in skuArrView">
         <tr v-for="items in item.list">
-            <td v-if="$index==0" v-bind:rowspan="item.list.length">
-                <input type="checkbox" value="1077" name="1077name1">
-            </td>
             <td v-if="$index==0" v-bind:rowspan="item.list.length">
                 <img src="../../assets/img/file_242_2.jpg" style="width:50px;" alt="" />
             </td>
@@ -247,7 +244,7 @@
         data(){
             return{
                 list:10,
-                listView:'spu',
+                listView:'sku',
                 skuArrView:[
                     {
                         name:'名字1',

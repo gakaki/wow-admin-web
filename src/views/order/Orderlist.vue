@@ -86,7 +86,7 @@ export default {
                 alertShow:false,
             },
             curIndex:0,
-            pageSize:'2',
+            pageSize:'10',
             search:{
                 orderCode:'',
                 beginDate:'',
