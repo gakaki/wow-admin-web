@@ -47,47 +47,47 @@ export const leftSider={
             path:'/order/list',
             name:'订单管理'
         },
-        {
-            path:'/order/refund',
-            name:'退款处理'
-        }
+        // {
+        //     path:'/order/refund',
+        //     name:'退款处理'
+        // }
     ],
     goods:[
         {
             path:'/goods/addproducts',
             name:'新增商品'
         },
-        {
-            path:'/goods/list',
-            name:'商品管理'
-        },
-        {
-            path:'/goods/combination',
-            name:'组合商品管理'
-        },
-        {
-            path:'/goods/import',
-            name:'批量导入商品'
-        },
-        {
-            path:'/goods/recycle',
-            name:'回收站'
-        },
-        {
-            path:'/goods/designers',
-            name:'设计师'
-        },
-        {
-            path:'/goods/category',
-            name:'分类管理'
-        },
-        {
-            path:'/goods/category-attr-set',
-            name:'分类属性设置'
-        },
-        {
-            path:'/goods/attribute',
-            name:'商品属性'
-        }
+        // {
+        //     path:'/goods/list',
+        //     name:'商品管理'
+        // },
+        // {
+        //     path:'/goods/combination',
+        //     name:'组合商品管理'
+        // },
+        // {
+        //     path:'/goods/import',
+        //     name:'批量导入商品'
+        // },
+        // {
+        //     path:'/goods/recycle',
+        //     name:'回收站'
+        // },
+        // {
+        //     path:'/goods/designers',
+        //     name:'设计师'
+        // },
+        // {
+        //     path:'/goods/category',
+        //     name:'分类管理'
+        // },
+        // {
+        //     path:'/goods/category-attr-set',
+        //     name:'分类属性设置'
+        // },
+        // {
+        //     path:'/goods/attribute',
+        //     name:'商品属性'
+        // }
     ]
 }

@@ -20,7 +20,7 @@ export const httpRes={
         .catch(function(ex) {
         })
     },
-    get:function({dispatch, state},url,event,data){
+    post:function({dispatch, state},url,event,data){
         let jsontext=JSON.stringify(data);
         Vue.http({url: API_ROOT+url, data:{paramJson:jsontext},method: 'post'})
         .then(res =>
@@ -33,7 +33,7 @@ export const httpRes={
 
 //订单列表
 export const orderList=function({dispatch, state},data){
-    httpRes.get({dispatch,state},'admin-api-dev/v1/order/getList','ORDERLIST',data);
+    httpRes.post({dispatch,state},'admin-api-dev/v1/order/getList','ORDERLIST',data);
 }
 
 //订单详情
