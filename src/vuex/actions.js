@@ -8,6 +8,7 @@ import WebStorageCache from 'web-storage-cache'
 
 /**
  * 简单包装数据请求方式，get/post
+ * 这里只负责dispatch数据的变更，不负责逻辑
  */
 export const httpRes={
     get:function({dispatch, state},url,event,data){

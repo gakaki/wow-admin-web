@@ -73,86 +73,17 @@
 
 <div class="left-sider">
     <div class="menu">
-        <!--订单管理菜单-->
-        <div v-if="permissions.tag=='order'">
+        <!--左侧菜单-->
+        <div>
             <h5>订单管理</h5>
             <ul class="list-unstyled">
                 <li>
                     <ul class="menu-dark">
-                        <li class="menu-item-selected">
-                            <a v-link='{ path: "/order/list"}'>
-                                订单管理
+                        <li v-for="item in leftNavList" class="menu-item-selected">
+                            <a v-link='{ path: item.path}'>
+                                {{item.name}}
                             </a>
                         </li>
-                        <!-- <li>
-                            <a v-link='{ path: "/order/refund"}'>
-                                退款处理
-                            </a>
-                        </li> -->
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <!--商品管理菜单-->
-        <div v-if="permissions.tag=='goods'">
-            <h5>商品管理</h5>
-            <ul class="list-unstyled">
-                <li>
-                    <ul class="menu-dark">
-                        <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/addproducts"}'>
-                                新增商品
-                            </a>
-                        </li>
-                        <!--
-                        <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/list"}'>
-                                商品管理
-                            </a>
-                        </li>
-                        <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/combination"}'>
-                                组合商品管理
-                            </a>
-                        </li>
-                        <li class="menu-item-selected">
-                            <a v-link='{ path: "/goods/import"}'>
-                                批量导入商品
-                            </a>
-                        </li>
-                        <li class="menu-item-selected">
-                            <a v-link='{path: "/goods/recycle"}'>
-                                回收站
-                            </a>
-                        </li>
-                        <hr class="left-nav-hr">
-                        <li>
-                            <a v-link='{ path: "/goods/brand"}'>
-                                品牌
-                            </a>
-                        </li>
-                        <li>
-                            <a v-link='{ path: "/goods/designers"}'>
-                                设计师
-                            </a>
-                        </li>
-                        <hr class="left-nav-hr">
-                        <li>
-                            <a v-link='{ path: "/goods/category"}'>
-                                分类管理
-                            </a>
-                        </li>
-                        <li>
-                            <a v-link='{ path: "/goods/category-attr-set"}'>
-                                分类属性设置
-                            </a>
-                        </li>
-                        <li>
-                            <a v-link='{ path: "/goods/attribute"}'>
-                                商品属性
-                            </a>
-                        </li> -->
                     </ul>
                 </li>
             </ul>
@@ -163,11 +94,33 @@
 </template>
 
 <script type="text/javascript">
-    import {getPermissions} from '../../vuex/getters'
+
+    /**
+     * getPermissions是vuex里面的数据，
+     * 顶部菜单路由切换的时候，同时改变vuex里面的Permissions值
+     * 该值主要是给watch监控变化，更改左侧菜单内容
+     */
+    import {getPermissions}     from    '../../vuex/getters'
+    import {leftSider}          from    '../../config.js'
+
     export default{
+        data(){
+            return{
+                leftNavList:[]
+            }
+        },
         vuex:{
             getters:{
                 permissions:getPermissions
+            }
+        },
+        watch:{
+            /**
+             * 根据watch监控路由变化，填充对应的菜单
+             * 菜单的数据在config.js里面的leftSider常量
+             */
+            'permissions.tag':function(val,oldval){
+                this.$set('leftNavList',leftSider[val])
             }
         }
     }
