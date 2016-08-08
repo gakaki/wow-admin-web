@@ -1,6 +1,7 @@
 <style media="screen">
     .multi-color{
         background:-webkit-linear-gradient(left,#f00 50%,#fed533 50%), -webkit-linear-gradient(left,#1790c8 50%,#7bba3c 50%);
+        background:-moz-linear-gradient(left,#f00 50%,#fed533 50%), -moz-linear-gradient(left,#1790c8 50%,#7bba3c 50%);
         background-repeat:no-repeat;
         background-position:left top,left bottom;
         background-size:100% 50%;
@@ -64,14 +65,15 @@
             </div>
         </div>
         <div class="form-group" style="margin-top:40px;">
-            <label for="firstname" class="col-sm-2 control-label"></label>
+            <label for="firstname" class="col-sm-2 control-label">
+            </label>
             <div class="col-sm-7 control-label">
                 <div class="text-left">
                     批量设置：
                     <div class="btn-group">
                         <button @click="batchSellPrice=!batchSellPrice" v-if="batchWeight==false" type="button" class="btn btn-primary btn-sm">售价</button>
-                        <div v-if="batchSellPrice==true" class="input-group input-group-sm" style="width:200px;">
-                           <input v-focus="batchSellPrice" @keyup.enter="batch_sellPrice" v-model="SellPrice" style="border-left:0px; border-radius:0px;" placeholder="批量设置售价" type="number" class="form-control">
+                        <div v-if="batchSellPrice==true" class="input-group input-group-sm" style="max-width:200px;">
+                           <input v-focus="batchSellPrice" @keyup.enter="batch_sellPrice" v-model="SellPrice" style="border-left:0px; border-radius:0px;" placeholder="售价" type="number" class="form-control">
                            <span class="input-group-btn">
                               <button @click="batch_sellPrice" class="btn btn-success" type="button">
                                  确定
@@ -83,8 +85,8 @@
                         </div>
 
                         <button @click="batchWeight=!batchWeight" v-if="batchSellPrice==false" type="button" class="btn btn-primary btn-sm">重量</button>
-                        <div v-if="batchWeight==true" class="input-group input-group-sm" style="width:200px;">
-                           <input v-focus="batchWeight" @keyup.enter="batch_weight" v-model="weight" style="border-left:0px; border-radius:0px;" placeholder="批量设置重量" type="number" class="form-control">
+                        <div v-if="batchWeight==true" class="input-group input-group-sm" style="max-width:200px;">
+                           <input v-focus="batchWeight" @keyup.enter="batch_weight" v-model="weight" style="border-left:0px; border-radius:0px;" placeholder="重量" type="number" class="form-control">
                            <span class="input-group-btn">
                               <button @click="batch_weight" class="btn btn-success" type="button">
                                  确定
@@ -110,7 +112,7 @@
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody :tbody_index="$index" :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody" :spec_select="productsalesattribute.specSelect">
+                <tbody :speclists="specListS" :tbody_index="$index" :listobj="item" v-for="item in productsalesattribute.color" is="Spectbody" :spec_select="productsalesattribute.specSelect">
                 </tbody>
             </table>
         </div>
@@ -159,6 +161,7 @@
                 this.$set('productsalesattribute.colorSelect',this.colorSelect);
             },
             'specListS':function(val,oldval){
+                console.log(val.length);
                 this.$set('productsalesattribute.specSelect',this.specListS);
             }
         },

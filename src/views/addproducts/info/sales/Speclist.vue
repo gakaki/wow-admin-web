@@ -8,10 +8,10 @@
 </style>
 <template>
     <tr v-if="list.selected==true" v-bind:class="{'spec-disabled':lists.disabled==true}">
-        <td v-if="index==0" v-bind:rowspan="speclength">
+        <td v-if="index==0" v-bind:rowspan="speclists.length">
             <Color-img :listobjselecteds="listobjselected" :id="tbody_index" :imgsrc="img"></Color-mg>
         </td>
-        <td v-if="index==0" v-bind:rowspan="speclength">
+        <td v-if="index==0" v-bind:rowspan="speclists.length">
             {{name}}
         </td>
         <td>
@@ -33,9 +33,9 @@
     import {productSalesAttribute} from '../../model'
     import ColorImg from './Color_img'
     export default{
-        props:['list','index','speclength','name','img','tbody_index','spec_index','lists','spec_select_length','listobjselected'],
+        props:['list','index','speclength','name','img','tbody_index','spec_index','lists','spec_select_length','listobjselected','speclists'],
         components:{
-            ColorImg
+            ColorImg,
         },
         data(){
             return{
@@ -43,7 +43,7 @@
                 activity_price:'',
                 cost_price:'',
                 weight:'',
-                arrivalPeriod:'',
+                arrivalPeriod:''
             }
         },
         methods:{
