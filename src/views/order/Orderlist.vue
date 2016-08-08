@@ -184,9 +184,6 @@ export default {
             this.orderlist(this.getSearchObj(data.toString(),orderPageStatus))
         },
         searchOrder:function(){
-
-            console.log(this.orderList);
-
             let beginDateNumber=moment(this.search.beginDate).format('X');
             let endDateNumber=moment(this.search.endDate).format('X');
             let today=moment().format('X');

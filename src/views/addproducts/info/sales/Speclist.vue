@@ -9,7 +9,7 @@
 <template>
     <tr v-if="list.selected==true" v-bind:class="{'spec-disabled':lists.disabled==true}">
         <td v-if="index==0" v-bind:rowspan="speclength">
-            <Color-img :id="tbody_index" :imgsrc="img"></Color-mg>
+            <Color-img v-if="listobjselected==true" :id="tbody_index" :imgsrc="img"></Color-mg>
         </td>
         <td v-if="index==0" v-bind:rowspan="speclength">
             {{name}}
@@ -18,10 +18,10 @@
             {{list.spec}}
         </td>
         <td>
-            <input data-rule="required" name="{{'sellPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
+            <input v-if="listobjselected==true" data-rule="required" name="{{'sellPrice'+tbody_index+index}}" @keyup="setVal(tbody_index,index,sell_price,'sell_price') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="sell_price" type="number" class="form-control sales-attribute-table-text" placeholder="售价" >
         </td>
         <td>
-            <input data-rule="required" name="{{'weight'+tbody_index+index}}" @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
+            <input v-if="listobjselected==true" data-rule="required" name="{{'weight'+tbody_index+index}}" @keyup="setVal(tbody_index,index,weight,'weight') | debounce 500" v-bind:disabled="lists.disabled==true" v-model="weight" type="number" class="form-control sales-attribute-table-text" placeholder="重量">
         </td>
         <td>
             <button @click="specDisable()" v-if="lists.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>
@@ -33,7 +33,7 @@
     import {productSalesAttribute} from '../../model'
     import ColorImg from './Color_img'
     export default{
-        props:['list','index','speclength','name','img','tbody_index','spec_index','lists','spec_select_length'],
+        props:['list','index','speclength','name','img','tbody_index','spec_index','lists','spec_select_length','listobjselected'],
         components:{
             ColorImg
         },
