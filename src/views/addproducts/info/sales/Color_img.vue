@@ -7,7 +7,7 @@
 <template>
     <a class="productColorImg" @click="imgIndex.set_img_index(id)" id="Apickfiles{{id}}" href="">
         <input data-rule="required" v-bind:value="imgsrc" class="form-control hidden" type="text" name="{{'productColorImg'+id}}" placeholder="颜色图片">
-        <img v-if="imgsrc!=''" style="max-width:70px; max-height:70px;" v-bind:src="imgIndex.qiniuurl+imgsrc" alt="" />
+        <img v-if="imgsrc!=''" style="max-width:70px; max-height:70px;" v-bind:src="imgsrc" alt="" />
         <button v-if="imgsrc==''" class="btn btn-success">
             <span>选择图片</span>
         </button>

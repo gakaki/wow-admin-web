@@ -12,7 +12,7 @@ export const qiNiu={
     uptokenUrl:'http://apidev.dev.wowdsgn.com:8400/apiv1/qiniu/token'
 }
 
-export const qiniuimgsrc="http://o7s1lyy5h.bkt.clouddn.com/"
+export const qiniuimgsrc="http://img.wowdsgn.com/"
 
 //删除数组
 Array.prototype.del = function(i) {
@@ -57,10 +57,10 @@ export const leftSider={
             path:'/goods/addproducts',
             name:'新增商品'
         },
-        // {
-        //     path:'/goods/list',
-        //     name:'商品管理'
-        // },
+        {
+            path:'/goods/list',
+            name:'商品管理'
+        },
         // {
         //     path:'/goods/combination',
         //     name:'组合商品管理'

@@ -1,5 +1,5 @@
 <template>
-
+<spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
 <div class="well well-sm" style="position:relative;">
     <div style="position:absolute; right:0px; left:0px; top:0px; bottom:0px; background:#fff; opacity:.5; z-index:9;">
 
@@ -93,14 +93,14 @@
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group pull-left">
-            <button type="button" class="btn btn-default disabled">上架</button>
-            <button type="button" class="btn btn-default disabled">下架</button>
-            <button type="button" class="btn btn-default disabled">导出Excel</button>
-            <button type="button" class="btn btn-default disabled">删除</button>
+            <button disabled="disabled" type="button" class="btn btn-default">上架</button>
+            <button disabled="disabled" type="button" class="btn btn-default">下架</button>
+            <button disabled="disabled" type="button" class="btn btn-default">导出Excel</button>
+            <button disabled="disabled" type="button" class="btn btn-default">删除</button>
         </div>
         <div class="btn-group pull-right">
-            <button @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default disabled">SPU视图</button>
-            <button @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default disabled">SKU视图</button>
+            <button disabled="disabled" @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default">SPU视图</button>
+            <button disabled="disabled" @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default">SKU视图</button>
         </div>
     </div>
 </div>
@@ -171,7 +171,6 @@
         </tr>
     </tbody>
 </table> -->
-
 <table class="table order-list table-thead-center table-tbody-center table-tbody-hover" v-if="listView=='sku'">
     <thead>
         <tr>
@@ -188,28 +187,27 @@
             <th>操作</th>
         </tr>
     </thead>
-    <tbody v-for="item in skuArrView">
-        <tr v-for="items in item.list">
-            <td v-if="$index==0" v-bind:rowspan="item.list.length">
-                <img src="../../assets/img/file_242_2.jpg" style="width:50px;" alt="" />
+    <tbody v-for="item in vuex_getProductList.data.productListPageVo">
+        <tr v-for="items in item.productListVo">
+            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
+                <img v-bind:src="item.productVo.productImg" style="width:50px;" alt="" />
             </td>
-            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <p>
-                    <a href="javascript:void(0);">{{item.name}}</a>
+                    <a href="javascript:void(0);">{{item.productVo.productName}}</a>
                 </p>
             </td>
             <td>
-                {{$index}}
-                Umbra
+                {{items.brandName}}
             </td>
             <td>
-                L
+                {{items.specName}}
             </td>
             <td>
                 {{$index*12932+'ab'}}
             </td>
             <td>
-                40
+                {{items.sellPrice}}
             </td>
             <td>
                 <span v-bind:class="{ 'text-danger': $index <= 3}">{{$index}}</span>
@@ -218,20 +216,20 @@
                 220
             </td>
             <td>
-                <span v-if="$index <=3" class="text-success">已上架</span>
-                <span v-if="$index > 3" class="text-danger">待上架</span>
+                <span v-if="items.productStatus==1" class="text-success">已上架</span>
+                <span v-if="items.productStatus==2" class="text-danger">待上架</span>
             </td>
-            <td v-if="$index==0" v-bind:rowspan="item.list.length">
+            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 2016-05-03 06:12:35
             </td>
-            <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.list.length">
-                <a href="#">编辑</a>
-                <a class="link-delete" href="#">删除</a>
+            <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.productListVo.length">
+                <a class="disabled btn" href="#">编辑</a>
+                <a class="disabled link-delete btn" href="#">删除</a>
             </td>
         </tr>
     </tbody>
 </table>
-<Pager :cur.sync="1" :all.sync='5' @btn-click="listen"></Pager>
+<Pager :cur.sync="1" :all.sync='totalPage' @btn-click="listen"></Pager>
 
 </template>
 
@@ -239,49 +237,24 @@
     import Pager                from    '../../components/common/Pager'
     import {getProductList}     from    '../../vuex/getters.js'
     import {setProductList}     from    '../../vuex/actions.js'
+    import spinner                  from    '../../components/common/spinner/Spinner';
+    import WebStorageCache          from    'web-storage-cache'
 
     export default{
         data(){
             return{
                 list:10,
+                pageSize:10,
                 listView:'sku',
+                totalPage:'',
                 search:{
 
-                },
-                skuArrView:[
-                    {
-                        name:'名字1',
-                        list:[1,2,3]
-                    },
-                    {
-                        name:'名字2',
-                        list:[1,2]
-                    },
-                    {
-                        name:'名字3',
-                        list:[1,2,3,4,5]
-                    },
-                    {
-                        name:'名字4',
-                        list:[1,2,3,4,5,6,7]
-                    },
-                    {
-                        name:'名字5',
-                        list:[1]
-                    },
-                    {
-                        name:'名字6',
-                        list:[1,2,3]
-                    },
-                    {
-                        name:'名字7',
-                        list:[1,2,3,4]
-                    }
-                ]
+                }
             }
         },
         components:{
-            Pager
+            Pager,
+            spinner
         },
         vuex:{
             getters:{
@@ -292,18 +265,46 @@
             }
         },
         methods:{
+            showloading:function(){
+                this.$broadcast('show::spinner');
+            },
             listen: function(data) {
                 //商品列表分页点击后的回调
-                this.vuex_setProductList(data);
-                // if (this.status=='') {
-                //     var orderPageStatus=this.status;
-                // }else {
-                //     var orderPageStatus=Number(this.status);
-                // }
-                // this.orderlist(this.getSearchObj(data.toString(),orderPageStatus))
+                this.vuex_setProductList(this.getSearchObj(data));
             },
             getSearchObj: function(page){
-
+                this.showloading();
+                /**
+                 * 根据用户选择或者输入的搜索条件，然后return出去
+                 * 需要根据接口的搜索条件做一些字段过滤，比如为空或者不选的，return出去的obj过滤掉对应的属性
+                 * 参数data是传进来的页码，如果是第一次刚进入页面的时候，传1
+                 * 通过listen监听点击的分页按钮，传回对应的值，达到分页效果
+                 */
+                var seacrObj=JSON.parse(JSON.stringify(this.search));
+                seacrObj.currentPage=page;
+                seacrObj.pageSize=this.pageSize;
+                return seacrObj;
+            }
+        },
+        ready: function() {
+            this.vuex_setProductList(this.getSearchObj(1));
+        },
+        watch:{
+            /**
+             * vuex_getProductList是从vuex里面取的值
+             * 服务端为了减轻压力，返回的分页总条数，只会在第一页返回
+             * 所以需要监听vuex_getProductList数据的变化，判断返回的总页数是否为0
+             * 如果为0不做操作，如果不为0，则把总页数设置到本地存储数据里面
+             * 取的时候，通过WebStorageCache（封装好的HTML5 LocalStorage）去取
+             */
+            'vuex_getProductList':function(val,oldval){
+                let wsCache = new WebStorageCache();
+                if (this.vuex_getProductList.data.totalPage!=0) {
+                    let wsCache = new WebStorageCache();
+                    wsCache.set('productListTotalPage', this.vuex_getProductList.data.totalPage);
+                }
+                this.$set('totalPage',wsCache.get('productListTotalPage'));
+                this.$broadcast('hide::spinner');
             }
         }
     }

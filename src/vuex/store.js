@@ -31,7 +31,9 @@ const state = {
         }
     },
     productlist:{
-
+        data:{
+            productListPageVo:[]
+        }
     }
 }
 
@@ -59,8 +61,7 @@ const mutations = {
         state.expressobj=res;
     },
     PRODUCTLIST(state,res){
-        console.log(state);
-        console.log(res);
+        state.productlist=res;
     }
 }
 

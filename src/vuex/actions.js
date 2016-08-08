@@ -53,6 +53,5 @@ export const permissionsObj=function({dispatch, state},data){
 
 //商品列表
 export const setProductList=function({dispatch, state},data){
-    console.log(data);
-    // dispatch('PRODUCTLIST',response.data);
+    httpRes.get({dispatch,state},'admin-api-dev/v1/product/pageList','PRODUCTLIST',data);
 }

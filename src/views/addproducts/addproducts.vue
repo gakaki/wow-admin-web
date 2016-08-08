@@ -167,7 +167,7 @@
     import Other                from    './info/other/Other'
     import Alert                from    '../../components/common/alert/Alert'
     import spinner              from    '../../components/common/spinner/Spinner'
-    import {API_ROOT,imgNameSplit,qiNiu,qiniuimgsrc}           from    '../../config'
+    import {API_ROOT,imgNameSplit,qiNiu,qiniuimgsrc,uploadImgLoad}           from    '../../config'
     import md5                  from    'md5'
 
     export default{
@@ -465,7 +465,7 @@
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
                             $('#add-product-from').validator('cleanUp');
-                            productSalesAttribute.color[imgIndex.img_index].img='loading.gif';
+                            productSalesAttribute.color[imgIndex.img_index].img=uploadImgLoad;
                         });
                     },
                     'BeforeUpload': function(up, file) {
@@ -488,7 +488,7 @@
                         // 每个文件上传成功后,处理相关的事情
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        productSalesAttribute.color[imgIndex.img_index].img=encodeURI(res.key);
+                        productSalesAttribute.color[imgIndex.img_index].img=domain+encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
                         //上传出错时,处理相关的事情

@@ -127,7 +127,6 @@ export default {
     },
     ready(){
         //判断是否ie浏览器
-        let isIE_6_7_8 = fuckIE(6,7,8,9,10,11)
         let isAnyVersionOfIE = fuckIE();
         if (isAnyVersionOfIE) {
             this.$set('ietpis',true);

@@ -66,7 +66,7 @@
                         <input data-rule="required" :name="'primaryImg'+$index" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
                         <span v-if="item.imgUrl!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p v-if="item.imgUrl!=''">
-                            <img v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
+                            <img v-bind:src="item.imgUrl" alt="" />
                         </p>
                         <p v-if="item.imgUrl==''" class="main-img-group-nopic">
                             添加图片
@@ -101,7 +101,7 @@
                     <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
                         <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
                             <input data-rule="required" :name="'img_text_desc_src'+item.sortOrder" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
-                            <img v-if="item.imgUrl!=''" v-bind:src="imgIndex.qiniuurl+item.imgUrl" alt="" />
+                            <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
                         <div class="add-product-hide-input">
@@ -124,7 +124,7 @@
 <script type="text/javascript">
     import {imgIndex}   from    '../../model'
     import Alert        from    '../../../../components/common/alert/Alert'
-    import {imgNameSplit,qiNiu,qiniuimgsrc}           from    '../../../../config'
+    import {imgNameSplit,qiNiu,qiniuimgsrc,uploadImgLoad}           from    '../../../../config'
     import md5          from    'md5'
 
     export default{
@@ -211,7 +211,7 @@
                         plupload.each(files, function(file) {
                             // 文件添加进队列后,处理相关的事情
                             $('#add-product-from').validator('cleanUp');
-                            _this.productdetails.primary_img[imgIndex.img_index].imgUrl='loading.gif';
+                            _this.productdetails.primary_img[imgIndex.img_index].imgUrl=uploadImgLoad;
                         });
                     },
                     'BeforeUpload': function(up, file) {
@@ -242,7 +242,7 @@
                         // 每个文件上传成功后,处理相关的事情
                         let domain = up.getOption('domain');
                         let res=$.parseJSON(info);
-                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl=encodeURI(res.key);
+                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl=domain+encodeURI(res.key);
                     },
                     'Error': function(up, err, errTip) {
                         //上传出错时,处理相关的事情
@@ -251,7 +251,7 @@
                         }else {
                             _this.$set('alertObj',{alertType:'alert-danger',alertInfo:errTip,alertShow:true})
                         }
-                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl='';
+                        _this.productdetails.primary_img[imgIndex.img_index].imgUrl=uploadImgLoad;
                     },
                     'UploadComplete': function() {
                         //队列文件处理完毕后,处理相关的事情
@@ -302,7 +302,7 @@
                          plupload.each(files, function(file) {
                              // 文件添加进队列后,处理相关的事情
                              $('#add-product-from').validator('cleanUp');
-                             _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl='loading.gif';
+                             _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl=uploadImgLoad;
                          });
                      },
                      'BeforeUpload': function(up, file) {
@@ -325,7 +325,7 @@
                          // 每个文件上传成功后,处理相关的事情
                          let domain = up.getOption('domain');
                          let res=$.parseJSON(info);
-                         _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl=encodeURI(res.key);
+                         _this.productdetails.img_text_desc[imgIndex.img_index].imgUrl=domain+encodeURI(res.key);
                      },
                      'Error': function(up, err, errTip) {
                          //上传出错时,处理相关的事情

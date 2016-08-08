@@ -240,7 +240,6 @@ export default {
         }
     },
     ready: function() {
-        this.showloading();
         this.orderlist(this.getSearchObj('1',''));
     },
     route: {
@@ -254,13 +253,20 @@ export default {
         }
     },
     watch:{
+        /**
+         * orderList是从vuex里面取的值
+         * 服务端为了减轻压力，返回的分页总条数，只会在第一页返回
+         * 所以需要监听orderList数据的变化，判断返回的总页数是否为0
+         * 如果为0不做操作，如果不为0，则把总页数设置到本地存储数据里面
+         * 取的时候，通过WebStorageCache（封装好的HTML5 LocalStorage）去取
+         */
         'orderList':function(val,oldval){
             let wsCache = new WebStorageCache();
-            if (this.orderList.data.totalPage!='0') {
+            if (this.orderList.data.totalPage!=0) {
                 let wsCache = new WebStorageCache();
-                wsCache.set('oorderListTotalPage', this.orderList.data.totalPage);
+                wsCache.set('orderListTotalPage', this.orderList.data.totalPage);
             }
-            this.$set('totalPage',wsCache.get('oorderListTotalPage'));
+            this.$set('totalPage',wsCache.get('orderListTotalPage'));
             this.$broadcast('hide::spinner');
         }
     },
