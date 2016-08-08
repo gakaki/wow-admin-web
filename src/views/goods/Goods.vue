@@ -90,6 +90,11 @@
         </div>
     </div>
 </div>
+<pre class="bg-danger" style="font-weight:bold;">
+    搜索条件暂不可用<br />
+    商品的库存／销量 现在是假的数据<br />
+    商品编辑功能，正在开发
+</pre>
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group pull-left">
@@ -190,21 +195,21 @@
     <tbody v-for="item in vuex_getProductList.data.productListPageVo">
         <tr v-for="items in item.productListVo">
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
-                <img v-bind:src="item.productVo.productImg" style="width:50px;" alt="" />
+                <img v-bind:src="item.productPageVo.productImg" style="width:50px;" alt="" />
             </td>
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <p>
-                    <a href="javascript:void(0);">{{item.productVo.productName}}</a>
+                    <a href="#">{{item.productPageVo.productName}}</a>
                 </p>
             </td>
-            <td>
-                {{items.brandName}}
+            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
+                {{item.productPageVo.brandName}}
             </td>
             <td>
                 {{items.specName}}
             </td>
             <td>
-                {{$index*12932+'ab'}}
+                {{items.productCode}}
             </td>
             <td>
                 {{items.sellPrice}}
@@ -223,7 +228,7 @@
                 2016-05-03 06:12:35
             </td>
             <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.productListVo.length">
-                <a class="disabled btn" href="#">编辑</a>
+                <a class="btn" v-link='{ path: "/goods/list/details/"+item.productPageVo.productId}'>编辑</a>
                 <a class="disabled link-delete btn" href="#">删除</a>
             </td>
         </tr>

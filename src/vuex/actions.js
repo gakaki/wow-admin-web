@@ -18,6 +18,7 @@ export const httpRes={
             [dispatch(event,res.data)]
         )
         .catch(function(ex) {
+            [dispatch(event,ex)]
         })
     },
     post:function({dispatch, state},url,event,data){
@@ -27,6 +28,7 @@ export const httpRes={
             [dispatch(event,res.data)]
         )
         .catch(function(ex) {
+            [dispatch(event,ex)]
         })
     }
 }
