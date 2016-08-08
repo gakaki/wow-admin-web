@@ -96,11 +96,11 @@
     }
     .details-img-group p{
         width: 140px;
-        height: 140px;
+        height: 92px;
         border: 1px solid #ccc;
         position: absolute;
         left: 0px;
-        top: 0px;
+        top: 25px;
         cursor:pointer;
         text-align: center;
     }
@@ -109,7 +109,7 @@
         max-height: 138px;
     }
     .details-img-group-nopic{
-        line-height: 138px;
+        line-height: 92px;
         text-align: center;
     }
     .details-img-group textarea{

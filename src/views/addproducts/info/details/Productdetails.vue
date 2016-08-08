@@ -89,7 +89,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">
-                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span><br /><span class="text-danger">(图片比例2:3)</span>
+                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span><br /><span class="text-danger">(图片比例3:2)</span>
             </label>
             <div class="col-sm-7">
                 <!-- 隐藏域，用于触发图文详情上传按钮 -->
@@ -106,7 +106,7 @@
                         </p>
                         <div class="add-product-hide-input">
                             <input data-rule="required" :name="'img_text_desc_text'+item.sortOrder" v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
-                            <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="7"></textarea>
+                            <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="details-img-group-right">
                             <div @click="sort_push($index,item.sortOrder)" class="img-text-desc-arrow-up" style="margin-bottom:15px;"></div>
