@@ -9,7 +9,7 @@
 <template>
     <tr v-if="list.selected==true" v-bind:class="{'spec-disabled':lists.disabled==true}">
         <td v-if="index==0" v-bind:rowspan="speclength">
-            <Color-img v-if="listobjselected==true" :id="tbody_index" :imgsrc="img"></Color-mg>
+            <Color-img :listobjselecteds="listobjselected" :id="tbody_index" :imgsrc="img"></Color-mg>
         </td>
         <td v-if="index==0" v-bind:rowspan="speclength">
             {{name}}
