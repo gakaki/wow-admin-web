@@ -11,10 +11,22 @@
         top: 3px;
         right: 0px;
     }
+    .edit-product-title{
+        font-size: 0px;
+    }
+    .edit-product-title li{
+        font-size: 14px;
+        width: 50%;
+    }
 </style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal">
-        <div class="well well-sm">基本信息</div>
+        <div class="well well-sm">
+            <ul class="edit-product-title list-inline">
+                <li>基本信息</li>
+                <li class="text-right"><button type="button" class="btn btn-danger">确认修改</button></li>
+            </ul>
+        </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">所属分类</label>
             <div class="col-sm-10">
@@ -50,7 +62,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
             <div class="col-sm-3 add-product-hide-input">
-
+                <brand :brandid.sync="brandid" :brandlist="brandlist"></brand>
             </div>
         </div>
 
@@ -151,8 +163,25 @@
 
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品描述</label>
+            <div class="col-sm-7">
+                <p class="control-label text-muted">
+                    <textarea name="detailDescription" placeholder="商品描述" class="form-control" rows="5"></textarea>
+                </p>
+            </div>
+            <span class="col-sm-3 control-label">
+                <div class="text-left text-muted">0/200</div>
+            </span>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
-
+    import brand from './brand'
+    export default{
+        props:['brandlist','brandid'],
+        components:{
+            brand,
+        }
+    }
 </script>

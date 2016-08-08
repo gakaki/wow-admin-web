@@ -124,7 +124,7 @@
 </style>
 <template>
     <div class="row" style="padding-bottom: 50px;">
-        <Basicinformation ></Basicinformation>
+        <Basicinformation :brandid="brandId" :brandlist="brandList"></Basicinformation>
     </div>
 </template>
 
@@ -133,6 +133,25 @@
     export default{
         components:{
             Basicinformation
+        },
+        data(){
+            return{
+                brandList:[],
+                brandId:'',
+            }
+        },
+        route: {
+            activate: function (transition) {
+                transition.next();
+            },
+            data({ to: { params: {goodsid}}}) {
+                window.scrollTo(0, 0);
+                console.log('商品id：'+goodsid);
+                setTimeout(()=>{
+                    this.$set('brandList',[{brandCname:'品牌1',id:'1'},{brandCname:'品牌2',id:'2'},{brandCname:'品牌3',id:'3'}]);
+                    this.$set('brandId','2');
+                },0)
+            }
         }
     }
 </script>
