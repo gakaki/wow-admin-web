@@ -97,9 +97,10 @@
                     <v-select class="origin_country" :on-change="setOriginProvinceId" label="areaName" :debounce="500" placeholder="搜索省份" :options="originProvince"  :on-search="searchProvince"></v-select>
                 </div>
             </div>
+            <!-- 查询城市，去掉，隐藏起来 -->
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
-                    <input data-rule="required" name="originCityId" v-bind:value="productbasiinfo.origin_city" type="text" class="form-control hidden" placeholder="城市">
+                    <input name="originCityId" v-bind:value="productbasiinfo.origin_city" type="text" class="form-control hidden" placeholder="城市">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">城市</span>
                     <v-select v-if="cityTag==0" class="origin_country" :on-change="setOriginCityId" label="areaName" :debounce="500" placeholder="搜索城市" :options="originCity" :on-search="searchCity"></v-select>
                 </div>

@@ -103,6 +103,7 @@
         top: 25px;
         cursor:pointer;
         text-align: center;
+        overflow: hidden;
     }
     .details-img-group p img{
         max-width: 138px;
