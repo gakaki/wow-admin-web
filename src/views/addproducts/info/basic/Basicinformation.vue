@@ -83,12 +83,11 @@
                 <div class="input-group add-product-hide-input">
                     <input data-rule="required" name="originCountryId" v-bind:value="productbasiinfo.origin_country" type="text" class="form-control hidden" placeholder="国家">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">国家</span>
-                    <v-select class="origin_country" :on-change="setOriginCountryId" label="keyValue" :debounce="500" :on-search="setOriginCountryCache" placeholder="搜索国家" :options="originCountry"></v-select>
+                    <v-select class="origin_country" :on-change="setOriginCountryId" label="name" :debounce="500" :on-search="setOriginCountryCache" placeholder="搜索国家" :options="originCountry"></v-select>
                 </div>
             </div>
         </div>
-
-        <div v-if="productbasiinfo.origin_country=='China'" class="form-group">
+        <div v-if="productbasiinfo.origin_country=='107'" class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/省-市</label>
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
@@ -112,7 +111,7 @@
                 <input data-rule="required" name="styleId" v-bind:value="productbasiinfo.style" type="text" class="form-control hidden" placeholder="风格">
                 <select v-model="productbasiinfo.style" class="form-control">
                     <option value="" selected>请选择</option>
-                    <option v-for="item in style" v-bind:value="item.keyName">{{item.keyValue}}</option>
+                    <option v-for="item in style" v-bind:value="item.keyId">{{item.keyValue}}</option>
                  </select>
             </div>
         </div>
@@ -149,7 +148,7 @@
                 <input data-rule="required" name="applicablePeople" v-bind:value="productbasiinfo.applicable_people" type="text" class="form-control hidden" placeholder="适用人群">
                 <select v-model="productbasiinfo.applicable_people" class="form-control">
                     <option value="" selected>请选择</option>
-                    <option v-for="item in applicable_people" v-bind:value="item.keyName">{{item.keyValue}}</option>
+                    <option v-for="item in applicable_people" v-bind:value="item.keyId">{{item.keyValue}}</option>
                  </select>
             </div>
         </div>
@@ -169,7 +168,7 @@
             </label>
             <div class="col-sm-7 bg-muted">
                 <label v-for="item in applicable_scene" class="checkbox-inline">
-                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" v-bind:value="item.keyName"> {{item.keyValue}}
+                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="productbasiinfo.applicable_scene_text" v-bind:value="item.keyId"> {{item.keyValue}}
                 </label>
             </div>
         </div>
@@ -177,7 +176,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in productbasiinfo.material_list">
-                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{item.id}}"> {{item.material}}
+                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{item.id}}"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -289,10 +288,9 @@
              */
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
-                let jsontext=JSON.stringify({"keyGroups":["country"]});
-                this.$http.get(API_ROOT+'v1/country/queryAllCountries',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'admin-api-dev/v1/country/queryAllCountries',{}).then((response) => {
                     if (response.data.resCode==0) {
-                        this.$set('originCountry',response.data.data.country);
+                        this.$set('originCountry',response.data.data);
                     }else {
                     }
                 }, (response) => {
@@ -305,14 +303,14 @@
                     this.$set('productbasiinfo.origin_country','')
                     return;
                 }
-                if(val.keyName!='China'){
+                if(val.id!=107){
                     this.$set('productbasiinfo.origin_province','');
                     this.$set('productbasiinfo.origin_city','')
                 }
-                if (val.keyName=='China') {
+                if (val.id==107) {
                     this.searchProvince();
                 }
-                this.$set('productbasiinfo.origin_country',val.keyName);
+                this.$set('productbasiinfo.origin_country',val.id);
                 $('#add-product-from').data('validator').hideMsg('input[name="originCountryId"]');
             },
             //搜索省份

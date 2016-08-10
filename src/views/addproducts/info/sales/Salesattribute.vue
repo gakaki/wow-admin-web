@@ -161,7 +161,6 @@
                 this.$set('productsalesattribute.colorSelect',this.colorSelect);
             },
             'specListS':function(val,oldval){
-                console.log(val.length);
                 this.$set('productsalesattribute.specSelect',this.specListS);
             }
         },

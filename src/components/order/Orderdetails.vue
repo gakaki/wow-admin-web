@@ -213,17 +213,17 @@
                     <dt>支付状态</dt>
                     <dd>{{details.data.paymentStatusName}}</dd>
                     <dt>商品总额</dt>
-                    <dd>¥{{details.data.orderAmount}}.00
+                    <dd>¥{{details.data.orderAmount}}
                     </dd>
                     <dt>运费金额</dt>
-                    <dd>¥{{details.data.deliveryFee}}.00
+                    <dd>¥{{details.data.deliveryFee}}
                     </dd>
                     <dt>优惠金额</dt>
                     <dd>¥
-                        <s>{{details.data.couponAmount}}.00</s>
+                        <s>{{details.data.couponAmount}}</s>
                     </dd>
                     <dt>应付金额</dt>
-                    <dd>¥{{details.data.orderAmount}}.00</dd>
+                    <dd>¥{{details.data.orderAmount}}</dd>
                 </dl>
             </div>
         </div>
@@ -290,7 +290,7 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{itemsList.sellPrice}}.00</p>
+                                        <p>{{itemsList.sellPrice}}</p>
                                     </td>
                                     <td class="text-center">
                                         <p>{{itemsList.productQty}}</p>
@@ -301,14 +301,14 @@
                                         </p>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{itemsList.productTotalAmount}}.00</p>
+                                        <p>{{itemsList.productTotalAmount}}</p>
                                     </td>
                                     <td class="text-center">
                                         <p v-if="details.data.deliveryFee==''">
                                             免运费
                                         </p>
                                         <p v-if="details.data.deliveryFee!=''">
-                                            {{details.data.deliveryFee}}.00
+                                            {{details.data.deliveryFee}}
                                         </p>
                                     </td>
                                 </tr>
@@ -332,7 +332,7 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{itemsList.sellPrice}}.00</p>
+                                        <p>{{itemsList.sellPrice}}</p>
                                     </td>
                                     <td class="text-center">
                                         <p>{{itemsList.productQty}}</p>
@@ -343,14 +343,14 @@
                                         </p>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{itemsList.productTotalAmount}}.00</p>
+                                        <p>{{itemsList.productTotalAmount}}</p>
                                     </td>
                                     <td class="text-center" rowspan={{items.orderItems.length}} v-if='$index==0'>
                                         <p v-if="details.data.deliveryFee==''">
                                             免运费
                                         </p>
                                         <p v-if="details.data.deliveryFee!=''">
-                                            {{details.data.deliveryFee}}.00
+                                            {{details.data.deliveryFee}}
                                         </p>
                                     </td>
                                 </tr>
@@ -401,7 +401,7 @@
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{items.sellPrice}}.00</p>
+                                        <p>{{items.sellPrice}}</p>
                                     </td>
                                     <td class="text-center">
                                         <p>{{items.productQty}}</p>
@@ -412,7 +412,7 @@
                                         </p>
                                     </td>
                                     <td class="text-center">
-                                        <p>{{items.productTotalAmount}}.00</p>
+                                        <p>{{items.productTotalAmount}}</p>
                                     </td>
                                     <td></td>
                                 </tr>

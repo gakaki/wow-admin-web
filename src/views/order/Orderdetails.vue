@@ -17,6 +17,7 @@ import Steps                            from    '../../components/order/Steps'
 import {getOrderdetails,getExpressobj}  from    '../../vuex/getters'
 import {orderDetails,expressObj}        from    '../../vuex/actions'
 import spinner                          from    '../../components/common/spinner/Spinner';
+import WebStorageCache                  from    'web-storage-cache'
 
 export default {
     components: {
@@ -67,7 +68,7 @@ export default {
         }
     },
     detached(){
-        this.Setexpressobj({tag: false})
+        this.Setexpressobj({tag: false});
     },
     route: {
         activate: function (transition) {

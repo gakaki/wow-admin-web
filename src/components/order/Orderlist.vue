@@ -132,6 +132,8 @@ import Express          from    '../../components/order/Express'
 import {getExpressobj}  from    '../../vuex/getters'
 import {expressObj}     from    '../../vuex/actions'
 import {API_ROOT}       from    '../../config.js'
+import WebStorageCache  from    'web-storage-cache'
+
 export default {
     props:['list'],
     data(){
@@ -147,6 +149,12 @@ export default {
         },
         actions: {
             Setexpressobj:expressObj
+        }
+    },
+    watch:{
+        'list':function(val,oldval){
+            let wsCache = new WebStorageCache();
+            wsCache.set('orderlistobjs', val);
         }
     },
     methods:{

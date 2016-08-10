@@ -2,7 +2,30 @@
  * 公用方法以及公用常量
  */
 //开发环境
-export const API_ROOT = 'http://10.0.60.121:9090/';
+// export const API_ROOT = 'http://10.0.60.121:9090/';
+let get_base_url = function( host="127.0.0.1" ){
+
+    let res                                     = ""
+    let default_url                             = "http://10.0.60.121:9090/"
+
+    let match = {
+        "/127|local|10.0/":                      default_url,
+        "/admin-web.stg.wowdsgn.com/":           "http://admin-api.stg.wowdsgn.com/",
+        "/admin-web.wowdsgn.com/":               "http://admin-api.wowdsgn.com/"
+    }
+
+    for(let regex in match){
+        let url = match[regex]
+        if ( regex.match(host) ){
+            res =  url
+            break;
+        }
+    }
+
+    if ( !res )   res = default_url
+    return res
+}
+export const API_ROOT = get_base_url(window.location.host);
 
 //生产环境
 // export const API_ROOT = 'http://10.0.60.121:9091/';

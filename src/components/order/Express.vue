@@ -80,7 +80,7 @@
             <h5>
                 收货信息：{{address}}，{{name}}，{{mobile}}
             </h5>
-            <h5 class="expressRadio">
+            <h5 class="expressRadio" style="display:none;">
                 发货方式：
                <label class="checkbox-inline" style="padding:0px;">
                   <input type="radio" name="expressRadios" value="true" checked="checked" v-model="needExpress"> 需要物流
@@ -169,6 +169,9 @@ export default{
     watch:{
         'expressinfo.arr':function(val,oldval){
             $('#expressBox'+this.orderid).validator('cleanUp');
+        },
+        'itemslistarr':function(val,oldval){
+            this.$set('checkAll',false)
         }
     },
     methods:{
@@ -193,9 +196,11 @@ export default{
                     deliveryOrderNo:this.expressinfo.number,
                     orderCode:this.orderid
                 }
-                let wsCache = new WebStorageCache();
+                var wsCache = new WebStorageCache();
                 var orderSearch=wsCache.get('orderListSearch');
-                if (this.orderlistobj.data.orderLists.length<=1) {
+                var orderlistobjs=wsCache.get('orderlistobjs');
+                return
+                if (orderlistobjs.data.orderLists.length<=1) {
                     orderSearch.currentPage=Number(orderSearch.currentPage-1).toString();
                     this.$dispatch('exprss-page', Number(orderSearch.currentPage-1))
                 }
