@@ -225,7 +225,7 @@
             nextSteps:function(){
                 let categoryId=productBasiInfo.Selectcategory.three
                 let jsontext=JSON.stringify({"categoryId":categoryId});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/material/queryCategoryMaterial',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/material/queryCategoryMaterial',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('productBasiInfo.material_list',response.data.materialList)
                     }else {
@@ -377,7 +377,7 @@
                  */
                 let jsontext=JSON.stringify(addProductOb);
                 this.$broadcast('show::spinner');
-                this.$http.post(API_ROOT+'admin-api-dev/v1/product/create',{paramJson:jsontext}).then((response) => {
+                this.$http.post(API_ROOT+'v1/product/create',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
                         setTimeout(() => {

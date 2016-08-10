@@ -62,7 +62,7 @@
         events: {
             'designerslist': function (msg) {
                 //获取设计师列表
-                this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
+                this.$http.get(API_ROOT+'v1/designer/queryAllDesigner',{}).then((response) => {
                     if (response.data.resCode==0) {
                         for (let i = 0; i < response.data.data.length; i++) {
                             response.data.data[i].primary=false;

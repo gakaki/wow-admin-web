@@ -225,7 +225,7 @@
             //查询字典，需要查询的数据，传递对应的参数给后端
             dictionarys:function(){
                 let jsontext=JSON.stringify({"keyGroups":["style","applicable_people","applicable_scene"]});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionarys',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/dictionarys',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('style',response.data.data.style);
                         this.$set('applicable_people',response.data.data.applicable_people);
@@ -242,7 +242,7 @@
              */
             //品牌数据，设置本地缓存数据
             setBrandListCache:function(){
-                this.$http.get(API_ROOT+'/admin-api-dev/v1/brand/queryAll',{}).then((response) => {
+                this.$http.get(API_ROOT+'/v1/brand/queryAll',{}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('brandlist',response.data.data.brandList);
                     }else {
@@ -266,7 +266,7 @@
              */
              //设计师，设置数据
              setDesignersCache:function(){
-                 this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
+                 this.$http.get(API_ROOT+'v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
                          for (let i = 0; i < response.data.data.length; i++) {
                              response.data.data[i].primary=false;
@@ -288,7 +288,7 @@
              */
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
-                this.$http.get(API_ROOT+'admin-api-dev/v1/country/queryAllCountries',{}).then((response) => {
+                this.$http.get(API_ROOT+'v1/country/queryAllCountries',{}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('originCountry',response.data.data);
                     }else {
@@ -316,7 +316,7 @@
             //搜索省份
  			searchProvince(){
                 let jsontext=JSON.stringify({"areaId":0});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/area/subarea',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/area/subarea',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
                         this.$set('originProvince',response.data.data.areaList);
@@ -345,7 +345,7 @@
             //搜索城市
  			searchCity(id){
                 let jsontext=JSON.stringify({"areaId":id});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/area/subarea',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/area/subarea',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
                         this.$set('originCity',response.data.data.areaList);

@@ -35,12 +35,12 @@ export const httpRes={
 
 //订单列表
 export const orderList=function({dispatch, state},data){
-    httpRes.post({dispatch,state},'admin-api-dev/v1/order/getList','ORDERLIST',data);
+    httpRes.post({dispatch,state},'v1/order/getList','ORDERLIST',data);
 }
 
 //订单详情
 export const orderDetails=function({dispatch, state},data){
-    httpRes.get({dispatch,state},'admin-api-dev/v1/order/orderDetail','ORDERDETAILS',data);
+    httpRes.get({dispatch,state},'v1/order/orderDetail','ORDERDETAILS',data);
 }
 
 //发货商品列表
@@ -55,11 +55,11 @@ export const permissionsObj=function({dispatch, state},data){
 
 //商品列表
 export const setProductList=function({dispatch, state},data){
-    httpRes.get({dispatch,state},'admin-api-dev/v1/product/pageList','PRODUCTLIST',data);
+    httpRes.get({dispatch,state},'v1/product/pageList','PRODUCTLIST',data);
 }
 
 //商品详情
 export const setProductDetails=function({dispatch, state},data){
     console.log(data);
-    httpRes.get({dispatch,state},'admin-api-dev/v1/product/detail','PRODUCTDETAILS',data);
+    httpRes.get({dispatch,state},'v1/product/detail','PRODUCTDETAILS',data);
 }

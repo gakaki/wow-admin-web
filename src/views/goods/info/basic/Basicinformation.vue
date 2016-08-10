@@ -209,12 +209,12 @@
                 let _this=this;
 
                 //获取分类材质属性
-                this.httpGet('admin-api-dev/v1/material/queryCategoryMaterial',{"categoryId":val.categoryId},'获取分类属性失败',function(data){
+                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":val.categoryId},'获取分类属性失败',function(data){
                     _this.$set('materialList',data.materialList)
                 });
 
                 //获取品牌数据
-                this.httpGet('admin-api-dev/v1/brand/queryAll',{},'获取品牌数据失败',function(data) {
+                this.httpGet('v1/brand/queryAll',{},'获取品牌数据失败',function(data) {
                     _this.$set('brandList',data.data.brandList)
                 });
 
@@ -226,7 +226,7 @@
             let _this=this;
 
             //获取风格／适用人群／适用场景
-            this.httpGet('admin-api-dev/v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',function(data) {
+            this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',function(data) {
                 _this.$set('style',data.data.style)
                 _this.$set('applicable_people',data.data.applicable_people)
                 _this.$set('applicable_scene',data.data.applicable_scene)

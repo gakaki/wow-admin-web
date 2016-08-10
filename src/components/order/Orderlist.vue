@@ -160,7 +160,7 @@ export default {
     methods:{
         getExpressObjAjax:function(orderid){
             let jsontext=JSON.stringify({"orderCode":orderid});
-            this.$http.get(API_ROOT+'admin-api-dev/v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
+            this.$http.get(API_ROOT+'v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
                 if (response.data.resCode=='0') {
                     let obj={
                         tag:true,

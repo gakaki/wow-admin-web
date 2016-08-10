@@ -6,7 +6,7 @@
 let get_base_url = function( host="127.0.0.1" ){
 
     let res                                     = ""
-    let default_url                             = "http://10.0.60.121:9090/"
+    let default_url                             = "http://10.0.60.121:9090/admin-api-dev/"
 
     let match = {
         "/127|local|10.0/":                      default_url,

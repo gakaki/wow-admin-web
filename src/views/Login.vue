@@ -111,7 +111,7 @@
                 }
                 this.$broadcast('show::spinner');
 
-                this.$http.post(API_ROOT+'admin-api-dev/v1/session/login',{paramJson:jsontext}).then((response) => {
+                this.$http.post(API_ROOT+'v1/session/login',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('alertObj',{alertType:'alert-success',alertInfo:response.data.resMsg,alertShow:true})
                         $.cookie('userName', response.data.data.userName,{ path: "/"});

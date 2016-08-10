@@ -172,7 +172,7 @@
             setList:function(id,list){
                 this.$set('tipText','正在获取分类')
                 let jsontext=JSON.stringify({"categoryId":id});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/category/sub-category',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/category/sub-category',{paramJson:jsontext}).then((response) => {
                     // success callback
                     if (response.data.resCode==0) {
                         this.$set(list,response.data.data);
@@ -188,7 +188,7 @@
         },
         ready(){
             this.$broadcast('show::spinner');
-            this.$http.get(API_ROOT+'admin-api-dev/v1/category/first-level').then((response) => {
+            this.$http.get(API_ROOT+'v1/category/first-level').then((response) => {
                 this.$broadcast('hide::spinner');
                 // success callback
                 if (response.data.resCode==0) {

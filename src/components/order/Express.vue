@@ -210,7 +210,7 @@ export default{
                  */
                 if (this.ordertag=='list') {
                     let jsontext=JSON.stringify(obj);
-                    this.$http.post(API_ROOT+'admin-api-dev/v1/order/deliver',{paramJson:jsontext}).then((response) => {
+                    this.$http.post(API_ROOT+'v1/order/deliver',{paramJson:jsontext}).then((response) => {
                         if (response.data.resCode=='0') {
                             let wsCache = new WebStorageCache();
                             this.orderListRes(orderSearch);
@@ -223,7 +223,7 @@ export default{
                     });
                 }else if(this.ordertag=='details'){
                     let jsontext=JSON.stringify(obj);
-                    this.$http.post(API_ROOT+'admin-api-dev/v1/order/deliver',{paramJson:jsontext}).then((response) => {
+                    this.$http.post(API_ROOT+'v1/order/deliver',{paramJson:jsontext}).then((response) => {
                         if (response.data.resCode=='0') {
                             this.orderdetails({orderCode: this.orderid});
                             this.closeMoadl();
