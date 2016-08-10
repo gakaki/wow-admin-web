@@ -64,11 +64,11 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div v-if="productbasiinfo.product_designer.length>0" class="form-group">
             <label for="firstname" class="col-sm-2 control-label">主设计师</label>
             <div class="col-sm-4 add-product-hide-input">
-                <input name="PrimaryDesigner" v-bind:value="isPrimaryDesigner" type="text" class="form-control hidden" placeholder="主设计师">
-                <select @change="isPrimary($event)" class="form-control">
+                <input data-rule="required" name="PrimaryDesigner" v-bind:value="isPrimaryDesigner" type="text" class="form-control hidden" placeholder="主设计师">
+                <select id="PrimaryDesigner" @change="isPrimary($event)" class="form-control">
                     <option value="" selected>请选择主设计师</option>
                     <option v-for="item in productbasiinfo.product_designer" v-bind:value="$index">{{item.designerName}}</option>
                  </select>
@@ -177,7 +177,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label class="checkbox-inline" v-for="item in productbasiinfo.material_list">
-                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{item.id}}"> 选项{{item.material}}
+                    <input data-rule="checked[1~]" name="materialList[]" v-model="productbasiinfo.material_text" type="checkbox" value="{{item.id}}"> {{item.material}}
                 </label>
             </div>
         </div>
@@ -234,7 +234,7 @@
                     }else {
                     }
                 }, (response) => {
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取国家数据错误',alertShow:true})
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
                 });
             },
 
@@ -265,10 +265,13 @@
             /**
              * 设计师操作
              */
-             //设计师，设置本地缓存数据
+             //设计师，设置数据
              setDesignersCache:function(){
                  this.$http.get(API_ROOT+'admin-api-dev/v1/designer/queryAllDesigner',{}).then((response) => {
                      if (response.data.resCode==0) {
+                         for (let i = 0; i < response.data.data.length; i++) {
+                             response.data.data[i].primary=false;
+                         }
                          this.$set('designers',response.data.data);
                      }else {
                      }
@@ -278,19 +281,7 @@
              },
             //设置主设计师
             isPrimary:function(event){
-                if (event.target.value=='') {
-                    this.$set('isPrimaryDesigner','');
-                    for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
-                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
-                    }
-                }else {
-                    for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
-                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
-                    }
-                    this.$set('productbasiinfo.product_designer['+event.target.value+'].primary',true);
-                    this.$set('isPrimaryDesigner',event.target.value);
-                    $('#add-product-from').data('validator').hideMsg('input[name="PrimaryDesigner"]');
-                }
+                this.$set('isPrimaryDesigner',Number(event.target.value));
             },
 
             /**
@@ -299,7 +290,7 @@
             //国家数据，设置本地缓存数据
             setOriginCountryCache:function(){
                 let jsontext=JSON.stringify({"keyGroups":["country"]});
-                this.$http.get(API_ROOT+'admin-api-dev/v1/dictionarys',{paramJson:jsontext}).then((response) => {
+                this.$http.get(API_ROOT+'v1/country/queryAllCountries',{paramJson:jsontext}).then((response) => {
                     if (response.data.resCode==0) {
                         this.$set('originCountry',response.data.data.country);
                     }else {
@@ -376,6 +367,29 @@
                 this.$set('productbasiinfo.origin_city',val.id)
                 $('#add-product-from').data('validator').hideMsg('input[name="originCityId"]');
             },
+        },
+        watch:{
+            'productbasiinfo.product_designer':function(val,oldval){
+                $("#PrimaryDesigner").val('')
+                this.$set('isPrimaryDesigner','')
+            },
+            'isPrimaryDesigner':function(val,oldval){
+                if (this.isPrimaryDesigner=='') {
+                    for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
+                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
+                    }
+                }else {
+                    for(let i=0;i<this.productbasiinfo.product_designer.length;i++){
+                        this.$set('productbasiinfo.product_designer['+i+'].primary',false);
+                        if (i==Number(this.isPrimaryDesigner)) {
+                            this.$set('productbasiinfo.product_designer['+i+'].primary',true);
+                        }else {
+                            this.$set('productbasiinfo.product_designer['+i+'].primary',false);
+                        }
+                    }
+                    $('#add-product-from').data('validator').hideMsg('input[name="PrimaryDesigner"]');
+                }
+            }
         },
         ready(){
 

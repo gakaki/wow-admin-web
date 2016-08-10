@@ -1,6 +1,12 @@
 <template>
-    {{brandid}}
-    <v-select :value.sync="selected" :on-change="setSelect" label="brandCname" :debounce="500" placeholder="搜索品牌" :options="brandlist"></v-select>
+
+    <div class="form-group">
+        <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
+        <div class="col-sm-3 add-product-hide-input">
+            <input v-model="brandid" type="text" class="form-control" placeholder="品牌id">
+            <v-select :value.sync="selected" :on-change="setSelect" label="brandCname" :debounce="500" placeholder="搜索品牌" :options="brandlist"></v-select>
+        </div>
+    </div>
 </template>
 <script type="text/javascript">
     import vSelect from '../../../../components/common/vue-select/src/index.js'
@@ -19,11 +25,15 @@
                 /**
                  * 用户选择品牌之后，给对应的品牌id赋值
                  */
-                this.$set('brandid',val.id)
+                if (val==null) {
+                    this.$set('brandid','')
+                }else {
+                    this.$set('brandid',val.id)
+                }
             }
         },
         watch:{
-            'brandid':function(){
+            'brandlist':function(){
                 /**
                  * 监控品牌id变化
                  * 如果品牌id有变化，就在品牌list数组里面查找对应的id并且赋值

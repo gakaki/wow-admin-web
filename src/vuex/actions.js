@@ -57,3 +57,9 @@ export const permissionsObj=function({dispatch, state},data){
 export const setProductList=function({dispatch, state},data){
     httpRes.get({dispatch,state},'admin-api-dev/v1/product/pageList','PRODUCTLIST',data);
 }
+
+//商品详情
+export const setProductDetails=function({dispatch, state},data){
+    console.log(data);
+    httpRes.get({dispatch,state},'admin-api-dev/v1/product/detail','PRODUCTDETAILS',data);
+}

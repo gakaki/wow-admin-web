@@ -30,11 +30,22 @@ const state = {
             unShipOutOrderItems:[]
         }
     },
+    //商品列表
     productlist:{
         data:{
             productListPageVo:[]
         }
-    }
+    },
+    // 商品详情
+    productdetails:{
+        data:{
+            info:{
+                productName:'',
+                sellingPoint:'',
+                detailDescription:''
+            }
+        }
+    },
 }
 
 // 创建一个 object 存储 mutation 函数
@@ -60,8 +71,13 @@ const mutations = {
     EXPRESSOBJ(state,res){
         state.expressobj=res;
     },
+    //商品列表
     PRODUCTLIST(state,res){
         state.productlist=res;
+    },
+    //商品详情
+    PRODUCTDETAILS(state,res){
+        state.productdetails=res;
     }
 }
 

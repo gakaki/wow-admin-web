@@ -47,9 +47,9 @@
                             x {{itemsList.productQty}}
                         </p>
                         <p class="text-muted">
-                            {{itemsList.sellPrice}}.00
+                            ¥{{itemsList.sellPrice}}
                         </p>
-                        <p>{{itemsList.productTotalAmount}}.00</p>
+                        <p>¥{{itemsList.productTotalAmount}}</p>
                     </td>
                     <td class="text-center">
                         <address>
@@ -66,8 +66,8 @@
                         </p>
                     </td>
                     <td class="text-center">
-                        <p>{{items.orderAmount}}.00</p>
-                        <p class="text-muted">含运费：{{items.deliveryFee}}.00</p>
+                        <p>¥{{items.orderAmount}}</p>
+                        <p class="text-muted">含运费：¥{{items.deliveryFee}}</p>
                     </td>
                 </tr>
 
@@ -92,9 +92,9 @@
                             x {{itemsList.productQty}}
                         </p>
                         <p class="text-muted">
-                            {{itemsList.sellPrice}}.00
+                            ¥{{itemsList.sellPrice}}
                         </p>
-                        <p>{{itemsList.productTotalAmount}}.00</p>
+                        <p>¥{{itemsList.productTotalAmount}}</p>
                     </td>
                     <td class="text-center" rowspan={{items.orderItemVos.length}} v-if='$index==0'>
                         <address>
@@ -112,8 +112,8 @@
 
                     </td>
                     <td class="text-center" rowspan={{items.orderItemVos.length}} v-if='$index==0'>
-                        <p>{{items.orderAmount}}.00</p>
-                        <p class="text-muted">含运费：{{items.deliveryFee}}.00</p>
+                        <p>¥{{items.orderAmount}}</p>
+                        <p class="text-muted">含运费：¥{{items.deliveryFee}}</p>
                     </td>
                 </tr>
                 <tr>

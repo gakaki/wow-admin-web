@@ -26,3 +26,8 @@ export function getPermissions(state){
 export function getProductList(state){
     return state.productlist
 }
+
+//商品详情
+export function getProductDetails(state){
+    return state.productdetails
+}

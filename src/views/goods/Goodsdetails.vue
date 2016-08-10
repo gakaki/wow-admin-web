@@ -124,20 +124,37 @@
 </style>
 <template>
     <div class="row" style="padding-bottom: 50px;">
-        <Basicinformation :brandid="brandId" :brandlist="brandList"></Basicinformation>
+        <Basicinformation :info=vuex_getProductDetails.data.info></Basicinformation>
     </div>
 </template>
 
 <script type="text/javascript">
     import Basicinformation     from    './info/basic/Basicinformation'
+    import {getProductDetails}  from    '../../vuex/getters'
+    import {setProductDetails}  from    '../../vuex/actions'
+
     export default{
         components:{
             Basicinformation
         },
         data(){
             return{
-                brandList:[],
-                brandId:'',
+            }
+        },
+        vuex:{
+            getters:{
+                vuex_getProductDetails:getProductDetails,
+            },
+            actions:{
+                vuex_setProductDetails:setProductDetails,
+            }
+        },
+        watch:{
+            //判断vuex获取的数据是否成功
+            'vuex_getProductDetails':function(val,oldval){
+                if (val.resCode==0) {
+                    console.log(val);
+                }
             }
         },
         route: {
@@ -146,11 +163,7 @@
             },
             data({ to: { params: {goodsid}}}) {
                 window.scrollTo(0, 0);
-                console.log('商品id：'+goodsid);
-                setTimeout(()=>{
-                    this.$set('brandList',[{brandCname:'品牌1',id:'1'},{brandCname:'品牌2',id:'2'},{brandCname:'品牌3',id:'3'}]);
-                    this.$set('brandId','2');
-                },0)
+                this.vuex_setProductDetails({productId: goodsid});
             }
         }
     }
