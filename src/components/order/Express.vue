@@ -199,7 +199,6 @@ export default{
                 var wsCache = new WebStorageCache();
                 var orderSearch=wsCache.get('orderListSearch');
                 var orderlistobjs=wsCache.get('orderlistobjs');
-                return
                 if (orderlistobjs.data.orderLists.length<=1) {
                     orderSearch.currentPage=Number(orderSearch.currentPage-1).toString();
                     this.$dispatch('exprss-page', Number(orderSearch.currentPage-1))

@@ -94,7 +94,7 @@
             <div class="col-sm-2 add-product-hide-input">
                 <input data-rule="required" name="styleId" v-bind:value="info.styleId"  type="text" class="form-control" placeholder="风格">
                 <select v-model="info.styleId" class="form-control">
-                    <option v-for="item in style" v-bind:value="item.keyName">
+                    <option v-for="item in style" v-bind:value="item.keyId">
                         {{ item.keyValue }}
                     </option>
                  </select>
@@ -132,7 +132,7 @@
             <div class="col-sm-2 add-product-hide-input">
                 <input data-rule="required" name="applicablePeople" v-bind:value="info.applicablePeople" type="text" class="form-control" placeholder="适用人群">
                 <select v-model="info.applicablePeople" class="form-control">
-                    <option v-for="item in applicable_people" v-bind:value="item.keyName">
+                    <option v-for="item in applicable_people" v-bind:value="item.keyId">
                         {{ item.keyValue }}
                     </option>
                  </select>
@@ -155,7 +155,7 @@
             <div class="col-sm-7 bg-muted">
                 {{info.applicableSceneList}}
                 <label v-for="item in applicable_scene" class="checkbox-inline">
-                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.applicableSceneList" v-bind:value="item.keyName"> {{item.keyValue}}
+                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.applicableSceneList" v-bind:value="item.keyId"> {{item.keyValue}}
                 </label>
             </div>
         </div>
@@ -164,7 +164,7 @@
             <div class="col-sm-7 bg-muted">
                 {{info.materialList}}
                 <label v-for="item in materialList" class="checkbox-inline">
-                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.materialList" v-bind:value="item.id"> {{item.material}}
+                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.materialList" v-bind:value="item.id"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -241,7 +241,7 @@
             modification:function(){
                 console.log(this.info.brandId);
                 console.log(this.info.width);
-                console.log(this.designersid);
+                console.log(this.info.designerVoList);
             },
 
             /**

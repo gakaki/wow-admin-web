@@ -237,6 +237,8 @@ export default {
         }
     },
     ready: function() {
+        let wsCache = new WebStorageCache();
+        wsCache.set('listPageTag', 1);
         this.orderlist(this.getSearchObj('1',''));
     },
     route: {
@@ -244,9 +246,24 @@ export default {
             transition.next();
         },
         data({ to: { params: {orderlist}}}) {
-            setTimeout(function(){
+            setTimeout(() => {
                 window.scrollTo(0, 0);
-            },10)
+                let wsCache = new WebStorageCache();
+                if (wsCache.get('listPageTag')==0) {
+                    var orderSearch=wsCache.get('orderListSearch');
+                    var orderlistobjs=wsCache.get('orderlistobjs');
+                    console.log(orderSearch);
+                    console.log(orderlistobjs);
+                    if (orderlistobjs.data.orderLists.length<=1) {
+                        orderSearch.currentPage=Number(orderSearch.currentPage-1).toString();
+                        this.$dispatch('exprss-page', Number(orderSearch.currentPage-1))
+                    }else {
+                        orderSearch.currentPage=Number(orderSearch.currentPage).toString();
+                        this.orderlist(orderSearch);
+                        this.$dispatch('exprss-page', Number(orderSearch.currentPage))
+                    }
+                }
+            }, 10);
         }
     },
     watch:{

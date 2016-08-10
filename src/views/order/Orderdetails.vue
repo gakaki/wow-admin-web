@@ -69,6 +69,8 @@ export default {
     },
     detached(){
         this.Setexpressobj({tag: false});
+        let wsCache = new WebStorageCache();
+        wsCache.set('listPageTag', 0);
     },
     route: {
         activate: function (transition) {
