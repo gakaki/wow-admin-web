@@ -248,12 +248,15 @@ export default {
         data({ to: { params: {orderlist}}}) {
             setTimeout(() => {
                 window.scrollTo(0, 0);
+
+                /**
+                 * 在进入路由对时候判断listPageTag的值来决定是否重新请求新的数据
+                 * 如果是在详情页发货操作，离开详情页面时候把listPageTag设置为0
+                 */
                 let wsCache = new WebStorageCache();
                 if (wsCache.get('listPageTag')==0) {
                     var orderSearch=wsCache.get('orderListSearch');
                     var orderlistobjs=wsCache.get('orderlistobjs');
-                    console.log(orderSearch);
-                    console.log(orderlistobjs);
                     if (orderlistobjs.data.orderLists.length<=1) {
                         orderSearch.currentPage=Number(orderSearch.currentPage-1).toString();
                         this.$dispatch('exprss-page', Number(orderSearch.currentPage-1))
