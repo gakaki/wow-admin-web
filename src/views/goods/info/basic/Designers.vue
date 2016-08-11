@@ -13,7 +13,7 @@
         <label for="firstname" class="col-sm-2 control-label">主设计师</label>
         <div class="col-sm-4 add-product-hide-input">
             <input v-model="primaryTag" type="text" class="form-control" placeholder="主设计师">
-            <select @change="isPrimary($event)" class="form-control">
+            <select id="primaryTag" @change="isPrimary($event)" class="form-control">
                 <option value="" selected>请选择主设计师</option>
                 <option v-for="item in designersid" v-bind:value="$index">{{$index}}{{item.designerName}}</option>
              </select>
@@ -89,6 +89,7 @@
 
             //如果设计师对数组为空，设置主设计师的值为空
             'designersid':function(val,oldval){
+                $("#primaryTag").val('')
                 this.$set('primaryTag','')
             }
 
