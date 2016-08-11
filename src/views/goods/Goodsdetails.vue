@@ -153,6 +153,7 @@
             //判断vuex获取的数据是否成功
             'vuex_getProductDetails':function(val,oldval){
                 if (val.resCode==0) {
+                    console.log('#####################获取商品数据成功#####################');
                     console.log(val);
                 }
             }

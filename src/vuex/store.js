@@ -42,7 +42,8 @@ const state = {
             info:{
                 productName:'',
                 sellingPoint:'',
-                detailDescription:''
+                detailDescription:'',
+                designerVoList:[]
             }
         }
     },
