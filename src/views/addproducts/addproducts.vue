@@ -143,7 +143,7 @@
         </div>
 
         <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
-            <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
+            <!-- <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation> -->
             <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
             <Productdetails :imgtimestamp="imgTimeStamp" :username="userName" :productdetails="productDetails"></Productdetails>
             <!-- <Other></Other> -->
@@ -370,6 +370,17 @@
                 if (addProductOb.categoryId==''||addProductOb.categoryId==null) {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'请选择分类',alertShow:true})
                     return;
+                }
+
+                //提交之前，最后筛选一次sku数据，去除多余数据
+                for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
+                    for (let b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {
+                        console.log(addProductOb.colorSpecVoList[a].specVoList[b]);
+                        if (addProductOb.colorSpecVoList[a].specVoList[b].sellPrice==''||addProductOb.colorSpecVoList[a].specVoList[b].weight==''||addProductOb.colorSpecVoList[a].specVoList[b].enabled==false) {
+                            console.log('###############为空###############');
+                            addProductOb.colorSpecVoList[a].specVoList.del(b);
+                        }
+                    }
                 }
 
                 /**
