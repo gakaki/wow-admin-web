@@ -88,10 +88,10 @@
             </div>
         </div>
         <div v-if="productbasiinfo.origin_country=='107'" class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/省-市</label>
+            <label for="firstname" class="col-sm-2 control-label">产地/省-市</label>
             <div class="col-sm-4">
                 <div class="input-group add-product-hide-input">
-                    <input data-rule="required" name="originProvinceId" v-bind:value="productbasiinfo.origin_province" type="text" class="form-control hidden" placeholder="省份">
+                    <input name="originProvinceId" v-bind:value="productbasiinfo.origin_province" type="text" class="form-control hidden" placeholder="省份">
                     <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">省份</span>
                     <v-select class="origin_country" :on-change="setOriginProvinceId" label="areaName" :debounce="500" placeholder="搜索省份" :options="originProvince"  :on-search="searchProvince"></v-select>
                 </div>
