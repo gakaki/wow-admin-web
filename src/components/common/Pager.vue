@@ -1,7 +1,7 @@
 
 <template>
 <div class="text-right">
-    <span v-if="totalresult!=null" class="text-muted" style="display:inline-block; position:relative; top:-30px; right:5px;">
+    <span v-if="totalresult!=null||totalresult!=''" class="text-muted" style="display:inline-block; position:relative; top:-30px; right:5px;">
         共有 <b>{{totalresult}}</b> 条记录
     </span>
     <ul class="pagination">
