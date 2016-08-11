@@ -280,7 +280,7 @@
              },
             //设置主设计师
             isPrimary:function(event){
-                this.$set('isPrimaryDesigner',Number(event.target.value));
+                this.$set('isPrimaryDesigner',event.target.value);
             },
 
             /**
