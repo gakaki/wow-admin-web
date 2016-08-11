@@ -11,7 +11,7 @@ let get_base_url = function( host="127.0.0.1" ){
 
     let match = {
         "/127|local|10.0/":                      default_url,
-        "/admin-web.stg.wowdsgn.com/":           "https://admin-api.stg.wowdsgn.com/",
+        "/admin-web.stg.wowdsgn.com/":           "http://admin-api.stg.wowdsgn.com/",
         "/admin-web.wowdsgn.com/":               "http://admin-api.wowdsgn.com/"
     }
 

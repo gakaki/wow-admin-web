@@ -1,2 +1,0 @@
-webpackJsonp([18,20],{436:function(o,t){o.exports="<p> 退款详情 </p>"},488:function(o,t,p){var e,s;s=p(436),o.exports=e||{},o.exports.__esModule&&(o.exports=o.exports["default"]),s&&(("function"==typeof o.exports?o.exports.options||(o.exports.options={}):o.exports).template=s)}});
-//# sourceMappingURL=18.4250cb5085b2b6f514fa.js.map

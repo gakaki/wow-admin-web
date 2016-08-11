@@ -233,7 +233,7 @@
                     <a @click="popoverHide" class="link-delete" href="javascript:void(0);">删除</a>
                     <div slot="content" class="text-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-warning" @click='deleteData($index)'>确认</button>
+                            <button type="button" class="btn btn-sm btn-warning" @click='deleteData(item.productPageVo.productId)'>确认</button>
                             <button @click="popoverHide" type="button" class="btn btn-sm btn-default">取消</button>
                         </div>
                     </div>
