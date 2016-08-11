@@ -144,9 +144,10 @@
         },
         methods:{
             img_text_desc_add:function(){
-                if (this.productdetails.img_text_desc.length>=10) {
-                    return false;
-                }
+                //最多添加10条，目前注释掉，暂无限制
+                // if (this.productdetails.img_text_desc.length>=10) {
+                //     return false;
+                // }
                 this.productdetails.img_text_desc.push({imgUrl:'',imgDesc:'',primary:false,sortOrder:this.productdetails.img_text_desc.length+1});
             },
             img_text_desc_delete:function(index){
