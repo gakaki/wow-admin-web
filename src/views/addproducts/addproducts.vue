@@ -396,9 +396,13 @@
                     }
                 }, (response) => {
                     // error callback
-                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true});
-                    this.$broadcast('hide::spinner');
-                    $("body").removeAttr("style");
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'网络错误',alertShow:true})
+                    setTimeout(() => {
+                        this.$broadcast('hide::spinner');
+                    }, 1000);
+                    setTimeout(() => {
+                        $("body").removeAttr("style");
+                    }, 1100);
                 });
             }
         },
