@@ -143,7 +143,7 @@
         </div>
 
         <div class="row" v-show="nowtag=='2'" style="padding-bottom:50px;">
-            <!-- <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation> -->
+            <Basicinformation :productbasiinfo="productBasiInfo"></Basicinformation>
             <Salesattribute :spectbodylist="specTbodyList" :productsalesattribute="productSalesAttribute"></Salesattribute>
             <Productdetails :imgtimestamp="imgTimeStamp" :username="userName" :productdetails="productDetails"></Productdetails>
             <!-- <Other></Other> -->
