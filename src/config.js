@@ -88,6 +88,10 @@ export const leftSider={
         //     name:'回收站'
         // },
         // {
+        //     path:'/goods/brand',
+        //     name:'品牌'
+        // },
+        // {
         //     path:'/goods/designers',
         //     name:'设计师'
         // },

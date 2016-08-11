@@ -1,5 +1,5 @@
 <template>
-<spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" text="数据加载中..." ></spinner>
+<spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" :text="spinnerText" ></spinner>
 <div class="well well-sm" style="position:relative;">
     <div style="position:absolute; right:0px; left:0px; top:0px; bottom:0px; background:#fff; opacity:.5; z-index:9;">
 
@@ -229,7 +229,15 @@
             </td>
             <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <a class="btn" v-link='{ path: "/goods/list/details/"+item.productPageVo.productId}'>编辑</a>
-                <a class="disabled link-delete btn" href="#">删除</a>
+                <vs-popover position="top">
+                    <a @click="popoverHide" class="link-delete" href="javascript:void(0);">删除</a>
+                    <div slot="content" class="text-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-warning" @click='deleteData($index)'>确认</button>
+                            <button @click="popoverHide" type="button" class="btn btn-sm btn-default">取消</button>
+                        </div>
+                    </div>
+                </vs-popover>
             </td>
         </tr>
     </tbody>
@@ -242,8 +250,9 @@
     import Pager                from    '../../components/common/Pager'
     import {getProductList}     from    '../../vuex/getters.js'
     import {setProductList}     from    '../../vuex/actions.js'
-    import spinner                  from    '../../components/common/spinner/Spinner';
-    import WebStorageCache          from    'web-storage-cache'
+    import spinner              from    '../../components/common/spinner/Spinner';
+    import WebStorageCache      from    'web-storage-cache'
+    import vsPopover            from    '../../components/common/popover/Popover'
 
     export default{
         data(){
@@ -254,13 +263,15 @@
                 totalPage:'',
                 totalResult:'',
                 search:{
-
-                }
+                },
+                spinnerFixed:false,
+                spinnerText:'数据加载中...'
             }
         },
         components:{
             Pager,
-            spinner
+            spinner,
+            vsPopover
         },
         vuex:{
             getters:{
@@ -271,6 +282,21 @@
             }
         },
         methods:{
+            // 删除商品回调
+            deleteData: function(id) {
+                this.$broadcast('show::spinner');
+                this.$set('spinnerFixed',true);
+                this.$set('spinnerText','正在删除商品');
+                setTimeout(() => {
+                    this.popoverHide();
+                    this.$broadcast('hide::spinner');
+                    alert('删除回调，需要删除的品牌id：' + id);
+                }, 2000)
+            },
+            popoverHide: function() {
+                this.$broadcast('hide::popover');
+            },
+
             showloading:function(){
                 this.$broadcast('show::spinner');
             },
