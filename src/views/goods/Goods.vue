@@ -253,6 +253,7 @@
     import spinner              from    '../../components/common/spinner/Spinner';
     import WebStorageCache      from    'web-storage-cache'
     import vsPopover            from    '../../components/common/popover/Popover'
+    import {API_ROOT}           from    '../../config'
 
     export default{
         data(){
@@ -282,16 +283,22 @@
             }
         },
         methods:{
-            // 删除商品回调
+            // 删除商品
             deleteData: function(id) {
                 this.$broadcast('show::spinner');
                 this.$set('spinnerFixed',true);
                 this.$set('spinnerText','正在删除商品');
-                setTimeout(() => {
-                    this.popoverHide();
-                    this.$broadcast('hide::spinner');
-                    alert('删除回调，需要删除的品牌id：' + id);
-                }, 2000)
+                let jsontext=JSON.stringify({productId:id});
+                this.$http.post(API_ROOT+'v1/product/delete',{paramJson:jsontext}).then((response) => {
+                    if (response.data.resCode==0) {
+                        this.popoverHide();
+                        this.$broadcast('hide::spinner');
+                    }else {
+                        alert('删除失败')
+                    }
+                }, (response) => {
+                    alert('网络错误')
+                });
             },
             popoverHide: function() {
                 this.$broadcast('hide::popover');
