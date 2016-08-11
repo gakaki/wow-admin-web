@@ -234,7 +234,7 @@
         </tr>
     </tbody>
 </table>
-<Pager :cur.sync="1" :all.sync='totalPage' @btn-click="listen"></Pager>
+<Pager :totalresult="totalResult" :cur.sync="1" :all.sync='totalPage' @btn-click="listen"></Pager>
 
 </template>
 
@@ -252,6 +252,7 @@
                 pageSize:10,
                 listView:'sku',
                 totalPage:'',
+                totalResult:'',
                 search:{
 
                 }
@@ -307,7 +308,9 @@
                 if (this.vuex_getProductList.data.totalPage!=0) {
                     let wsCache = new WebStorageCache();
                     wsCache.set('productListTotalPage', this.vuex_getProductList.data.totalPage);
+                    wsCache.set('productListTotalResult', this.vuex_getProductList.data.totalResult);
                 }
+                this.$set('totalResult',wsCache.get('productListTotalResult'));
                 this.$set('totalPage',wsCache.get('productListTotalPage'));
                 this.$broadcast('hide::spinner');
             }

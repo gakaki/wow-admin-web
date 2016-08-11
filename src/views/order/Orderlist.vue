@@ -59,7 +59,7 @@
     </div>
     <Tab :curindex.sync="curIndex" :name='tabname' @btn-click="setstatus"></Tab>
     <orderlist :list="orderList"></orderlist>
-    <Pager :cur.sync="cur" :all.sync='totalPage' @btn-click="listen"></Pager>
+    <Pager :totalresult="totalResult" :cur.sync="cur" :all.sync='totalPage' @btn-click="listen"></Pager>
 </template>
 
 <script type="text/javascript">
@@ -100,6 +100,7 @@ export default {
             cur: 1,
             status:'',
             totalPage:'',
+            totalResult:'',
             tabname:[
                 {tab:'所有订单',key:''},
                 {tab:'待付款',key:'0'},
@@ -282,7 +283,9 @@ export default {
             if (this.orderList.data.totalPage!=0) {
                 let wsCache = new WebStorageCache();
                 wsCache.set('orderListTotalPage', this.orderList.data.totalPage);
+                wsCache.set('orderListTotalResult', this.orderList.data.totalResult);
             }
+            this.$set('totalResult',wsCache.get('orderListTotalResult'));
             this.$set('totalPage',wsCache.get('orderListTotalPage'));
             this.$broadcast('hide::spinner');
         }

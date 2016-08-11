@@ -1,6 +1,9 @@
 
 <template>
 <div class="text-right">
+    <span v-if="totalresult!=null" class="text-muted" style="display:inline-block; position:relative; top:-30px; right:5px;">
+        共有 <b>{{totalresult}}</b> 条记录
+    </span>
     <ul class="pagination">
         <li v-if="cur!=1"><a @click="cur--">上一页</a></li>
         <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}"><a @click="btnClick(index)" href="javascript:;">{{ index }}</a></li>
@@ -14,7 +17,7 @@
 <script>
 
 export default {
-    props: ['cur', 'all'],
+    props: ['cur', 'all','totalresult'],
     computed: {
         indexs: function() {
             var left = 1
