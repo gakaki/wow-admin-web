@@ -179,8 +179,7 @@
 <table class="table order-list table-thead-center table-tbody-center table-tbody-hover" v-if="listView=='sku'">
     <thead>
         <tr>
-            <th>图片</th>
-            <th>商品名称</th>
+            <th>商品</th>
             <th>品牌</th>
             <th>规格</th>
             <th>SKU</th>
@@ -196,8 +195,6 @@
         <tr v-for="items in item.productListVo">
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <img v-bind:src="item.productPageVo.productImg" style="width:50px;" alt="" />
-            </td>
-            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <p>
                     id：{{item.productPageVo.productId}}
                 </p>
