@@ -105,7 +105,7 @@
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
                         <div class="add-product-hide-input">
-                            <input data-rule="required" :name="'img_text_desc_text'+item.sortOrder" v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
+                            <input :name="'img_text_desc_text'+item.sortOrder" v-bind:value="item.imgDesc"  type="text" class="form-control hidden" placeholder="商品详情">
                             <textarea v-model="item.imgDesc" placeholder="商品详情" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="details-img-group-right">
