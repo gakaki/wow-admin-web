@@ -233,7 +233,7 @@
             <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <a class="btn" v-link='{ path: "/goods/list/details/"+item.productPageVo.productId}'>编辑</a>
                 <vs-popover position="top">
-                    <a @click="popoverHide" class=" link-delete" href="javascript:void(0);">删除</a>
+                    <a @click="popoverHide" class="link-delete" href="javascript:void(0);">删除</a>
                     <div slot="content" class="text-center">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-warning" @click='deleteData(item.productPageVo.productId)'>确认</button>
@@ -296,6 +296,7 @@
                     if (response.data.resCode==0) {
                         this.popoverHide();
                         this.$broadcast('hide::spinner');
+                        window.location.href=""
                     }else {
                         alert('删除失败')
                     }
