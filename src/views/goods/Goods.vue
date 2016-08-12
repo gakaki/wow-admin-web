@@ -259,7 +259,7 @@
         data(){
             return{
                 list:10,
-                pageSize:10,
+                pageSize:100,
                 listView:'sku',
                 totalPage:'',
                 totalResult:'',
