@@ -51,17 +51,17 @@
         <div class="form-group" id="specSelected">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>规格</label>
             <div class="col-sm-7 bg-muted">
-                <label class="checkbox-inline" v-for="item in spectbodylist">
-                    <input v-bind:disabled="$index==0"  type="checkbox" value="{{item.spec}}" v-model='item.selected'>
-
-                    <div v-if="item.selected==true" >
+                <div v-for="item in spectbodylist" style="display:inline-block; min-width:140px; margin:5px 0px;">
+                    <label style="margin: 0px; position: relative;top: -11px;" class="checkbox-inline">
+                        <input v-bind:disabled="$index==0"  type="checkbox" value="{{item.spec}}" v-model='item.selected'>
+                    </label>
+                    <div v-if="item.selected==true" style="display:inline-block;">
                         <input data-rule="required" name="{{'specSelected'+$index}}" v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
                     </div>
-
-                    <div v-if="item.selected!=true" >
+                    <div v-if="item.selected!=true" style="display:inline-block;">
                         <input v-bind:class="{'spec-border-danger':item.selected==true}" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.spec}}" v-model='item.spec'>
                     </div>
-                </label>
+                </div>
             </div>
         </div>
         <div class="form-group" style="margin-top:40px;">

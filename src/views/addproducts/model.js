@@ -54,6 +54,13 @@ export const specTbodyList=[
     {spec:'',selected: false},
     {spec:'',selected: false},
     {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
+    {spec:'',selected: false},
     {spec:'',selected: false}
 ]
 
@@ -62,6 +69,13 @@ export const specTbodyList=[
  * @type {Array}
  */
 export const  specTbodyListVal=[
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
+    {spec:'',sell_price:'',weight:'',disabled:false},
     {spec:'',sell_price:'',weight:'',disabled:false},
     {spec:'',sell_price:'',weight:'',disabled:false},
     {spec:'',sell_price:'',weight:'',disabled:false},
@@ -111,7 +125,15 @@ export const productSalesAttribute={
         {colorId:9,color:'#8d429f',name:'紫色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
         {colorId:10,color:'#cb8b44',name:'原木色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
         {colorId:11,color:'#941100',name:'棕色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
-        {colorId:12,multi:true,color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),}
+        {colorId:12,multi:true,color:['#f00','#fed533','#1790c8','#7bba3c'],name:'花色',img:'',selected: false,specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),},
+        {
+            colorId:13,
+            color:'#FF9C00',
+            name:'橙色',
+            img:'',
+            selected: false,
+            specList:specTbodyList,specListVal:JSON.parse(JSON.stringify(specTbodyListVal)),
+        },
     ],
     colorSelect         :   [],
     specSelect          :   [],

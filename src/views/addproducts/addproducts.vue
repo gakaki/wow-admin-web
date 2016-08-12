@@ -358,7 +358,7 @@
                 for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
                     for (var b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {
                         if (addProductOb.colorSpecVoList[a].specVoList[b].enabled==false) {
-                            addProductOb.colorSpecVoList[a].specVoList.del(b);
+                            delete addProductOb.colorSpecVoList[a].specVoList[b]
                         }else {
                             delete addProductOb.colorSpecVoList[a].specVoList[b].enabled
                         }
@@ -373,15 +373,21 @@
                 }
 
                 //提交之前，最后筛选一次sku数据，去除多余数据
-                for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
-                    for (let b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {
-                        console.log(addProductOb.colorSpecVoList[a].specVoList[b]);
-                        if (addProductOb.colorSpecVoList[a].specVoList[b].sellPrice==''||addProductOb.colorSpecVoList[a].specVoList[b].weight==''||addProductOb.colorSpecVoList[a].specVoList[b].enabled==false) {
-                            console.log('###############为空###############');
-                            addProductOb.colorSpecVoList[a].specVoList.del(b);
-                        }
+                let filterFalseArr=[];
+                function filterFalseFun(arr) {
+                    if (arr==undefined) {
+                    }else {
+                        return arr;
                     }
                 }
+                for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
+                    filterFalseArr.push({});
+                    filterFalseArr[a].colorId=addProductOb.colorSpecVoList[a].colorId;
+                    filterFalseArr[a].productColorImg=addProductOb.colorSpecVoList[a].productColorImg;
+                    filterFalseArr[a].colorDisplayName=addProductOb.colorSpecVoList[a].colorDisplayName;
+                    filterFalseArr[a].specVoList=addProductOb.colorSpecVoList[a].specVoList.filter(filterFalseFun)
+                }
+                addProductOb.colorSpecVoList=filterFalseArr;
 
                 /**
                  * 发送请求后端录入
@@ -458,7 +464,13 @@
              * [上传颜色图片初始化]
              * start
              */
-            let specColorPic_button=['Apickfiles0','Apickfiles1','Apickfiles2','Apickfiles3','Apickfiles4','Apickfiles5','Apickfiles6','Apickfiles7','Apickfiles8','Apickfiles9','Apickfiles10','Apickfiles11']
+
+            //遍历颜色列表，生成对应的颜色上传实例按钮
+            let specColorPic_button=[]
+            for (let i = 0; i < this.productSalesAttribute.color.length; i++) {
+                specColorPic_button.push('Apickfiles'+i);
+            }
+
             let specColorPic = {
                 runtimes: 'html5,flash,html4', //上传模式,依次退化
                 browse_button: specColorPic_button, //上传选择的点选按钮，**必需**
