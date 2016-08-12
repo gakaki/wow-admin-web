@@ -89,7 +89,7 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">
-                <span class="text-danger">*</span>图文详情<br /><span class="text-muted">限制10条</span><br /><span class="text-danger">(图片比例3:2)</span>
+                <span class="text-danger">*</span>图文详情<br /><span class="text-danger">(图片比例3:2)</span>
             </label>
             <div class="col-sm-7">
                 <!-- 隐藏域，用于触发图文详情上传按钮 -->
