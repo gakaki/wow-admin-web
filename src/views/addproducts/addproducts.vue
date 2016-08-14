@@ -103,11 +103,10 @@
         top: 25px;
         cursor:pointer;
         text-align: center;
-        overflow: hidden;
     }
     .details-img-group p img{
         max-width: 138px;
-        max-height: 138px;
+        max-height: 92px;
     }
     .details-img-group-nopic{
         line-height: 92px;
@@ -354,6 +353,7 @@
                         }
                     }
                 }
+
                 //如果商品规格状态禁用，提交的数据里面删除这条数据
                 for (let a = 0; a < addProductOb.colorSpecVoList.length; a++) {
                     for (var b = 0; b < addProductOb.colorSpecVoList[a].specVoList.length; b++) {

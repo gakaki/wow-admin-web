@@ -1,9 +1,9 @@
 /**
  * 公用方法以及公用常量
  */
-//开发环境
-// export const API_ROOT = 'http://10.0.60.121:9090/';
 
+// 根据环境判断对应的数据接口
+// export const API_ROOT = 'http://10.0.60.121:9090/';
 let get_base_url = function( host="127.0.0.1" ){
 
     let res                                     = ""

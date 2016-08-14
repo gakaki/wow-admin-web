@@ -66,28 +66,8 @@
         <!-- 设计师 -->
         <designers :designersid.sync="info.designerVoList"></designers>
 
-        <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/国家</label>
-            <div class="col-sm-4">
-                <div class="input-group add-product-hide-input">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/省-市</label>
-            <div class="col-sm-4">
-                <div class="input-group add-product-hide-input">
-
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="input-group add-product-hide-input">
-
-                </div>
-            </div>
-        </div>
+        <!--国家省份城市-->
+        <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country>
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
@@ -183,14 +163,16 @@
 </template>
 <script type="text/javascript">
     import brand                from    './brand'
-    import designers            from    './Designers.vue'
+    import designers            from    './designers.vue'
+    import country              from    './country.vue'
     import {API_ROOT}           from    '../../../../config'
 
     export default{
         props:['info'],
         components:{
             brand,
-            designers
+            designers,
+            country
         },
         data(){
             return{
@@ -206,30 +188,31 @@
         },
         watch:{
             'info':function(val,oldval){
-                let _this=this;
 
                 //获取分类材质属性
-                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":val.categoryId},'获取分类属性失败',function(data){
-                    _this.$set('materialList',data.materialList)
+                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":val.categoryId},'获取分类属性失败',(data)=>{
+                    this.$set('materialList',data.materialList)
                 });
 
                 //获取品牌数据
-                this.httpGet('v1/brand/queryAll',{},'获取品牌数据失败',function(data) {
-                    _this.$set('brandList',data.data.brandList)
+                this.httpGet('v1/brand/queryAll',{},'获取品牌数据失败',(data)=> {
+                    this.$set('brandList',data.data.brandList)
                 });
 
-                //广播通知设计师组件获取设计师数据
+                //广播通知设计师组件获取数据
                 this.$broadcast('designerslist', 'test');
+
+                //广播通知国家组件获取数据
+                this.$broadcast('countrylist', 'test');
             }
         },
         compiled(){
-            let _this=this;
 
             //获取风格／适用人群／适用场景
-            this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',function(data) {
-                _this.$set('style',data.data.style)
-                _this.$set('applicable_people',data.data.applicable_people)
-                _this.$set('applicable_scene',data.data.applicable_scene)
+            this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
+                this.$set('style',data.data.style)
+                this.$set('applicable_people',data.data.applicable_people)
+                this.$set('applicable_scene',data.data.applicable_scene)
             });
 
         },
@@ -255,8 +238,10 @@
                     if (response.data.resCode==0) {
                         callback(response.data);
                     }else {
+                        alert(errText);
                     }
                 }, (response) => {
+                    alert(errText);
                 });
             }
         },
