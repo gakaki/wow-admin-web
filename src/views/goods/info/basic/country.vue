@@ -67,6 +67,14 @@
                 });
             }
         },
+        detached(){
+            this.$set('countryList',[]);
+            this.$set('provinceList',[]);
+            this.$set('cityList',[]);
+            this.$set('defaultCountry',{});
+            this.$set('defaultProvince',{});
+            this.$set('defaultCity',{});
+        },
         methods:{
             /**
              * 根据国家／省份／城市／三者的id查询列表里面对应的数据
@@ -131,13 +139,10 @@
                     return;
                 }
                 this.$set('originCountryId',val.id)
-                this.$set('defaultCity','')
-                this.$set('originCity','');
-                this.$set('cityList',[]);
 
                 //根据省份查询对应的城市
                 this.httpGet('v1/area/subarea',{"areaId":val.id},'获取城市数据错误',(data)=>{
-                    console.log(this.originCity);
+                    this.$set('defaultCity','')
                     this.$set('cityList',data.data.areaList);
                     this.filterObj(data.data.areaList,this.originCity,'defaultCity');
                 });

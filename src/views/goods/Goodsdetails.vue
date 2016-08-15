@@ -124,7 +124,7 @@
 </style>
 <template>
     <div class="row" style="padding-bottom: 50px;">
-        <Basicinformation :info=vuex_getProductDetails.data.info></Basicinformation>
+        <Basicinformation :info.sync=vuex_getProductDetails.data.info></Basicinformation>
     </div>
 </template>
 
@@ -150,13 +150,15 @@
             }
         },
         watch:{
-            //判断vuex获取的数据是否成功
+            /**
+             * 判断vuex获取的数据是否成功
+             */
             'vuex_getProductDetails':function(val,oldval){
                 if (val.resCode==0) {
-                    console.log('#####################获取商品数据成功#####################');
-                    console.log(val);
+                    this.$broadcast('infoGetData', 'msg');
+                    this.$broadcast('deepCopyInfo', val.data.info);
                 }
-            }
+            },
         },
         route: {
             activate: function (transition) {

@@ -166,6 +166,7 @@
     import designers            from    './designers.vue'
     import country              from    './country.vue'
     import {API_ROOT}           from    '../../../../config'
+    import lodash               from    'lodash'
 
     export default{
         props:['info'],
@@ -184,13 +185,25 @@
                 applicable_scene:[],
                 materialList:[],
                 brandList:[],
+                copyInfo:{},
             }
         },
         watch:{
-            'info':function(val,oldval){
+            'info': {
+                handler: 'isEqual',
+                deep: true
+            }
+        },
+        events:{
+            // 深度拷贝原始数据，在watch到数据变化后，做比较
+            'deepCopyInfo':function(data){
+                this.$set('copyInfo',JSON.parse(JSON.stringify(data)));
+            },
 
+            //获取一些下拉列表数据
+            'infoGetData':function(msg){
                 //获取分类材质属性
-                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":val.categoryId},'获取分类属性失败',(data)=>{
+                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":this.info.categoryId},'获取分类属性失败',(data)=>{
                     this.$set('materialList',data.materialList)
                 });
 
@@ -200,23 +213,28 @@
                 });
 
                 //广播通知设计师组件获取数据
-                this.$broadcast('designerslist', 'test');
+                this.$broadcast('designerslist', 'msg');
 
                 //广播通知国家组件获取数据
-                this.$broadcast('countrylist', 'test');
+                this.$broadcast('countrylist', 'msg');
+
+                //获取风格／适用人群／适用场景
+                this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
+                    this.$set('style',data.data.style)
+                    this.$set('applicable_people',data.data.applicable_people)
+                    this.$set('applicable_scene',data.data.applicable_scene)
+                });
             }
         },
-        compiled(){
-
-            //获取风格／适用人群／适用场景
-            this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
-                this.$set('style',data.data.style)
-                this.$set('applicable_people',data.data.applicable_people)
-                this.$set('applicable_scene',data.data.applicable_scene)
-            });
-
-        },
         methods:{
+            /**
+             * 对象深度比较
+             * lodash提供的方式
+             */
+            isEqual:function(val){
+                console.log(_.isEqual(this.info, this.copyInfo));
+            },
+
             /**
              * 确认修改按钮
              * 1：提交数据的时候，需要把数组里面的designersid这个数组里面的designerName属性过滤掉
@@ -244,9 +262,6 @@
                     alert(errText);
                 });
             }
-        },
-        ready(){
-
         }
     }
 </script>

@@ -60,6 +60,5 @@ export const setProductList=function({dispatch, state},data){
 
 //商品详情
 export const setProductDetails=function({dispatch, state},data){
-    console.log(data);
     httpRes.get({dispatch,state},'v1/product/detail','PRODUCTDETAILS',data);
 }
