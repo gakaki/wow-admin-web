@@ -1,11 +1,5 @@
 <template>
     <div class="form-group">
-        <p>
-            省份id：{{originProvinceId}}
-        </p>
-        <p>
-            城市ID：{{originCity}}
-        </p>
         <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/国家</label>
         <div class="col-sm-4">
             <input name="originCountryId" v-bind:value="originCountryId" type="text" class="form-control" placeholder="国家">
@@ -35,8 +29,8 @@
     </div>
 </template>
 <script type="text/javascript">
-    import vSelect      from    '../../../../components/common/vue-select/src/index.js'
-    import {API_ROOT}   from    '../../../../config'
+    import vSelect              from    '../../../../components/common/vue-select/src/index.js'
+    import {API_ROOT,httpGet}   from    '../../../../config'
 
     export default{
         props:['originCountryId','originProvinceId','originCity'],
@@ -61,7 +55,7 @@
         events: {
             'countrylist': function (msg) {
                 //获取国家数据并设置默认值
-                this.httpGet('v1/country/queryAllCountries',{},'获取国家数据错误',(data) =>{
+                httpGet('v1/country/queryAllCountries',{},'获取国家数据错误',(data) =>{
                     this.$set('countryList',data.data);
                     this.filterObj(data.data,this.originCountryId,'defaultCountry');
                 });
@@ -92,22 +86,6 @@
             },
 
             /**
-             * http请求，组件内请求数据调用该方法
-             * callback是回调方法，可以在回调里面进行对应的数据绑定
-             * url是要请求的url，data是要给传给服务器的参数，errText是错误提示文字
-             */
-            httpGet:function(url,data,errText,callback){
-                let jsontext=JSON.stringify(data);
-                this.$http.get(API_ROOT+url,{paramJson:jsontext}).then((response) => {
-                    if (response.data.resCode==0) {
-                        callback(response.data);
-                    }else {
-                    }
-                }, (response) => {
-                });
-            },
-
-            /**
              * 设置国家id的值并设置默认值
              * 非中国的国家，不用设置省份城市
              */
@@ -117,12 +95,15 @@
                     return;
                 }
                 if(val.id!=107){
-                    this.$set('originProvinceId','');
-                    this.$set('originCity','')
+                    console.log(132322);
+                    this.$set('originProvinceId',0);
+                    this.$set('originCity','');
+                    this.$set('defaultProvince',{});
+                    this.$set('defaultCity',{});
                 }
                 if(val.id==107){
                     //如果是中国，获取省份
-                    this.httpGet('v1/area/subarea',{"areaId":0},'获取省份数据错误',(data)=>{
+                    httpGet('v1/area/subarea',{"areaId":0},'获取省份数据错误',(data)=>{
                         this.$set('provinceList',data.data.areaList);
                         this.filterObj(data.data.areaList,this.originProvinceId,'defaultProvince');
                     });
@@ -135,17 +116,20 @@
              */
             setOriginProvinceId:function(val){
                 if (!val) {
-                    this.$set('setOriginProvinceId','')
+                    this.$set('originProvinceId',0)
                     return;
                 }
-                this.$set('originCountryId',val.id)
+                this.$set('originProvinceId',val.id)
+                if (!val.id||val.id=='') {
 
-                //根据省份查询对应的城市
-                this.httpGet('v1/area/subarea',{"areaId":val.id},'获取城市数据错误',(data)=>{
-                    this.$set('defaultCity','')
-                    this.$set('cityList',data.data.areaList);
-                    this.filterObj(data.data.areaList,this.originCity,'defaultCity');
-                });
+                }else {
+                    //根据省份查询对应的城市
+                    httpGet('v1/area/subarea',{"areaId":val.id},'获取城市数据错误',(data)=>{
+                        this.$set('defaultCity','')
+                        this.$set('cityList',data.data.areaList);
+                        this.filterObj(data.data.areaList,this.originCity,'defaultCity');
+                    });
+                }
             },
 
             /**

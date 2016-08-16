@@ -80,6 +80,7 @@ export default {
     props: ['orderList'],
     data() {
         return {
+            spinnerFixed:true,
             alertObj:{
                 alertType:null,
                 alertInfo:null,

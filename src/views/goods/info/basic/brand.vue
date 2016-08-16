@@ -3,7 +3,7 @@
     <div class="form-group">
         <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>品牌</label>
         <div class="col-sm-3 add-product-hide-input">
-            <input v-model="brandid" type="text" class="form-control" placeholder="品牌id">
+            <input v-model="brandid" type="text" class="form-control hidden" placeholder="品牌id">
             <v-select :value.sync="selected" :on-change="setSelect" label="brandCname" :debounce="500" placeholder="搜索品牌" :options="brandlist"></v-select>
         </div>
     </div>

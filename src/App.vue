@@ -36,6 +36,8 @@
 </style>
 <template>
     <div id="app" v-bind:class="{'bodybg':loginTag==true}" @click="closeDropdownsAndPopovers" class="container-fluid">
+
+        <!-- ie浏览器提示层 -->
         <div class="ietip" v-if="ietpis==true">
             <div class="ietip-box">
                 <div class="well text-center">
@@ -81,8 +83,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- 顶部菜单 -->
         <Topnav v-if="loginTag==true"></Topnav>
+
+        <!-- 左边菜单 -->
         <leftsider v-if="loginTag==true"></leftsider>
+
+        <!-- 主内容 -->
         <div class="layout-main">
             <breadcrumb v-if="loginTag==true"></breadcrumb>
             <div class="containerPadding"><router-view keep-alive></router-view></div>

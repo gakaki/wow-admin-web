@@ -2,6 +2,34 @@
  * 公用方法以及公用常量
  */
 
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
+
+/**
+ * http请求，组件内请求数据调用该方法
+ * url是要请求的url，data是要给传给服务器的参数，errText是错误提示文字
+ * callback是正确响应时的回调方法，可以在回调里面进行对应的数据绑定
+ */
+export function httpGet(url,data,errText,callback){
+    let jsontext=JSON.stringify(data)
+    Vue.http({url: API_ROOT+url, data:{paramJson:jsontext},method: 'get'})
+    .then((response) => {
+        callback(response.data)
+    }, (response) => {
+        callback(response)
+    });
+}
+export function httpPost(url,data,errText,callback){
+    let jsontext=JSON.stringify(data)
+    Vue.http({url: API_ROOT+url, data:{paramJson:jsontext},method: 'post'})
+    .then((response) => {
+        callback(response.data)
+    }, (response) => {
+        callback(response)
+    });
+}
+
 // 根据环境判断对应的数据接口
 // export const API_ROOT = 'http://10.0.60.121:9090/';
 let get_base_url = function( host="127.0.0.1" ){

@@ -24,14 +24,18 @@
         <div class="well well-sm">
             <ul class="edit-product-title list-inline">
                 <li>基本信息</li>
-                <li class="text-right"><button @click="modification" type="button" class="btn btn-danger">确认修改</button></li>
+                <li class="text-right">
+                    <button v-bind:class="{'btn-danger':disabled==false}" v-bind:disabled="disabled==true" @click="modificationInfo" type="button" class="btn">确认修改</button>
+                </li>
             </ul>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">所属分类</label>
             <div class="col-sm-10">
                 <p class="control-label text-muted">
-                    分类1 > 分类2 > 分类3
+                    <span v-for="item in categoryName">
+                        {{item.categoryName}} <i v-if="$index+1!=categoryName.length">></i>
+                    </span>
                 </p>
             </div>
         </div>
@@ -63,16 +67,16 @@
         <!-- 品牌 -->
         <brand :brandid.sync="info.brandId" :brandlist="brandList"></brand>
 
-        <!-- 设计师 -->
-        <designers :designersid.sync="info.designerVoList"></designers>
+        <!-- 设计师 监控数据有问题，暂不启用-->
+        <!-- <designers :designersid.sync="info.designerVoList"></designers> -->
 
-        <!--国家省份城市-->
-        <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country>
+        <!--国家省份城市 监控数据有问题，暂不启用-->
+        <!-- <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country> -->
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
             <div class="col-sm-2 add-product-hide-input">
-                <input data-rule="required" name="styleId" v-bind:value="info.styleId"  type="text" class="form-control" placeholder="风格">
+                <input data-rule="required" name="styleId" v-bind:value="info.styleId"  type="text" class="form-control hidden" placeholder="风格">
                 <select v-model="info.styleId" class="form-control">
                     <option v-for="item in style" v-bind:value="item.keyId">
                         {{ item.keyValue }}
@@ -85,21 +89,21 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input v-model="info.length" name="length" type="number" class="form-control" placeholder="长">
+                    <input v-model="info.length" name="length" type="number" class="form-control" placeholder="长" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">宽</span>
-                    <input v-model="info.width" name="width" type="number" class="form-control" placeholder="宽">
+                    <input v-model="info.width" name="width" type="number" class="form-control" placeholder="宽" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">高</span>
-                    <input v-model="info.height" name="height" type="number" class="form-control" placeholder="高">
+                    <input v-model="info.height" name="height" type="number" class="form-control" placeholder="高" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
@@ -110,7 +114,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>适用人群</label>
             <div class="col-sm-2 add-product-hide-input">
-                <input data-rule="required" name="applicablePeople" v-bind:value="info.applicablePeople" type="text" class="form-control" placeholder="适用人群">
+                <input data-rule="required" name="applicablePeople" v-bind:value="info.applicablePeople" type="text" class="form-control hidden" placeholder="适用人群">
                 <select v-model="info.applicablePeople" class="form-control">
                     <option v-for="item in applicable_people" v-bind:value="item.keyId">
                         {{ item.keyValue }}
@@ -121,7 +125,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>是否可定制</label>
             <div class="col-sm-2 add-product-hide-input">
-                <input data-rule="required" name="canCustomized" v-bind:value="info.canCustomized" type="text" class="form-control" placeholder="是否可以定制">
+                <input data-rule="required" name="canCustomized" v-bind:value="info.canCustomized" type="text" class="form-control hidden" placeholder="是否可以定制">
                 <select v-model="info.canCustomized" class="form-control">
                     <option v-for="item in canCustomized" v-bind:value="item.value">
                         {{ item.text }}
@@ -133,8 +137,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>适用场景
             </label>
             <div class="col-sm-7 bg-muted">
-                {{info.applicableSceneList}}
-                <label v-for="item in applicable_scene" class="checkbox-inline">
+                <label v-for="item in applicable_scene | orderBy 'keyId'" class="checkbox-inline">
                     <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.applicableSceneList" v-bind:value="item.keyId"> {{item.keyValue}}
                 </label>
             </div>
@@ -142,8 +145,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
-                {{info.materialList}}
-                <label v-for="item in materialList" class="checkbox-inline">
+                <label v-for="item in materialList | orderBy 'id'" class="checkbox-inline">
                     <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.materialList" v-bind:value="item.id"> {{item.name}}
                 </label>
             </div>
@@ -152,7 +154,7 @@
             <label class="col-sm-2 control-label">商品描述</label>
             <div class="col-sm-7">
                 <p class="control-label text-muted">
-                    <textarea name="detailDescription" placeholder="商品描述" class="form-control" rows="5">{{info.detailDescription}}</textarea>
+                    <textarea v-model="info.detailDescription" name="detailDescription" placeholder="商品描述" class="form-control" rows="5"></textarea>
                 </p>
             </div>
             <span class="col-sm-3 control-label">
@@ -162,18 +164,18 @@
     </div>
 </template>
 <script type="text/javascript">
-    import brand                from    './brand'
-    import designers            from    './designers.vue'
-    import country              from    './country.vue'
-    import {API_ROOT}           from    '../../../../config'
-    import lodash               from    'lodash'
+    import brand                            from    './brand'
+    import designers                        from    './designers.vue'
+    import country                          from    './country.vue'
+    import {API_ROOT,httpGet,httpPost}      from    '../../../../config'
+    import lodash                           from    'lodash'
 
     export default{
-        props:['info'],
+        props:['productid','info','alertobj'],
         components:{
             brand,
             designers,
-            country
+            country,
         },
         data(){
             return{
@@ -186,6 +188,12 @@
                 materialList:[],
                 brandList:[],
                 copyInfo:{},
+                disabled:true,
+                categoryName:[],
+                editInfoObj:{
+                    productId:'',
+                    info:{}
+                }
             }
         },
         watch:{
@@ -197,18 +205,24 @@
         events:{
             // 深度拷贝原始数据，在watch到数据变化后，做比较
             'deepCopyInfo':function(data){
-                this.$set('copyInfo',JSON.parse(JSON.stringify(data)));
+                this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
             },
 
-            //获取一些下拉列表数据
+            //获取一些列表数据
             'infoGetData':function(msg){
+
+                //根据三级类目id查询级联类目id
+                httpGet('v1/category/path-category',{"categoryId":this.info.categoryId},'级联类目信息失败',(data)=>{
+                    this.$set('categoryName',data.data.categoryList)
+                });
+
                 //获取分类材质属性
-                this.httpGet('v1/material/queryCategoryMaterial',{"categoryId":this.info.categoryId},'获取分类属性失败',(data)=>{
+                httpGet('v1/material/queryCategoryMaterial',{"categoryId":this.info.categoryId},'获取分类属性失败',(data)=>{
                     this.$set('materialList',data.materialList)
                 });
 
                 //获取品牌数据
-                this.httpGet('v1/brand/queryAll',{},'获取品牌数据失败',(data)=> {
+                httpGet('v1/brand/queryAll',{},'获取品牌数据失败',(data)=> {
                     this.$set('brandList',data.data.brandList)
                 });
 
@@ -219,7 +233,7 @@
                 this.$broadcast('countrylist', 'msg');
 
                 //获取风格／适用人群／适用场景
-                this.httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
+                httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
                     this.$set('style',data.data.style)
                     this.$set('applicable_people',data.data.applicable_people)
                     this.$set('applicable_scene',data.data.applicable_scene)
@@ -231,37 +245,30 @@
              * 对象深度比较
              * lodash提供的方式
              */
-            isEqual:function(val){
-                console.log(_.isEqual(this.info, this.copyInfo));
+            isEqual:function(){
+                if (_.isEqual(this.info, this.copyInfo)) {
+                    this.$set('disabled',true)
+                }else {
+                    this.$set('disabled',false)
+                }
             },
 
             /**
              * 确认修改按钮
-             * 1：提交数据的时候，需要把数组里面的designersid这个数组里面的designerName属性过滤掉
              */
-            modification:function(){
-                console.log(this.info.brandId);
-                console.log(this.info.width);
-                console.log(this.info.designerVoList);
-            },
-
-            /**
-             * http请求，组件内请求数据调用该方法
-             * callback是回调方法，可以在回调里面进行对应的数据绑定
-             * url是要请求的url，data是要给传给服务器的参数，errText是错误提示文字
-             */
-            httpGet:function(url,data,errText,callback){
-                let jsontext=JSON.stringify(data);
-                this.$http.get(API_ROOT+url,{paramJson:jsontext}).then((response) => {
-                    if (response.data.resCode==0) {
-                        callback(response.data);
+            modificationInfo:function(){
+                this.$set('editInfoObj.productId',this.productid);
+                this.$set('editInfoObj.info',this.info);
+                httpPost('v1/product/info',this.editInfoObj,'修改失败',(data)=> {
+                    if (data.resCode==0) {
+                        this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
+                        this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                        this.$set('disabled',true);
                     }else {
-                        alert(errText);
+                        this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
                     }
-                }, (response) => {
-                    alert(errText);
                 });
-            }
+            },
         }
     }
 </script>

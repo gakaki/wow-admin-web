@@ -52,9 +52,10 @@
                 }else {
                     let findDesignersTrue = (value,index,array) => {
                         this.designersid[index].primary=false;
-                       if(value.designerId==Number(event.target.value)){
-                           this.designersid[index].primary=true;
-                       }
+                        if(value.designerId==Number(event.target.value)){
+                            this.designersid[index].primary=true;
+                            this.$dispatch('deepCopyInfo',1)
+                        }
                     };
                     this.designersid.find(findDesignersTrue)
                 }
@@ -87,7 +88,7 @@
                         // 设置默认设计师列表
                         let findDesigners = (value,index,array) => {
                             if (value.designerId==this.designersIdTag) {
-                                this.selected.push(value)
+                                this.selected.push(value);
                             }
                         };
                         for(let a=0; a<this.designersid.length;a++){

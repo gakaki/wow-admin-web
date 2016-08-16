@@ -124,21 +124,41 @@
 </style>
 <template>
     <div class="row" style="padding-bottom: 50px;">
-        <Basicinformation :info.sync=vuex_getProductDetails.data.info></Basicinformation>
+        <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" :text="spinnerText" ></spinner>
+        <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
+
+        <!-- 基础信息 -->
+        <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync=vuex_getProductDetails.data.info></Basicinformation>
+
+        <!-- 商品详情 -->
+        <product-image></product-image>
     </div>
 </template>
 
 <script type="text/javascript">
     import Basicinformation     from    './info/basic/Basicinformation'
+    import productImage         from    './info/image/image.vue'
     import {getProductDetails}  from    '../../vuex/getters'
     import {setProductDetails}  from    '../../vuex/actions'
+    import spinner              from    '../../components/common/spinner/Spinner';
+    import Alert                from    '../../components/common/alert/Alert'
 
     export default{
         components:{
-            Basicinformation
+            Basicinformation,
+            productImage,
+            spinner,
+            Alert
         },
         data(){
             return{
+                spinnerFixed:true,
+                spinnerText:'数据加载中...',
+                alertObj:{
+                    alertType:null,
+                    alertInfo:null,
+                    alertShow:false,
+                },
             }
         },
         vuex:{
@@ -157,7 +177,10 @@
                 if (val.resCode==0) {
                     this.$broadcast('infoGetData', 'msg');
                     this.$broadcast('deepCopyInfo', val.data.info);
+                }else {
+                    this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取商品数据错误',alertShow:true})
                 }
+                this.$broadcast('hide::spinner');
             },
         },
         route: {
@@ -168,6 +191,9 @@
                 window.scrollTo(0, 0);
                 this.vuex_setProductDetails({productId: goodsid});
             }
+        },
+        ready(){
+            this.$broadcast('show::spinner');
         }
     }
 </script>
