@@ -187,7 +187,6 @@
                 if (val.resCode==0) {
                     this.$broadcast('infoGetData', 'msg');
                     this.$broadcast('deepCopyInfo', val.data.info);
-
                     // 过滤掉图片列表里面多余的modifed字段
                     for (var i = 0; i < val.data.images.length; i++) {
                         delete val.data.images[i].modifed
@@ -199,8 +198,16 @@
                 }else {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取商品数据错误',alertShow:true})
                 }
-                this.$broadcast('hide::spinner');
+                this.loadingEnd();
             },
+        },
+        events:{
+            'loadingStart':function(msg){
+                this.loadingStart();
+            },
+            'loadingEnd':function(msg){
+                this.loadingEnd();
+            }
         },
         methods:{
             //过滤图片数据分组，便于渲染
@@ -212,6 +219,12 @@
                         this.imagesDesc.push(val[i])
                     }
                 }
+            },
+            loadingStart:function(){
+                this.$broadcast('show::spinner');
+            },
+            loadingEnd:function(){
+                this.$broadcast('hide::spinner');
             }
         },
         detached(){
@@ -228,7 +241,7 @@
             }
         },
         ready(){
-            this.$broadcast('show::spinner');
+            this.loadingStart();
         }
     }
 </script>

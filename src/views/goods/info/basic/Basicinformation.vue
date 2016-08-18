@@ -20,12 +20,12 @@
     }
 </style>
 <template>
-    <div class="col-md-12 addproduct-box-html form-horizontal">
+    <div id="edit-product-info" class="col-md-12 addproduct-box-html form-horizontal">
         <div class="well well-sm">
             <ul class="edit-product-title list-inline">
                 <li>基本信息</li>
                 <li class="text-right">
-                    <button v-bind:class="{'btn-danger':disabled==false}" v-bind:disabled="disabled==true" @click="modificationInfo" type="button" class="btn">确认修改</button>
+                    <button v-bind:class="{'btn-danger':disabled==false}" v-bind:disabled="disabled==true" id="edit-product-info-button" type="button" class="btn">确认修改</button>
                 </li>
             </ul>
         </div>
@@ -42,7 +42,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>商品名称</label>
             <div class="col-sm-4">
-                <input v-model="info.productName" name="productName" maxlength="30" type="text" class="form-control" placeholder="商品名称">
+                <input data-rule="required" v-model="info.productName" name="productName" maxlength="30" type="text" class="form-control" placeholder="商品名称">
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">{{info.productName.length}}/30</div>
@@ -51,7 +51,7 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>卖点</label>
             <div class="col-sm-4">
-                <input v-model="info.sellingPoint" name="sellingPoint" type="text" class="form-control" placeholder="商店卖点">
+                <input data-rule="required" v-model="info.sellingPoint" name="sellingPoint" type="text" class="form-control" placeholder="商店卖点">
             </div>
             <span class="col-sm-4 control-label">
                 <div class="text-left text-muted">{{info.sellingPoint.length}}/30</div>
@@ -89,21 +89,21 @@
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">长</span>
-                    <input v-model="info.length" name="length" type="number" class="form-control" placeholder="长" number>
+                    <input data-rule="required" v-model="info.length" name="length" type="number" class="form-control" placeholder="长" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">宽</span>
-                    <input v-model="info.width" name="width" type="number" class="form-control" placeholder="宽" number>
+                    <input data-rule="required" v-model="info.width" name="width" type="number" class="form-control" placeholder="宽" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="input-group">
                     <span class="input-group-addon">高</span>
-                    <input v-model="info.height" name="height" type="number" class="form-control" placeholder="高" number>
+                    <input data-rule="required" v-model="info.height" name="height" type="number" class="form-control" placeholder="高" number>
                     <span class="input-group-addon">cm</span>
                 </div>
             </div>
@@ -146,7 +146,7 @@
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>材质</label>
             <div class="col-sm-7 bg-muted">
                 <label v-for="item in materialList | orderBy 'id'" class="checkbox-inline">
-                    <input data-rule="checked[1~]" type="checkbox" name="applicableScene[]" v-model="info.materialList" v-bind:value="item.id"> {{item.name}}
+                    <input data-rule="checked[1~]" type="checkbox" name="materialList[]" v-model="info.materialList" v-bind:value="item.id"> {{item.name}}
                 </label>
             </div>
         </div>
@@ -206,6 +206,7 @@
             // 深度拷贝原始数据，在watch到数据变化后，做比较
             'deepCopyInfo':function(data){
                 this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                $('#edit-product-info').validator('cleanUp');
             },
 
             //获取一些列表数据
@@ -260,6 +261,7 @@
                 this.$set('editInfoObj.productId',this.productid);
                 this.$set('editInfoObj.info',this.info);
                 httpPost('v1/product/info',this.editInfoObj,'修改失败',(data)=> {
+                    this.$dispatch('loadingEnd', 'msg');
                     if (data.resCode==0) {
                         this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
                         this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
@@ -269,6 +271,36 @@
                     }
                 });
             },
+        },
+        ready(){
+            let _this=this;
+            $('#edit-product-info').validator({
+                theme: "yellow_right",
+                stopOnError: true,
+                focusCleanup: true,
+                focusInvalid:false,
+                timely: 2,
+                // 获取display
+                display: function(el) {
+                    return el.getAttribute('placeholder') || '';
+                },
+                fields: {
+                    //必填项直接绑定表单的 data-rule="required"
+                    //复杂的验证正则放这处理
+                },
+                invalid: function(form, errors){
+                    //数据验证没通过
+                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-15},500);
+                },
+                valid: function(){
+                    _this.$dispatch('loadingStart', 'msg');
+                    //表单验证通过，提交表单到服务器
+                    _this.modificationInfo();
+                }
+            })
+            .on("click", "#edit-product-info-button", function(e){
+                $(e.delegateTarget).trigger("validate");
+            });
         }
     }
 </script>
