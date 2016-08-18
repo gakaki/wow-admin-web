@@ -124,14 +124,22 @@
 </style>
 <template>
     <div class="row" style="padding-bottom: 50px;">
+        <div class="col-md-12 addproduct-box-html">
+            <div class="well well-sm">
+                修改信息分为三块：基本信息／销售信息／图片信息<br />
+                <span class="text-danger">
+                    修改完对应区域的内容后，请点击对应区域的右上角确认按钮提交
+                </span>
+            </div>
+        </div>
         <spinner id="spinner-box" :size="spinnerSize" :fixed="spinnerFixed" :text="spinnerText" ></spinner>
         <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
 
         <!-- 基础信息 -->
         <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync=vuex_getProductDetails.data.info></Basicinformation>
 
-        <!-- 商品详情 -->
-        <product-image></product-image>
+        <!-- 商品图片 -->
+        <product-image :productid="vuex_getProductDetails.data.productId" :alertobj.sync="alertObj" :imagesprimary="imagesPrimary" :imagesdesc="imagesDesc"></product-image>
     </div>
 </template>
 
@@ -159,6 +167,8 @@
                     alertInfo:null,
                     alertShow:false,
                 },
+                imagesPrimary:[],
+                imagesDesc:[],
             }
         },
         vuex:{
@@ -177,11 +187,36 @@
                 if (val.resCode==0) {
                     this.$broadcast('infoGetData', 'msg');
                     this.$broadcast('deepCopyInfo', val.data.info);
+
+                    // 过滤掉图片列表里面多余的modifed字段
+                    for (var i = 0; i < val.data.images.length; i++) {
+                        delete val.data.images[i].modifed
+                        if (i+1==val.data.images.length) {
+                            this.imgFilter(val.data.images)
+                            this.$broadcast('imagesList', val.data.images)
+                        }
+                    }
                 }else {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取商品数据错误',alertShow:true})
                 }
                 this.$broadcast('hide::spinner');
             },
+        },
+        methods:{
+            //过滤图片数据分组，便于渲染
+            imgFilter:function(val){
+                for (let i = 0; i < val.length; i++) {
+                    if (val[i].primary==true) {
+                         this.imagesPrimary.push(val[i])
+                    }else {
+                        this.imagesDesc.push(val[i])
+                    }
+                }
+            }
+        },
+        detached(){
+            this.$set('imagesPrimary',[])
+            this.$set('imagesDesc',[])
         },
         route: {
             activate: function (transition) {
