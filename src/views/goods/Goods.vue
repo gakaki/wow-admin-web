@@ -265,7 +265,7 @@
                 totalResult:'',
                 search:{
                 },
-                spinnerFixed:false,
+                spinnerFixed:true,
                 spinnerText:'数据加载中...'
             }
         },
