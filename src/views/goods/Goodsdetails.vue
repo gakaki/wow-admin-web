@@ -139,7 +139,7 @@
         <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync=vuex_getProductDetails.data.info></Basicinformation>
 
         <!-- 销售属性 -->
-        <sales-attribute></sales-attribute>
+        <!-- <sales-attribute></sales-attribute> -->
 
         <!-- 商品图片 -->
         <product-image :productid="vuex_getProductDetails.data.productId" :alertobj.sync="alertObj" :imagesprimary="imagesPrimary" :imagesdesc="imagesDesc"></product-image>
