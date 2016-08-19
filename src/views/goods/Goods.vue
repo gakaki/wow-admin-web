@@ -194,7 +194,7 @@
     <tbody v-for="item in vuex_getProductList.data.productListPageVo">
         <tr v-for="items in item.productListVo">
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
-                <img v-bind:src="item.productPageVo.productImg" style="width:50px;" alt="" />
+                <img v-bind:src="item.productPageVo.productImg+'?imageView2/1/w/50/h/50'" style="width:50px;" alt="" />
                 <p>
                     id：{{item.productPageVo.productId}}
                 </p>

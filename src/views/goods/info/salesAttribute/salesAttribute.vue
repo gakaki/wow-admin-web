@@ -90,31 +90,30 @@
         </div>
 
         <!-- 颜色 -->
-        <div class="form-group" id="colorSelected">
-            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>颜色</label>
-            <div class="col-sm-7 bg-muted">
-                <div v-for="item in color" style="display:inline-block; min-width:140px;">
-                    <label class="checkbox-inline" style="margin-right:0px;">
-                        <input data-rule="checked[1~]" name="colorList[]" name="{{'colorSelected'+$index}}" type="checkbox" value="{{item.colorName}}" v-model='item.selected'>
-                        <i v-bind:class="item.color" v-bind:style="{ background: item.color}" class="addproduct-box-html-color-box"></i>
-                        <span v-if="item.selected==false">{{item.colorName}}</span>
-                    </label>
-                    <div class="color-label" v-if="item.selected==true" style="display:inline-block">
-                        <input data-rule="required" name="{{'colorSelected'+$index}}" v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.colorName}}" v-model='item.colorName' placeholder="颜色">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <color-list :color-list.sync="colorList"></color-list>
 
+        <!-- 规格 -->
+        <spec-list :spec-list.sync="specList"></spec-list>
 
+        <!-- 属性展示列表 -->
+        <sales-list :color-list.sync="colorList" :spec-list.sync="specList"></sales-list>
     </div>
 </template>
 <script type="text/javascript">
-    import{uploadImgLoad}   from    '../../../../config'
+    import {uploadImgLoad}                      from    '../../../../config'
+    import colorList                            from    './colorList'
+    import specList                             from    './specList'
+    import salesList                            from    './salesList'
+
     export default{
+        components:{
+            colorList,
+            specList,
+            salesList
+        },
         data(){
             return{
-                color:[
+                colorList:[
                     {colorId: 1,color: 'colorId1',colorName: '白色',colorImg:'',selected:true},
                     {colorId: 2,color: 'colorId2',colorName: '银色',colorImg:'',selected:false},
                     {colorId: 3,color: 'colorId3',colorName: '灰色',colorImg:'',selected:false},
@@ -129,8 +128,22 @@
                     {colorId: 12,color: 'colorId12',colorName: '花色',colorImg:'',selected:false},
                     {colorId: 13,color: 'colorId13',colorName: '橙色',colorImg:'',selected:false},
                 ],
-                spec:[
+                specList:[
                     {specName:'默认',sellPrice:'',weight:'',selected:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false},
                 ],
             }
         }
