@@ -91,7 +91,7 @@
                         <input data-rule="required" :name="'primaryImg'+$index" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
                         <span class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p>
-                            <img alt="" v-bind:src="item.imgUrl">
+                            <img alt="" v-bind:src="item.imgUrl+'?imageView2/1/w/90/h/90'">
                         </p>
                         {{item.imgDesc}}
                     </li>
@@ -111,7 +111,7 @@
                     <li @click="setImgIndex($index)" v-for="item in imagesdesc | orderBy 'sortOrder' 1">
                         <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
                             <input data-rule="required" :name="'img_text_desc_src'+item.sortOrder" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
-                            <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl" alt="" />
+                            <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl+'?imageView2/1/w/138/h/92'" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
                         <div class="add-product-hide-input">

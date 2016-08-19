@@ -66,7 +66,7 @@
                         <input data-rule="required" :name="'primaryImg'+$index" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder={{item.imgDesc}}>
                         <span v-if="item.imgUrl!=''" class="primary-img-remove glyphicon glyphicon-remove-sign text-danger"></span>
                         <p v-if="item.imgUrl!=''">
-                            <img v-bind:src="item.imgUrl" alt="" />
+                            <img v-bind:src="item.imgUrl+'?imageView2/1/w/90/h/90'" alt="" />
                         </p>
                         <p v-if="item.imgUrl==''" class="main-img-group-nopic">
                             添加图片
@@ -101,7 +101,7 @@
                     <li @click="imgIndex.set_img_index($index)" v-for="item in productdetails.img_text_desc | orderBy 'sortOrder' 1">
                         <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
                             <input data-rule="required" :name="'img_text_desc_src'+item.sortOrder" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
-                            <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl" alt="" />
+                            <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl+'?imageView2/1/w/138/h/92'" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
                         </p>
                         <div class="add-product-hide-input">
