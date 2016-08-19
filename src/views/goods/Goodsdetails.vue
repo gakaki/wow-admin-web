@@ -138,6 +138,9 @@
         <!-- 基础信息 -->
         <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync=vuex_getProductDetails.data.info></Basicinformation>
 
+        <!-- 销售属性 -->
+        <!-- <sales-attribute></sales-attribute> -->
+
         <!-- 商品图片 -->
         <product-image :productid="vuex_getProductDetails.data.productId" :alertobj.sync="alertObj" :imagesprimary="imagesPrimary" :imagesdesc="imagesDesc"></product-image>
     </div>
@@ -145,6 +148,7 @@
 
 <script type="text/javascript">
     import Basicinformation     from    './info/basic/Basicinformation'
+    import salesAttribute       from    './info/salesAttribute/salesAttribute'
     import productImage         from    './info/image/image.vue'
     import {getProductDetails}  from    '../../vuex/getters'
     import {setProductDetails}  from    '../../vuex/actions'
@@ -155,6 +159,7 @@
         components:{
             Basicinformation,
             productImage,
+            salesAttribute,
             spinner,
             Alert
         },

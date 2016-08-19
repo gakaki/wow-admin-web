@@ -109,7 +109,7 @@
                 </div>
                 <ul class="details-img-group bg-muted">
                     <li @click="setImgIndex($index)" v-for="item in imagesdesc | orderBy 'sortOrder' 1">
-                        <p class="img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
+                        <p class="edit-img-text-desc-file add-product-hide-input" v-bind:class="{'details-img-group-nopic':item.imgUrl==''}" v-if="item-imgUrl!=''">
                             <input data-rule="required" :name="'img_text_desc_src'+item.sortOrder" v-bind:value="item.imgUrl"  type="text" class="form-control hidden" placeholder="图片">
                             <img v-if="item.imgUrl!=''" v-bind:src="item.imgUrl+'?imageView2/1/w/138/h/92'" alt="" />
                             <span v-if="item.imgUrl==''">添加图片</span>
@@ -386,7 +386,7 @@
             */
             var Qiniu2 = new QiniuJsSDK();
 
-            $(document).on("click",".img-text-desc-file",function(){
+            $(document).on("click",".edit-img-text-desc-file",function(){
                 $("#img-text-upload-btn").trigger("click");
             })
             let ImgTextDesc = {
