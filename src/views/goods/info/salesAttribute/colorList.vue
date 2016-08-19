@@ -18,7 +18,5 @@
 <script type="text/javascript">
     export default{
         props:['colorList'],
-        computed:{
-        }
     }
 </script>
