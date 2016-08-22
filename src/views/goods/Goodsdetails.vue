@@ -136,10 +136,10 @@
         <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
 
         <!-- 基础信息 -->
-        <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync=vuex_getProductDetails.data.info></Basicinformation>
+        <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync="vuex_getProductDetails.data.info"></Basicinformation>
 
         <!-- 销售属性 -->
-        <sales-attribute></sales-attribute>
+        <sales-attribute :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :serials="vuex_getProductDetails.data.serials"></sales-attribute>
 
         <!-- 商品图片 -->
         <product-image :productid="vuex_getProductDetails.data.productId" :alertobj.sync="alertObj" :imagesprimary="imagesPrimary" :imagesdesc="imagesDesc"></product-image>
@@ -225,9 +225,13 @@
                     }
                 }
             },
+
+            //loading start
             loadingStart:function(){
                 this.$broadcast('show::spinner');
             },
+            
+            //loading end
             loadingEnd:function(){
                 this.$broadcast('hide::spinner');
             }

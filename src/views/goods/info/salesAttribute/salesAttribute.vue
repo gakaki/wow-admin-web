@@ -97,6 +97,9 @@
 
         <!-- 属性展示列表 -->
         <sales-list :color-list.sync="colorList" :spec-list.sync="specList"></sales-list>
+        <pre>
+            {{serials|json}}
+        </pre>
     </div>
 </template>
 <script type="text/javascript">
@@ -106,16 +109,17 @@
     import salesList                            from    './salesList'
 
     export default{
+        props:['alertobj','productid','serials'],
         components:{
             colorList,
             specList,
-            salesList
+            salesList,
         },
         data(){
             return{
                 colorList:[
-                    {colorId: 1,color: 'colorId1',colorName: '白色',colorImg:'',selected:true},
-                    {colorId: 2,color: 'colorId2',colorName: '银色',colorImg:'',selected:true},
+                    {colorId: 1,color: 'colorId1',colorName: '白色',colorImg:'',selected:false},
+                    {colorId: 2,color: 'colorId2',colorName: '银色',colorImg:'',selected:false},
                     {colorId: 3,color: 'colorId3',colorName: '灰色',colorImg:'',selected:false},
                     {colorId: 4,color: 'colorId4',colorName: '黑色',colorImg:'',selected:false},
                     {colorId: 5,color: 'colorId5',colorName: '红色',colorImg:'',selected:false},
@@ -129,22 +133,52 @@
                     {colorId: 13,color: 'colorId13',colorName: '橙色',colorImg:'',selected:false},
                 ],
                 specList:[
-                    {specId:1,specName:'默认',sellPrice:'1',weight:'1',selected:true},
-                    {specId:2,specName:'默认2',sellPrice:'2',weight:'2',selected:true},
-                    {specId:3,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:4,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:5,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:6,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:7,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:8,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:9,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:10,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:11,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:12,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:13,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:14,specName:'',sellPrice:'',weight:'',selected:false},
-                    {specId:15,specName:'',sellPrice:'',weight:'',selected:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
                 ],
+            }
+        },
+        methods:{
+            //筛选已选颜色
+            colorFilter:function(){
+                for (let a = 0; a < this.colorList.length; a++) {
+                    for (let b = 0; b < this.serials.length; b++) {
+                        if (this.colorList[a].colorId==this.serials[b].colorId) {
+                            this.colorList[a].selected=true
+                            this.colorList[a].productId=this.serials[b].productId
+                            this.colorList[a].colorImg=this.serials[b].colorImg
+                        }
+                    }
+                }
+            },
+            //筛选已选尺寸
+            specFilter:function(){
+                for (let a = 0; a < this.serials.length; a++) {
+                    this.specList[a].selected=true;
+                    this.specList[a].specName=this.serials[a].specName;
+                    this.specList[a].sellPrice=this.serials[a].sellPrice;
+                    this.specList[a].weight=this.serials[a].weight;
+                }
+            },
+        },
+        watch:{
+            'serials':function(val,oldval){
+                // 从服务端拿到数据后，筛选成本地要渲染的数据颜色数据
+                this.colorFilter()
+                this.specFilter()
             }
         }
     }

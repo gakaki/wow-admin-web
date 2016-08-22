@@ -1,3 +1,11 @@
+<style media="screen">
+    .spec-disabled td+td+td{
+        background: #f9f9f9;
+    }
+    .spec-disabled:nth-child(n+2) td{
+        background: #f9f9f9;
+    }
+</style>
 <template>
     <div class="form-group" style="margin-top:40px">
         <label for="firstname" class="col-sm-2 control-label"> </label>
@@ -22,27 +30,28 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tbody v-if="item.selected==true" v-for="item in colorSelected">
-                <tr v-if="items.selected==true" v-for="items in specList">
-                    <td v-if="$index==0" v-bind:rowspan="specSelected.length">
-                        <button class="btn btn-success"> <span>选择图片</span> </button>
-                    </td>
-                    <td v-if="$index==0" v-bind:rowspan="specSelected.length">
-                        {{item.colorName}}
-                    </td>
-                    <td>
-                        {{items.specName}}
-                    </td>
-                    <td>
-                        <input @input="specSellPrice($index,$event)" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true">
-                    </td>
-                    <td>
-                        <input @input="specWeight($index,$event)" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true">
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm">禁用</button>
-                    </td>
-                </tr>
+            <tbody v-for="item in listView">
+                <tr v-for="items in item.specList" v-bind:class="{'spec-disabled':items.disabled==true}">
+                   <td v-if="$index==0" v-bind:rowspan="specSelected.length">
+                       <button class="btn btn-success"> <span>选择图片</span> </button>
+                   </td>
+                   <td v-if="$index==0" v-bind:rowspan="specSelected.length">
+                       {{item.colorName}}
+                   </td>
+                   <td>
+                       {{items.specName}}
+                   </td>
+                   <td>
+                       <input v-bind:disabled="items.disabled==true" @input="specSellPrice($index,$event)" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true" v-bind:value="items.sellPrice">
+                   </td>
+                   <td>
+                       <input v-bind:disabled="items.disabled==true" @input="specWeight($index,$event)" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
+                   </td>
+                   <td>
+                       <button v-if="items.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>
+                       <button v-if="items.disabled==true" type="button" class="btn btn-success btn-sm">启用</button>
+                   </td>
+               </tr>
             </tbody>
         </table>
     </div>
@@ -62,13 +71,16 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <h3>总共条数</h3>
+            <h3>视图渲染sku</h3>
             <pre>
-                {{listTotal|json}}
+                {{listView|json}}
             </pre>
         </div>
         <div class="col-sm-6">
-            
+            <h3>需要提交的sku数据</h3>
+            <pre>
+                {{listTotal|json}}
+            </pre>
         </div>
     </div>
 </template>
@@ -80,12 +92,15 @@
             return{
                 colorSelected:[],
                 specSelected:[],
-                listTotal:[]
+                listTotal:[],
+                listView:[],
             }
         },
         compiled(){
             this.colorFilter()
             this.specFilter()
+            this.TotalFilter()
+            this.viewSku();
         },
         methods:{
             //筛选已选颜色
@@ -94,10 +109,6 @@
                 for (let i = 0; i < this.colorList.length; i++) {
                     if (this.colorList[i].selected==true) {
                         this.colorSelected.push(this.colorList[i])
-                    }
-                    if (i+1==this.colorList.length) {
-                        console.log(this.colorSelected)
-                        console.log(this.specSelected);
                     }
                 }
             },
@@ -108,6 +119,47 @@
                 for (let i = 0; i < this.specList.length; i++) {
                     if (this.specList[i].selected==true) {
                         this.specSelected.push(this.specList[i])
+                    }
+                }
+            },
+
+            //计算总的需要渲染的sku数据
+            viewSku:function(){
+                this.$set('listView',[]);
+                for (let a = 0; a < this.colorSelected.length; a++) {
+                    this.listView.push(
+                        {
+                            colorId:this.colorSelected[a].colorId,
+                            colorName:this.colorSelected[a].colorName,
+                            colorImg:this.colorSelected[a].colorImg,
+                            specList:[],
+                        }
+                    )
+                    for (let b = 0; b < this.specSelected.length; b++) {
+                        this.listView[a].specList.push(
+                            this.specSelected[b]
+                        )
+                    }
+                }
+            },
+
+            //计算总的需要提交的sku数据
+            TotalFilter:function(){
+                this.$set('listTotal',[]);
+                for (let a = 0; a < this.colorList.length; a++) {
+                    if (this.colorList[a].selected==true) {
+                        for (let b = 0; b < this.specList.length; b++) {
+                            if (this.specList[b].selected==true) {
+                                this.listTotal.push({
+                                    colorId:this.colorList[a].colorId,
+                                    colorImg:this.colorList[a].colorImg,
+                                    colorName:this.colorList[a].colorName,
+                                    specName:this.specList[b].specName,
+                                    weight:this.specList[b].weight,
+                                    sellPrice:this.specList[b].sellPrice,
+                                })
+                            }
+                        }
                     }
                 }
             },
@@ -128,12 +180,16 @@
             'colorList': {
                 handler: function (val, oldVal) {
                     this.colorFilter()
+                    this.TotalFilter()
+                    this.viewSku();
                 },
                 deep: true
             },
             'specList': {
                 handler: function (val, oldVal) {
                     this.specFilter()
+                    this.TotalFilter()
+                    this.viewSku();
                 },
                 deep: true
             }
