@@ -96,7 +96,7 @@
         <spec-list :spec-list.sync="specList"></spec-list>
 
         <!-- 属性展示列表 -->
-        <sales-list :color-list.sync="colorList" :spec-list.sync="specList"></sales-list>
+        <sales-list :serials="serials" :color-list="colorList" :spec-list.sync="specList"></sales-list>
         <pre>
             {{serials|json}}
         </pre>
@@ -133,21 +133,21 @@
                     {colorId: 13,color: 'colorId13',colorName: '橙色',colorImg:'',selected:false},
                 ],
                 specList:[
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
-                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:true},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
+                    {specName:'',sellPrice:'',weight:'',selected:false,disabled:false},
                 ],
             }
         },
@@ -158,8 +158,8 @@
                     for (let b = 0; b < this.serials.length; b++) {
                         if (this.colorList[a].colorId==this.serials[b].colorId) {
                             this.colorList[a].selected=true
-                            this.colorList[a].productId=this.serials[b].productId
                             this.colorList[a].colorImg=this.serials[b].colorImg
+                            this.colorList[a].colorName=this.serials[b].colorName
                         }
                     }
                 }
@@ -167,6 +167,7 @@
             //筛选已选尺寸
             specFilter:function(){
                 for (let a = 0; a < this.serials.length; a++) {
+                    this.specList[a].colorId=this.serials[a].colorId;
                     this.specList[a].selected=true;
                     this.specList[a].specName=this.serials[a].specName;
                     this.specList[a].sellPrice=this.serials[a].sellPrice;

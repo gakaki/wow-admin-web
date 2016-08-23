@@ -103,79 +103,8 @@
             <button disabled="disabled" type="button" class="btn btn-default">导出Excel</button>
             <button disabled="disabled" type="button" class="btn btn-default">删除</button>
         </div>
-        <div class="btn-group pull-right">
-            <button disabled="disabled" @click="listView='spu'" v-bind:class="{'btn-primary':listView=='spu'}" class="btn btn-default">SPU视图</button>
-            <button disabled="disabled" @click="listView='sku'" v-bind:class="{'btn-primary':listView=='sku'}" class="btn btn-default">SKU视图</button>
-        </div>
     </div>
 </div>
-<!-- <table class="table order-list table-thead-center table-tbody-center table-hover" v-if="listView=='spu'">
-    <thead>
-        <tr>
-            <th>
-                <input type="checkbox" value="1077" name="1077name1">
-            </th>
-            <th>图片</th>
-            <th>商品名称</th>
-            <th>品牌</th>
-            <th>售价</th>
-            <th>库存</th>
-            <th>销量</th>
-            <th>访问量</th>
-            <th>喜欢</th>
-            <th>发布时间</th>
-            <th>商品状态</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="item in list">
-            <td>
-                <input type="checkbox" value="1077" name="1077name1">
-            </td>
-            <td>
-                <img src="../../assets/img/file_242_2.jpg" style="width:50px;" alt="" />
-            </td>
-            <td>
-                <p>
-                    <a href="javascript:void(0);">GRASSY小草收纳座</a>
-                </p>
-                <p class="text-muted">
-                    SPU：C02356652
-                </p>
-            </td>
-            <td>
-                Umbra
-            </td>
-            <td>
-                {{2269*$index+5}}~{{3389*$index+5}}
-            </td>
-            <td>
-                <span v-bind:class="{ 'text-danger': $index <= 3}">{{$index}}</span>
-            </td>
-            <td>
-                40
-            </td>
-            <td>
-                PV：2435<br />UV：876
-            </td>
-            <td>
-                220
-            </td>
-            <td>
-                2016-05-03 06:12:35
-            </td>
-            <td>
-                <span v-if="$index <=3" class="text-success">已上架</span>
-                <span v-if="$index > 3" class="text-danger">待上架</span>
-            </td>
-            <td  class="linst-link-group">
-                <a href="#">编辑</a>
-                <a class="link-delete" href="#">删除</a>
-            </td>
-        </tr>
-    </tbody>
-</table> -->
 <table class="table order-list table-thead-center table-tbody-center table-tbody-hover" v-if="listView=='sku'">
     <thead>
         <tr>
@@ -225,7 +154,7 @@
                 <span v-if="items.productStatus==2" class="text-danger">待上架</span>
             </td>
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
-                2016-05-03 06:12:35
+                {{item.productPageVo.createTime}}
             </td>
             <td  class="linst-link-group" v-if="$index==0" v-bind:rowspan="item.productListVo.length">
                 <a class="btn" v-link='{ path: "/goods/list/details/"+item.productPageVo.productId}'>编辑</a>
