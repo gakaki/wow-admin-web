@@ -84,7 +84,7 @@
             <ul class="edit-product-title list-inline">
                 <li>销售属性<span class="text-danger">［颜色／规格 *必选］</span></li>
                 <li class="text-right">
-                    <button type="button" class="btn btn-danger">确认修改</button>
+                    <button @click="TotalFilter" type="button" class="btn btn-danger">确认修改</button>
                 </li>
             </ul>
         </div>
@@ -96,17 +96,20 @@
         <spec-list :spec-list.sync="specList"></spec-list>
 
         <!-- 属性展示列表 -->
-        <sales-list :serials="serials" :color-list="colorList" :spec-list.sync="specList"></sales-list>
-        <pre>
-            {{serials|json}}
-        </pre>
+        <sales-list :productid="productid" :alertobj.sync="alertobj" :serials="serials" :color-list="colorList" :spec-list.sync="specList"></sales-list>
+
+        <!-- 隐藏域，用于触发图片上传按钮 -->
+        <img class="testImg" alt="" style="display:none;">
+        <div id="edit-img-text-upload" style="display:none;">
+            <button id="edit-img-text-upload-btn" type="button" name="button">图文上传按钮</button>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
-    import {uploadImgLoad}                      from    '../../../../config'
     import colorList                            from    './colorList'
     import specList                             from    './specList'
     import salesList                            from    './salesList'
+    import {uploadImgLoad} from    '../../../../config'
 
     export default{
         props:['alertobj','productid','serials'],
@@ -152,6 +155,11 @@
             }
         },
         methods:{
+            // 提交数据
+            TotalFilter:function(){
+                this.$broadcast('TotalFilterList','msg')
+            },
+
             //筛选已选颜色
             colorFilter:function(){
                 for (let a = 0; a < this.colorList.length; a++) {

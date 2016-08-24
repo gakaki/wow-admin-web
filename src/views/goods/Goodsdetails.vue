@@ -198,6 +198,7 @@
                         if (i+1==val.data.images.length) {
                             this.imgFilter(val.data.images)
                             this.$broadcast('imagesList', val.data.images)
+                            this.$broadcast('colorImgList','msg')
                         }
                     }
                 }else {
@@ -230,7 +231,7 @@
             loadingStart:function(){
                 this.$broadcast('show::spinner');
             },
-            
+
             //loading end
             loadingEnd:function(){
                 this.$broadcast('hide::spinner');

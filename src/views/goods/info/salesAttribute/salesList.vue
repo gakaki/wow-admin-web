@@ -7,7 +7,6 @@
     }
 </style>
 <template>
-    <button type="button" name="button" @click="TotalFilter">测试按钮2</button>
     <div class="form-group" style="margin-top:40px">
         <label for="firstname" class="col-sm-2 control-label"> </label>
         <div class="col-sm-7 control-label">
@@ -34,7 +33,10 @@
             <tbody v-for="(index, item) in listView">
                 <tr v-for="items in item.specList" v-bind:class="{'spec-disabled':items.disabled==true}">
                    <td v-if="$index==0" v-bind:rowspan="specSelected.length">
-                       <button class="btn btn-success"> <span>选择图片</span> </button>
+                       <div class="set-color-src" @click="setColorSrc(index)">
+                           <img v-if="item.colorImg!=''" style="max-width:70px; max-height:70px;" v-bind:src="item.colorImg+'?imageView2/1/w/70/h/70'" alt="" />
+                           <button v-if="item.colorImg==''" class="btn btn-success"> <span>选择图片</span> </button>
+                       </div>
                    </td>
                    <td v-if="$index==0" v-bind:rowspan="specSelected.length">
                        {{item.colorName}}
@@ -56,57 +58,15 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h3>已选颜色</h3>
-            <pre>
-                {{colorSelected|json}}
-            </pre>
-        </div>
-        <div class="col-sm-6">
-            <h3>已选规格</h3>
-            <pre>
-                {{specSelected|json}}
-            </pre>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h3>视图渲染sku</h3>
-            <pre>
-                {{listView|json}}
-            </pre>
-        </div>
-        <div class="col-sm-6">
-            <h3>删除的sku</h3>
-            <pre>
-                {{deleteds|json}}
-            </pre>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2>{{addeds.length}}</h2>
-            <h3>新增的sku数据</h3>
-            <pre>
-                {{addeds|json}}
-            </pre>
-        </div>
-        <div class="col-sm-6">
-                <h2>{{updateds.length}}</h2>
-            <h3>更新的sku数据</h3>
-            <pre>
-                {{updateds|json}}
-            </pre>
-        </div>
-    </div>
 </template>
 
 <script type="text/javascript">
     import lodash           from    'lodash'
+    import {imgNameSplit,qiNiu,qiniuimgsrc,uploadImgLoad,httpPost} from    '../../../../config'
+    import md5          from    'md5'
 
     export default{
-        props:['colorList','specList','serials'],
+        props:['colorList','specList','serials','alertobj','productid'],
         data(){
             return{
                 colorSelected:[],
@@ -115,6 +75,7 @@
                 addeds:[],
                 updateds:[],
                 deleteds:[],
+                colorSrcIndex:'',
             }
         },
         compiled(){
@@ -123,6 +84,11 @@
             this.viewSku()
         },
         methods:{
+            //上传图片
+            setColorSrc:function(index){
+                this.$set('colorSrcIndex',index)
+            },
+
             //设置默认的规格值
             defaultSpec:function(){
                 this.$set('listView',JSON.parse(JSON.stringify(this.listView)))
@@ -213,9 +179,28 @@
                     }
                     if (a+1==this.listView.length) {
                         //过滤完需要提交的sku数据，提交到服务器
+                        console.log('商品id'+this.productid);
                         console.log(this.addeds);
                         console.log(this.updateds);
                         console.log(this.deleteds);
+                        let skuInfo={
+                            productId:this.productid,
+                            deleteds:this.deleteds,
+                            addeds:this.addeds,
+                            updateds:this.updateds
+                        }
+                        this.$dispatch('loadingStart', 'msg');
+                        httpPost('/v1/product/serials',skuInfo,'修改失败',(data)=> {
+                            this.$dispatch('loadingEnd', 'msg');
+                            if (data.resCode==0) {
+                                this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
+                            }else {
+                                this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
+                            }
+                            setTimeout(function(){
+                                window.location.href=""
+                            },500)
+                        });
                     }
                 }
             },
@@ -244,10 +229,6 @@
 
             //售价与重量的赋值
             setVal:function(colro,spec,e,name){
-                console.log(colro);
-                console.log(spec);
-                console.log(e.target.value);
-                console.log(name);
                 this.listView[colro].specList[spec][name]=e.target.value;
             },
         },
@@ -267,7 +248,90 @@
                 deep: true
             }
         },
-        ready(){
+        events:{
+            //提交数据
+            'TotalFilterList':function(){
+                this.TotalFilter();
+            },
+            'colorImgList':function(msg){
+                var _this=this;
+                setTimeout(function(){
+                    var Qiniu3 = new QiniuJsSDK();
+                    $(document).on("click",".set-color-src",function(){
+                        $("#edit-img-text-upload-btn").trigger("click");
+                    })
+                    let editColorImg = {
+                        runtimes: 'html5,flash,html4', //上传模式,依次退化
+                        browse_button: 'edit-img-text-upload-btn', //上传选择的点选按钮，**必需**
+                        uptoken_url: qiNiu.uptokenUrl, //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                        uptoken: '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                       //  unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                        // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+                        domain: qiniuimgsrc, //bucket 域名，下载资源时用到，**必需**
+                        get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
+                        container: 'edit-img-text-upload', //上传区域DOM ID，默认是browser_button的父元素，
+                        max_file_size: '1000kb', //最大文件体积限制
+                        flash_swf_url: 'http://cdn.bootcss.com/plupload/2.1.8/Moxie.swf', //引入flash,相对路径
+                        max_retries: 3, //上传失败最大重试次数
+                        dragdrop: false, //开启可拖曳上传
+                        drop_element: 'edit-img-text-upload', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+                        chunk_size: '1000kb', //分块上传时，每片的体积
+                        auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                        init: {
+                            'FilesAdded': function(up, files) {
+                                plupload.each(files, function(file) {
+                                    // 文件添加进队列后,处理相关的事情
+                                    $('#add-product-from').validator('cleanUp');
+                                    _this.listView[_this.colorSrcIndex].colorImg=uploadImgLoad;
+                                });
+                            },
+                            'BeforeUpload': function(up, file) {
+                               // 每个文件上传前,处理相关的事情
+                               let testImgSrc=file.getNative();
+                               let temUrl=window.URL.createObjectURL(testImgSrc);
+                               let objImg = document.querySelector('.testImg');
+                               objImg.src = temUrl;
+                               setTimeout(()=>{
+                                   if (objImg.naturalWidth/objImg.naturalHeight!=1.5) {
+                                       _this.$set('alertobj',{alertType:'alert-danger',alertInfo:'您的图片比例不正确',alertShow:true})
+                                       return;
+                                   }
+                               },100);
+                            },
+                            'UploadProgress': function(up, file) {
+                                // 每个文件上传时,处理相关的事情
+                            },
+                            'FileUploaded': function(up, file, info) {
+                                // 每个文件上传成功后,处理相关的事情
+                                let domain = up.getOption('domain');
+                                let res=$.parseJSON(info);
+                                _this.listView[_this.colorSrcIndex].colorImg=domain+encodeURI(res.key);
+                            },
+                            'Error': function(up, err, errTip) {
+                                //上传出错时,处理相关的事情
+                                if (err.status==614) {
+                                    _this.$set('alertobj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
+                                }else {
+                                    _this.$set('alertobj',{alertType:'alert-danger',alertInfo:errTip,alertShow:true})
+                                }
+                                _this.listView[_this.colorSrcIndex].colorImg='';
+                            },
+                            'UploadComplete': function() {
+                                //队列文件处理完毕后,处理相关的事情
+                            },
+                            'Key': function(up, file) {
+                                let fileName=file.id+'.'+imgNameSplit(file.name);
+                                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                                // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                                var key = "product/"+md5(_this.imgTimeStamp+_this.userName)+'/'+fileName;
+                                // do something with key here
+                                return key
+                            }
+                        }
+                    };
+                    var uploader3 = Qiniu3.uploader(editColorImg);
+                },100)
+            }
         }
     }
 </script>
