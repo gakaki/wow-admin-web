@@ -118,10 +118,10 @@
             <div class="col-sm-7 bg-muted">
                 <div v-for="item in specList" style="display:inline-block; min-width:140px; margin:5px 0px;">
                     <label style="margin: 0px; position: relative;top: -11px;" class="checkbox-inline">
-                        <input v-bind:disabled="item.disabled==true" type="checkbox" value="{{item.specName}}" v-model='item.selected'>
+                        <input v-on:change="specChange($index, $event)" v-bind:disabled="item.disabled==true" type="checkbox" value="{{item.specName}}" v-model='item.selected'>
                     </label>
                     <div style="display:inline-block;">
-                        <input v-bind:disabled="item.selected==false" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.specName}}" v-model='item.specName'>
+                        <input @input="setSpec($index,$event)" v-bind:disabled="item.selected==false" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.specName}}" v-model='item.specName'>
                     </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                     </tr>
                 </thead>
                 <tbody v-if="item.selected==true" v-for="(index, item) in colorList">
-                    <tr v-if="items.selected==true" v-for="items in item.specList" v-bind:class="{'spec-disabled':items.disabled==true}">
+                    <tr v-if="items.selected==true" v-for="items in item.specList" v-bind:class="{'spec-disabled':items.addeds==true}">
                        <td v-if="$index==0" v-bind:rowspan="specSelected.length">
                            <div class="set-color-src" @click="setColorSrc(index)">
                                <img v-if="item.colorImg!=''" style="max-width:70px; max-height:70px;" v-bind:src="item.colorImg+'?imageView2/1/w/70/h/70'" alt="" />
@@ -166,14 +166,14 @@
                            {{items.specName}}
                        </td>
                        <td>
-                           <input @input="setVal(index,$index,$event,'sellPrice') | debounce 500" v-bind:disabled="items.disabled==true" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true" v-bind:value="items.sellPrice">
+                           <input @input="setVal(index,$index,$event,'sellPrice') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true" v-bind:value="items.sellPrice">
                        </td>
                        <td>
-                           <input @input="setVal(index,$index,$event,'weight') | debounce 500" v-bind:disabled="items.disabled==true" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
+                           <input @input="setVal(index,$index,$event,'weight') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
                        </td>
                        <td>
-                           <button @click="specDisable(index,$index,items.productId)" v-if="items.disabled==false" type="button" class="btn btn-danger btn-sm">禁用</button>
-                           <button @click="specEnable(index,$index,items.productId)" v-if="items.disabled==true" type="button" class="btn btn-success btn-sm">启用</button>
+                           <button @click="specDisable(index,$index)" v-if="items.addeds==false" type="button" class="btn btn-danger btn-sm">禁用</button>
+                           <button @click="specEnable(index,$index)" v-if="items.addeds==true" type="button" class="btn btn-success btn-sm">启用</button>
                        </td>
                    </tr>
                 </tbody>
@@ -232,14 +232,42 @@
             setVal:function(colro,spec,e,name){
                 // this.listView[colro].specList[spec][name]=e.target.value;
             },
+
+            //每次修改，批量设置规格的值
+            setSpec:function(index,e){
+                for (let i = 0; i < this.colorList.length; i++) {
+                    this.colorList[i].specList[index].specName=e.target.value;
+                }
+            },
+
+            //禁用
+            specDisable:function(color,spec){
+                this.colorList[color].specList[spec].addeds=true;
+            },
+
+            //启用
+            specEnable:function(color,spec){
+                this.colorList[color].specList[spec].addeds=false;
+            },
+
+            //规格取消选中
+            specChange:function(index,e){
+                for (let i = 0; i < this.colorList.length; i++) {
+                    this.colorList[i].specList[index].selected=e.target.checked;
+                }
+            }
         },
         watch:{
-            //拿到服务端返回的sku数据
+            //拿到服务端返回的sku数据,设置默认数据
             'serials':function(val,oldval){
                 Promise.then(() => {
-                    // 初始化本地的规格
+                    /**
+                     * 初始化本地的规格
+                     * disabled这个用于控制默认值那些规格是要被锁定的
+                     * addeds这个属性用于控制单条sku是否启用或者禁用
+                     */
                     for (let a = 0; a < 15; a++) {
-                        this.specList.push(JSON.parse(JSON.stringify({specName:'',sellPrice:'',weight:'',selected:false,disabled:false})))
+                        this.specList.push(JSON.parse(JSON.stringify({specName:'',sellPrice:'',weight:'',selected:false,disabled:false,addeds:true})))
                     }
                 })
                 .then(value => {
@@ -303,6 +331,7 @@
                         };
                         return spec;
                     });
+                    console.log(specList);
                     return Promise.resolve(specList);
                 })
                 .then(value => {
@@ -316,34 +345,34 @@
                     }
                     value.filter(selected);
                 })
-                .label('sign', () => {
-                    console.log('跳过来')
+                .then(value => {
+                    // 设置各个规格默认值
+                    let specVal=(value,index)=>{
+                        return value.selected==true;
+                    }
+                    this.specList.filter(specVal);
+                    for (let a = 0; a < this.colorList.length; a++) {
+                        for (var b = 0; b < this.specList.filter(specVal).length; b++) {
+                            this.colorList[a].specList[b].specName=this.specList.filter(specVal)[b].specName;
+                            this.colorList[a].specList[b].selected=true;
+                        }
+                    }
+                })
+                .then(value=>{
+                    console.log(val);
                 })
             },
             'specList': {
                 handler: function (val, oldVal) {
+                    /**
+                     * 监控单条数据是否发生变化
+                     * 如果发生变化，筛选出已经勾选的规格，specSelect数组长度用于设置table显示的row数
+                     */
                     Promise.then(() => {
-                        // 筛选出已经勾选的规格
                         let specSelect=(value,index)=>{
                             return value.selected==true;
                         }
                         this.$set('specSelected',val.filter(specSelect));
-                    })
-                    .then(value => {
-                        // 设置各个颜色对应的值
-                        let specVal=(value,index)=>{
-                            return value.selected==true;
-                        }
-                        val.filter(specVal);
-                        for (let a = 0; a < this.colorList.length; a++) {
-                            for (var b = 0; b < val.filter(specVal).length; b++) {
-                                this.colorList[a].specList[b].specName=val.filter(specVal)[b].specName;
-                                this.colorList[a].specList[b].selected=true;
-                            }
-                        }
-                    })
-                    .label('sign', () => {
-                        // console.log('跳过来222')
                     })
                 },
                 deep: true,
