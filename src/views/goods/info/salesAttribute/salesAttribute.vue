@@ -91,16 +91,15 @@
         bottom: 0px;
         background-color:rgba(0,0,0,0.2);
         z-index: 9;
-        display: table-cell;
     }
 </style>
 <template>
-    <div class="col-md-12 addproduct-box-html form-horizontal" id="edit-product-img">
+    <div class="col-md-12 addproduct-box-html form-horizontal" id="edit-color-img">
         <div class="well well-sm">
             <ul class="edit-product-title list-inline">
                 <li>销售属性<span class="text-danger">［颜色／规格 *必选］</span></li>
                 <li class="text-right">
-                    <button @click="TotalFilter" type="button" class="btn btn-danger">确认修改</button>
+                    <button id="edit-color-button" type="button" class="btn btn-danger">确认修改</button>
                 </li>
             </ul>
         </div>
@@ -116,7 +115,7 @@
                         <span v-if="item.selected==false">{{item.colorName}}</span>
                     </label>
                     <div class="color-label" v-if="item.selected==true" style="display:inline-block">
-                        <input v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.colorName}}" v-model='item.colorName' placeholder="颜色">
+                        <input data-rule="required" name="{{'colorSelected'+$index}}" v-bind:disabled="item.selected==false" v-if="item.selected==true" type="text" value="{{item.colorName}}" v-model='item.colorName' placeholder="颜色">
                     </div>
                 </div>
             </div>
@@ -131,7 +130,7 @@
                         <input v-on:change="specChange($index, $event)" v-bind:disabled="item.disabled==true" type="checkbox" value="{{item.specName}}" v-model='item.selected'>
                     </label>
                     <div style="display:inline-block;">
-                        <input @input="setSpec($index,$event)" v-bind:disabled="item.selected==false" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.specName}}" v-model='item.specName'>
+                        <input data-rule="required" name="{{'specSelected'+$index}}" @input="setSpec($index,$event)" v-bind:disabled="item.selected==false" type="text" class="sales-attribute-table-text" placeholder="规格" value="{{item.specName}}" v-model='item.specName'>
                     </div>
                 </div>
             </div>
@@ -157,6 +156,7 @@
                            <div class="set-color-src" @click="setColorSrc(index)">
                                <img v-if="item.colorImg!=''" style="max-width:70px; max-height:70px;" v-bind:src="item.colorImg+'?imageView2/1/w/70/h/70'" alt="" />
                                <button v-if="item.colorImg==''" class="btn btn-success"> <span>选择图片</span> </button>
+                               <input data-rule="required" v-bind:value="item.colorImg" class="form-control hidden" type="text" name="{{'productColorImg'+index}}" placeholder="颜色图片">
                            </div>
                        </td>
                        <td v-if="$index==0" v-bind:rowspan="specSelected.length">
@@ -166,10 +166,10 @@
                            {{items.specName}}
                        </td>
                        <td>
-                           <input @input="setVal(index,$index,$event,'sellPrice') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true" v-bind:value="items.sellPrice">
+                           <input data-rule="required" name="{{'sellPrice'+index+$index}}" @input="setVal(index,$index,$event,'sellPrice') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="售价" name="sellPrice00" aria-required="true" v-bind:value="items.sellPrice">
                        </td>
                        <td>
-                           <input @input="setVal(index,$index,$event,'weight') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
+                           <input data-rule="required" name="{{'weight'+index+$index}}"  @input="setVal(index,$index,$event,'weight') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
                        </td>
                        <td>
                             <div class="text-muted" v-if="items.productId">
@@ -193,9 +193,6 @@
     </div>
 </template>
 <script type="text/javascript">
-    import colorList                            from    './colorList'
-    import specList                             from    './specList'
-    import salesList                            from    './salesList'
     import Promise                              from    'thenfail'
     import lodash                               from    'lodash'
     import {imgNameSplit,qiNiu,qiniuimgsrc,uploadImgLoad,httpPost} from    '../../../../config'
@@ -203,11 +200,6 @@
 
     export default{
         props:['alertobj','productid','serials'],
-        components:{
-            colorList,
-            specList,
-            salesList,
-        },
         data(){
             return{
                 colorList:[
@@ -229,56 +221,155 @@
                 specSelected:[],
                 colorSrcIndex:'',
                 colorImgTag:false,
+                totalSkuList:[],
+                addeds:[],
+                updateds:[],
             }
         },
         methods:{
-            // 点击选中图片按钮，设置颜色图片的索引值
+            /**
+             * =====点击选中图片按钮，设置颜色图片的索引值=====
+             */
             setColorSrc:function(index){
                 this.$set('colorSrcIndex',index)
             },
 
-            //售价与重量的赋值
+            /**
+             * =====售价与重量的赋值=====
+             */
             setVal:function(colro,spec,e,name){
                 this.colorList[colro].specList[spec][name]=e.target.value;
             },
 
-            //如果规格的文字变动，修改对应规格的值
+            /**
+             * =====如果规格的文字变动，修改对应规格的值=====
+             */
             setSpec:function(index,e){
                 for (let i = 0; i < this.colorList.length; i++) {
                     this.colorList[i].specList[index].specName=e.target.value;
                 }
             },
 
-            //取消单条sku
+            /**
+             * =====取消单条sku=====
+             */
             specDisable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=true;
             },
 
-            //新增单条sku
+            /**
+             * =====新增单条sku=====
+             */
             specEnable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=false;
             },
 
-            //规格取消选中
+            /**
+             * =====规格取消选中=====
+             */
             specChange:function(index,e){
                 for (let i = 0; i < this.colorList.length; i++) {
                     this.colorList[i].specList[index].selected=e.target.checked;
                 }
             },
 
-            // 提交数据
-            TotalFilter:function(){
-                console.log('1');
+            /**
+             * =====筛选数据提交到服务器=====
+             */
+            totalFilter:function(){
+                /**
+                 * 判断是否有相同的规格名
+                 */
+                let selectSpec=[]
+                let selectedSpecArr=(val)=>{
+                    selectSpec.push(val.specName)
+                }
+                this.specSelected.filter(selectedSpecArr);
+                if (this.specSelected.length!=_.uniq(selectSpec).length) {
+                    this.$set('alertobj',{alertType:'alert-danger',alertInfo:'规格名字重复',alertShow:true});
+                    this.$dispatch('loadingEnd', 'msg');
+                    return false;
+                }
+
+                Promise.then(()=>{
+                    /**
+                     * 筛选已经勾选的颜色
+                     * colorId的selected等于true符合条件
+                     */
+                    let totalColor=(value)=>{
+                        return value.selected==true;
+                    }
+                    return Promise.resolve(this.colorList.filter(totalColor))
+                })
+                .then(value=>{
+                    /**
+                     * 从符合条件的colorId数据里面筛选全部需要提交的单条sku
+                     * addeds等于false的符合条件
+                     * 数据push到两个数组列表里面，addeds/updateds
+                     * 根据有没有productId来区分是老数据还是新增的数据
+                     */
+                    this.$set('addeds',[]);
+                    this.$set('updateds',[])
+                    let totalSku=(val,valIndex)=>{
+                        let totalSkuS=(sku,skuIndex)=>{
+                            if (sku.addeds==false&&typeof(sku.productId)=='number') {
+                                this.updateds.push({
+                                    productId:sku.productId,
+                                    colorId:val.colorId,
+                                    colorImg:val.colorImg,
+                                    colorName:val.colorName,
+                                    specName:sku.specName,
+                                    weight:sku.weight,
+                                    sellPrice:sku.sellPrice
+                                })
+                            }else if(sku.addeds==false){
+                                this.addeds.push({
+                                    colorId:val.colorId,
+                                    colorImg:val.colorImg,
+                                    colorName:val.colorName,
+                                    specName:sku.specName,
+                                    weight:sku.weight,
+                                    sellPrice:sku.sellPrice
+                                })
+                            }
+                        }
+                        val.specList.filter(totalSkuS)
+                    }
+                    value.filter(totalSku)
+                })
+                .then(value=>{
+                    let skuInfo={
+                        productId:this.productid,
+                        addeds:this.addeds,
+                        updateds:this.updateds
+                    }
+                    httpPost('/v1/product/serials',skuInfo,'修改失败',(data)=> {
+                        this.$dispatch('loadingEnd', 'msg');
+                        if (data.resCode==0) {
+                            this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
+                            setTimeout(function(){
+                                window.location.href=""
+                            },500)
+                        }else {
+                            this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
+                        }
+                    });
+                })
             },
         },
         watch:{
-            //拿到服务端返回的sku数据,设置默认数据
+            /**
+             * =====拿到服务端返回的sku数据,设置默认数据=====
+             */
             'serials':function(val,oldval){
+                /**
+                 * 初始化本地的数据
+                 * disabled用于控制默认值那些规格是要被锁定的
+                 * addeds属性用于控制单条sku是否启用或者禁用
+                 */
                 Promise.then(() => {
                     /**
-                     * 初始化本地的规格
-                     * disabled这个用于控制默认值那些规格是要被锁定的
-                     * addeds这个属性用于控制单条sku是否启用或者禁用
+                     * 判断是否有相同名字的规格
                      */
                     for (let a = 0; a < 15; a++) {
                         this.specList.push(JSON.parse(JSON.stringify({specName:'',sellPrice:'',weight:'',selected:false,disabled:false,addeds:true})))
@@ -373,7 +464,6 @@
                 })
                 .then(value=>{
                     /**
-                     * 设置默认的规格的值
                      * 先从服务端返回的数据找出颜色id，然后用颜色id去匹配设置默认值
                      */
                     let filterColorId=val;
@@ -439,7 +529,7 @@
                             'FilesAdded': function(up, files) {
                                 plupload.each(files, function(file) {
                                     // 文件添加进队列后,处理相关的事情
-                                    $('#add-product-from').validator('cleanUp');
+                                    $('#edit-color-img').validator('cleanUp');
                                     _this.colorList[_this.colorSrcIndex].colorImg=uploadImgLoad;
                                 });
                             },
@@ -494,12 +584,46 @@
                     };
                     var uploader3 = Qiniu3.uploader(editColorImg);
                 })
+                .then(value=>{
+                    /**
+                     * 表单验证
+                     */
+                    let _this=this;
+                    $('#edit-color-img').validator({
+                        theme: "yellow_right",
+                        stopOnError: true,
+                        focusCleanup: true,
+                        focusInvalid:false,
+                        timely: 2,
+                        // 获取display
+                        display: function(el) {
+                            return el.getAttribute('placeholder') || '';
+                        },
+                        fields: {
+                            //必填项直接绑定表单的 data-rule="required"
+                            //复杂的验证正则放这处理
+                        },
+                        invalid: function(form, errors){
+                            //数据验证没通过
+                            $("body").animate({scrollTop: $(".msg-wrap").offset().top-15},500);
+                        },
+                        valid: function(){
+                            _this.$dispatch('loadingStart', 'msg');
+                            _this.totalFilter();
+                        }
+                    })
+                    .on("click", "#edit-color-button", function(e){
+                        $(e.delegateTarget).trigger("validate");
+                    });
+                })
             },
+            /**
+             * =====监控单条specList数据是否发生变化=====
+             */
             'specList': {
                 handler: function (val, oldVal) {
                     /**
-                     * 监控单条数据是否发生变化
-                     * 如果发生变化，筛选出已经勾选的规格，specSelect数组长度用于设置table显示的row数
+                     * 如果specList发生变化，筛选出已经勾选的规格，specSelect数组长度用于设置table显示的row数
                      */
                     Promise.then(() => {
                         let specSelect=(value,index)=>{
