@@ -83,6 +83,16 @@
     .spec-disabled:nth-child(n+2) td{
         background: #f9f9f9;
     }
+    .color-img-disabled{
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        top:0px;
+        bottom: 0px;
+        background-color:rgba(0,0,0,0.2);
+        z-index: 9;
+        display: table-cell;
+    }
 </style>
 <template>
     <div class="col-md-12 addproduct-box-html form-horizontal" id="edit-product-img">
@@ -128,18 +138,7 @@
         </div>
 
         <!-- 属性展示列表 -->
-        <div class="form-group" style="margin-top:40px">
-            <label for="firstname" class="col-sm-2 control-label"> </label>
-            <div class="col-sm-7 control-label">
-                <div class="text-left"> 批量设置：
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary btn-sm">售价</button>
-                        <button type="button" class="btn btn-primary btn-sm">重量</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="edit-clor-pic-box">
+        <div id="edit-clor-pic-box" style="margin-top:40px;">
             <table class="table order-list sales-attribute-table">
                 <thead>
                     <tr>
@@ -153,7 +152,8 @@
                 </thead>
                 <tbody v-if="item.selected==true" v-for="(index, item) in colorList">
                     <tr v-if="items.selected==true" v-for="items in item.specList" v-bind:class="{'spec-disabled':items.addeds==true}">
-                       <td v-if="$index==0" v-bind:rowspan="specSelected.length">
+                       <td style="position:relative;" v-if="$index==0" v-bind:rowspan="specSelected.length">
+                           <div v-if="colorImgTag==true" class="color-img-disabled text-danger"></div>
                            <div class="set-color-src" @click="setColorSrc(index)">
                                <img v-if="item.colorImg!=''" style="max-width:70px; max-height:70px;" v-bind:src="item.colorImg+'?imageView2/1/w/70/h/70'" alt="" />
                                <button v-if="item.colorImg==''" class="btn btn-success"> <span>选择图片</span> </button>
@@ -172,8 +172,13 @@
                            <input @input="setVal(index,$index,$event,'weight') | debounce 500" v-bind:disabled="items.addeds==true" type="number" class="form-control sales-attribute-table-text" placeholder="重量" name="weight00" aria-required="true" v-bind:value="items.weight">
                        </td>
                        <td>
-                           <button @click="specDisable(index,$index)" v-if="items.addeds==false" type="button" class="btn btn-danger btn-sm">禁用</button>
-                           <button @click="specEnable(index,$index)" v-if="items.addeds==true" type="button" class="btn btn-success btn-sm">启用</button>
+                            <div class="text-muted" v-if="items.productId">
+                                <span class="glyphicon glyphicon-ban-circle"></span>
+                            </div>
+                           <div v-if="!items.productId">
+                               <button @click="specDisable(index,$index)" v-if="items.addeds==false" type="button" class="btn btn-danger btn-sm">取消</button>
+                               <button @click="specEnable(index,$index)" v-if="items.addeds==true" type="button" class="btn btn-success btn-sm">新增</button>
+                           </div>
                        </td>
                    </tr>
                 </tbody>
@@ -191,9 +196,10 @@
     import colorList                            from    './colorList'
     import specList                             from    './specList'
     import salesList                            from    './salesList'
-    import {uploadImgLoad}                      from    '../../../../config'
     import Promise                              from    'thenfail'
     import lodash                               from    'lodash'
+    import {imgNameSplit,qiNiu,qiniuimgsrc,uploadImgLoad,httpPost} from    '../../../../config'
+    import md5                                  from    'md5'
 
     export default{
         props:['alertobj','productid','serials'],
@@ -221,31 +227,34 @@
                 ],
                 specList:[],
                 specSelected:[],
+                colorSrcIndex:'',
+                colorImgTag:false,
             }
         },
         methods:{
-            // 提交数据
-            TotalFilter:function(){
+            // 点击选中图片按钮，设置颜色图片的索引值
+            setColorSrc:function(index){
+                this.$set('colorSrcIndex',index)
             },
 
             //售价与重量的赋值
             setVal:function(colro,spec,e,name){
-                // this.listView[colro].specList[spec][name]=e.target.value;
+                this.colorList[colro].specList[spec][name]=e.target.value;
             },
 
-            //每次修改，批量设置规格的值
+            //如果规格的文字变动，修改对应规格的值
             setSpec:function(index,e){
                 for (let i = 0; i < this.colorList.length; i++) {
                     this.colorList[i].specList[index].specName=e.target.value;
                 }
             },
 
-            //禁用
+            //取消单条sku
             specDisable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=true;
             },
 
-            //启用
+            //新增单条sku
             specEnable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=false;
             },
@@ -255,7 +264,12 @@
                 for (let i = 0; i < this.colorList.length; i++) {
                     this.colorList[i].specList[index].selected=e.target.checked;
                 }
-            }
+            },
+
+            // 提交数据
+            TotalFilter:function(){
+                console.log('1');
+            },
         },
         watch:{
             //拿到服务端返回的sku数据,设置默认数据
@@ -331,7 +345,6 @@
                         };
                         return spec;
                     });
-                    console.log(specList);
                     return Promise.resolve(specList);
                 })
                 .then(value => {
@@ -359,7 +372,127 @@
                     }
                 })
                 .then(value=>{
-                    console.log(val);
+                    /**
+                     * 设置默认的规格的值
+                     * 先从服务端返回的数据找出颜色id，然后用颜色id去匹配设置默认值
+                     */
+                    let filterColorId=val;
+                    let colorId = _.uniqBy(filterColorId,'colorId'),
+                    dataMap = {
+                        colorId: 'colorId',
+                    };
+                    let colorIdArr=[]
+                    let colorIdList = colorId.map(function (specName) {
+                        for (let key in dataMap) {
+                            colorIdArr.push(specName[key]);
+                        };
+                    });
+
+                    /**
+                     * 根据找出的颜色id，设置默认匹配对应的尺寸价格／重量
+                     */
+                    let colorIdFilter=(data)=>{
+                        let index=this.colorList.findIndex(function(val, index ,arr){
+                            return val.colorId==data;
+                        })
+                        for (let a = 0; a < this.colorList[index].specList.length; a++) {
+                            for (let b = 0; b < val.length; b++) {
+                                if (val[b].colorId==index+1&&val[b].specName==this.colorList[index].specList[a].specName) {
+                                    this.colorList[index].specList[a].addeds=false;
+                                    this.colorList[index].specList[a].productId=val[b].productId;
+                                    this.colorList[index].specList[a].sellPrice=val[b].sellPrice;
+                                    this.colorList[index].specList[a].weight=val[b].weight;
+                                }
+
+                            }
+                        }
+                    }
+                    colorIdArr.filter(colorIdFilter)
+                })
+                .then(value=>{
+                    /**
+                     * 七牛上传颜色图片
+                     */
+                    let _this=this;
+                    var Qiniu3 = new QiniuJsSDK();
+                    $(document).on("click",".set-color-src",function(){
+                        $("#edit-img-text-upload-btn").trigger("click");
+                    })
+                    let editColorImg = {
+                        runtimes: 'html5,flash,html4', //上传模式,依次退化
+                        browse_button: 'edit-img-text-upload-btn', //上传选择的点选按钮，**必需**
+                        uptoken_url: qiNiu.uptokenUrl, //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+                        uptoken: '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+                       //  unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+                        // save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+                        domain: qiniuimgsrc, //bucket 域名，下载资源时用到，**必需**
+                        get_new_uptoken: false, //设置上传文件的时候是否每次都重新获取新的token
+                        container: 'edit-img-text-upload', //上传区域DOM ID，默认是browser_button的父元素，
+                        max_file_size: '1000kb', //最大文件体积限制
+                        flash_swf_url: 'http://cdn.bootcss.com/plupload/2.1.8/Moxie.swf', //引入flash,相对路径
+                        max_retries: 3, //上传失败最大重试次数
+                        dragdrop: false, //开启可拖曳上传
+                        drop_element: 'edit-img-text-upload', //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+                        chunk_size: '1000kb', //分块上传时，每片的体积
+                        auto_start: true, //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+                        init: {
+                            'FilesAdded': function(up, files) {
+                                plupload.each(files, function(file) {
+                                    // 文件添加进队列后,处理相关的事情
+                                    $('#add-product-from').validator('cleanUp');
+                                    _this.colorList[_this.colorSrcIndex].colorImg=uploadImgLoad;
+                                });
+                            },
+                            'BeforeUpload': function(up, file) {
+                               // 每个文件上传前,处理相关的事情
+                               _this.$set('colorImgTag',true);
+                               let testImgSrc=file.getNative();
+                               let temUrl=window.URL.createObjectURL(testImgSrc);
+                               let objImg = document.querySelector('.testImg');
+                               objImg.src = temUrl;
+                               setTimeout(()=>{
+                                   if (objImg.naturalWidth/objImg.naturalHeight!=1.5) {
+                                       _this.$set('alertobj',{alertType:'alert-danger',alertInfo:'您的图片比例不正确',alertShow:true})
+                                       return;
+                                   }
+                               },100);
+                            },
+                            'UploadProgress': function(up, file) {
+                                // 每个文件上传时,处理相关的事情
+                            },
+                            'FileUploaded': function(up, file, info) {
+                                // 每个文件上传成功后,处理相关的事情
+                                let domain = up.getOption('domain');
+                                let res=$.parseJSON(info);
+                                setTimeout(()=>{
+                                    _this.colorList[_this.colorSrcIndex].colorImg=domain+encodeURI(res.key);
+                                    _this.$set('colorImgTag',false);
+                                },100)
+                            },
+                            'Error': function(up, err, errTip) {
+                                //上传出错时,处理相关的事情
+                                if (err.status==614) {
+                                    _this.$set('alertobj',{alertType:'alert-danger',alertInfo:'文件已存在，请更改文件名',alertShow:true})
+                                }else {
+                                    _this.$set('alertobj',{alertType:'alert-danger',alertInfo:errTip,alertShow:true})
+                                }
+                                _this.colorList[_this.colorSrcIndex].colorImg='';
+                                _this.$set('colorImgTag',false);
+                            },
+                            'UploadComplete': function() {
+                                //队列文件处理完毕后,处理相关的事情
+                            },
+                            'Key': function(up, file) {
+                                let fileName=file.id+'.'+imgNameSplit(file.name);
+                                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                                // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                                var key = "product/"+md5(_this.imgTimeStamp+_this.userName)+'/'+fileName;
+                                // do something with key here
+                                return key
+                            }
+                        }
+                    };
+                    var uploader3 = Qiniu3.uploader(editColorImg);
                 })
             },
             'specList': {
@@ -376,7 +509,14 @@
                     })
                 },
                 deep: true,
-            }
+            },
+            // 'colorList': {
+            //     // 监测数据变动，控制按钮是否变亮
+            //     handler: function (val, oldVal) {
+            //         console.log(val);
+            //     },
+            //     deep: true,
+            // },
         }
     }
 </script>
