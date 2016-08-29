@@ -99,7 +99,7 @@
             <ul class="edit-product-title list-inline">
                 <li>销售属性<span class="text-danger">［颜色／规格 *必选］</span></li>
                 <li class="text-right">
-                    <button id="edit-color-button" type="button" class="btn btn-danger">确认修改</button>
+                    <button v-bind:class="{'btn-danger':disabled==false}" v-bind:disabled="disabled==true" id="edit-color-button" type="button" class="btn">确认修改</button>
                 </li>
             </ul>
         </div>
@@ -224,6 +224,44 @@
                 totalSkuList:[],
                 addeds:[],
                 updateds:[],
+                copySerials:[],
+                isSerials:[],
+                disabled:true,
+            }
+        },
+        detached(){
+            this.$set('serials',[])
+            this.$set('colorList',[
+                {colorId: 1,colorName: '白色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 2,colorName: '银色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 3,colorName: '灰色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 4,colorName: '黑色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 5,colorName: '红色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 6,colorName: '黄色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 7,colorName: '蓝色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 8,colorName: '绿色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 9,colorName: '紫色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 10,colorName: '原木色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 11,colorName: '棕色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 12,colorName: '花色',colorImg:'',selected:false,specList: [],disabled:false},
+                {colorId: 13,colorName: '橙色',colorImg:'',selected:false,specList: [],disabled:false},
+            ])
+            this.$set('specList',[])
+            this.$set('specSelected',[])
+            this.$set('colorSrcIndex','')
+            this.$set('totalSkuList',[])
+            this.$set('addeds',[])
+            this.$set('updateds',[])
+            this.$set('copySerials',[])
+            this.$set('isSerials',[])
+            this.$set('disabled',true)
+        },
+        events:{
+            'deepCopySerials':function(val){
+                /**
+                 * 深拷贝初始化数据用于比较
+                 */
+                this.$set('copySerials',JSON.parse(JSON.stringify(val)));
             }
         },
         methods:{
@@ -255,6 +293,7 @@
              */
             specDisable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=true;
+                $('#edit-color-img').validator('cleanUp');
             },
 
             /**
@@ -262,6 +301,7 @@
              */
             specEnable:function(color,spec){
                 this.colorList[color].specList[spec].addeds=false;
+                $('#edit-color-img').validator('cleanUp');
             },
 
             /**
@@ -347,9 +387,9 @@
                         this.$dispatch('loadingEnd', 'msg');
                         if (data.resCode==0) {
                             this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
-                            setTimeout(function(){
-                                window.location.href=""
-                            },500)
+                            //数据提交通过后，设置深拷贝比较的值为最新值
+                            this.$set('copySerials',JSON.parse(JSON.stringify(_.sortBy(this.isSerials, "productId"))));
+                            this.$set('disabled',true);
                         }else {
                             this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
                         }
@@ -634,13 +674,58 @@
                 },
                 deep: true,
             },
-            // 'colorList': {
-            //     // 监测数据变动，控制按钮是否变亮
-            //     handler: function (val, oldVal) {
-            //         console.log(val);
-            //     },
-            //     deep: true,
-            // },
+            'colorList': {
+                // 监测数据变动，控制按钮是否变亮
+                handler: function (val, oldVal) {
+                    Promise.then(()=>{
+                        /**
+                         * 筛选已经勾选的颜色
+                         * colorId的selected等于true符合条件
+                         */
+                        let totalColor=(value)=>{
+                            return value.selected==true;
+                        }
+                        return Promise.resolve(this.colorList.filter(totalColor))
+                    })
+                    .then((value)=>{
+                        this.$set('isSerials',[]);
+                        let totalSku=(val,valIndex)=>{
+                            let totalSkuS=(sku,skuIndex)=>{
+                                if (sku.addeds==false&&typeof(sku.productId)=='number') {
+                                    this.isSerials.push({
+                                        productId:sku.productId,
+                                        colorId:val.colorId,
+                                        colorImg:val.colorImg,
+                                        colorName:val.colorName,
+                                        specName:sku.specName,
+                                        weight:sku.weight,
+                                        sellPrice:sku.sellPrice
+                                    })
+                                }else if(sku.addeds==false){
+                                    this.isSerials.push({
+                                        colorId:val.colorId,
+                                        colorImg:val.colorImg,
+                                        colorName:val.colorName,
+                                        specName:sku.specName,
+                                        weight:sku.weight,
+                                        sellPrice:sku.sellPrice
+                                    })
+                                }
+                            }
+                            val.specList.filter(totalSkuS)
+                        }
+                        value.filter(totalSku);
+
+                        //判断值是否有被改变
+                        if (_.isEqual(_.sortBy(this.isSerials, "productId"), this.copySerials)) {
+                            this.$set('disabled',true)
+                        }else{
+                            this.$set('disabled',false)
+                        }
+                    })
+                },
+                deep: true,
+            },
         }
     }
 </script>

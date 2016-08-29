@@ -192,6 +192,7 @@
                 if (val.resCode==0) {
                     this.$broadcast('infoGetData', 'msg');
                     this.$broadcast('deepCopyInfo', val.data.info);
+                    this.$broadcast('deepCopySerials', val.data.serials);
                     // 过滤掉图片列表里面多余的modifed字段
                     for (var i = 0; i < val.data.images.length; i++) {
                         delete val.data.images[i].modifed
