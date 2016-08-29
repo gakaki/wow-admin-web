@@ -57,7 +57,7 @@
     }
     .details-img-group p img{
         max-width: 138px;
-        max-height: 92px;
+        max-height: 90px;
     }
     .details-img-group-nopic{
         line-height: 92px;

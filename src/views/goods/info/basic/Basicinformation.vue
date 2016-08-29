@@ -71,7 +71,7 @@
         <!-- <designers :designersid.sync="info.designerVoList"></designers> -->
 
         <!--国家省份城市 监控数据有问题，暂不启用-->
-        <!-- <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country> -->
+        <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country>
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
