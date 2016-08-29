@@ -68,10 +68,33 @@
         <brand :brandid.sync="info.brandId" :brandlist="brandList"></brand>
 
         <!-- 设计师 监控数据有问题，暂不启用-->
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label">设计师(可多选)</label>
+            <div class="col-sm-4 add-product-hide-input">
+                <input v-model="info.designerVoList" type="text" class="form-control" placeholder="设计师数组">
+                <v-select multiple :value.sync="info.designerVoList" :on-change="setSelect" label="designerName" :debounce="500" placeholder="设计师" :options="designerslist"></v-select>
+                <pre>
+                    {{info.designerVoList|json}}
+                </pre>
+                <pre>
+                    {{selected|json}}
+                </pre>
+            </div>
+        </div>
+        <div v-if="info.designerVoList.length>0" class="form-group">
+            <label for="firstname" class="col-sm-2 control-label">主设计师</label>
+            <div class="col-sm-4 add-product-hide-input">
+                <input data-rule="required" name="primaryTag" v-model="primaryTag" type="text" class="form-control" placeholder="主设计师">
+                <select v-model="primaryTag" id="primaryTag" @change="isPrimary($event)" class="form-control">
+                    <option value="" selected>请选择主设计师</option>
+                    <option v-for="item in info.designerVoList" v-bind:value="item.designerId">{{item.designerName}}</option>
+                 </select>
+            </div>
+        </div>
         <!-- <designers :designersid.sync="info.designerVoList"></designers> -->
 
         <!--国家省份城市 监控数据有问题，暂不启用-->
-        <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country>
+        <!-- <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country> -->
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
@@ -164,11 +187,13 @@
     </div>
 </template>
 <script type="text/javascript">
+    import Promise                          from    'thenfail'
     import brand                            from    './brand'
     import designers                        from    './designers.vue'
     import country                          from    './country.vue'
     import {API_ROOT,httpGet,httpPost}      from    '../../../../config'
     import lodash                           from    'lodash'
+    import vSelect                          from    '../../../../components/common/vue-select/src/index.js'
 
     export default{
         props:['productid','info','alertobj'],
@@ -176,6 +201,7 @@
             brand,
             designers,
             country,
+            vSelect
         },
         data(){
             return{
@@ -193,20 +219,67 @@
                 editInfoObj:{
                     productId:'',
                     info:{}
-                }
+                },
+                //设计师
+                designerslist:[],
+                designersIdTag:'',
+                primaryTag:'',
             }
         },
         watch:{
             'info': {
                 handler: 'isEqual',
                 deep: true
+            },
+
+            'info.designerVoList.length':function(val,oldval){
+                $("#primaryTag").val('')
+                this.$set('primaryTag','')
             }
         },
         events:{
             // 深度拷贝原始数据，在watch到数据变化后，做比较
             'deepCopyInfo':function(data){
-                this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                // this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
                 $('#edit-product-info').validator('cleanUp');
+
+                Promise.then(()=>{
+                    httpGet('v1/designer/queryAllDesigner',{},'设计师列表获取失败',(data)=>{
+                        for (let i = 0; i < data.data.length; i++) {
+                            data.data[i].primary=false;
+                        };
+                        this.$set('designerslist',data.data);
+
+                        //遍历已有的设计师，把某个默认主设计师的值改成true
+                        for(let a=0; a<this.info.designerVoList.length;a++){
+                           if (this.info.designerVoList[a].primary==true) {
+                               let findDesignersTrue = (value,index,array) => {
+                                  if(value.designerId==this.info.designerVoList[a].designerId){
+                                      this.$set('primaryTag',value.designerId);
+                                      this.designerslist[index].primary=true;
+                                  }
+                               };
+                               this.designerslist.find(findDesignersTrue)
+                           }
+                        }
+
+                        // 设置默认设计师列表
+                        let designer=this.info.designerVoList;
+                        this.$set('info.designerVoList',[]);
+                        let findDesigners = (value,index,array) => {
+                            if (value.designerId==this.designersIdTag) {
+                                this.info.designerVoList.push(value);
+                            }
+                        };
+                        for(let a=0; a<designer.length;a++){
+                           this.$set('designersIdTag',designer[a].designerId);
+                           this.designerslist.find(findDesigners)
+                        }
+                    });
+                })
+                .then(value=>{
+                    console.log(22222);
+                })
             },
 
             //获取一些列表数据
@@ -226,9 +299,6 @@
                 httpGet('v1/brand/queryAll',{},'获取品牌数据失败',(data)=> {
                     this.$set('brandList',data.data.brandList)
                 });
-
-                //广播通知设计师组件获取数据
-                this.$broadcast('designerslist', 'msg');
 
                 //广播通知国家组件获取数据
                 this.$broadcast('countrylist', 'msg');
@@ -270,6 +340,25 @@
                         this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
                     }
                 });
+            },
+
+            //选择主设计师的时候，从已选的数组里面找到对应的设置设计师设置primary=true
+            isPrimary:function(event){
+                $('#edit-product-info').validator('cleanUp');
+                if (event.target.value=="") {
+                    for(let i=0;i<this.info.designerVoList.length;i++){
+                        this.$set('designersid['+i+'].primary',false)
+                    }
+                }else {
+                    let findDesignersTrue = (value,index,array) => {
+                        this.info.designerVoList[index].primary=false;
+                        if(value.designerId==Number(event.target.value)){
+                            this.info.designerVoList[index].primary=true;
+                            // this.$dispatch('deepCopyInfo',1)
+                        }
+                    };
+                    this.info.designerVoList.find(findDesignersTrue)
+                }
             },
         },
         ready(){
