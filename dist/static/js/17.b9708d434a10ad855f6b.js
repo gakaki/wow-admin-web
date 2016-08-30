@@ -1,2 +1,0 @@
-webpackJsonp([17,20],{463:function(o,t){o.exports="<p> 退款列表 <a v-link='{ path: \"/order/refund/details/201\"}'>详情</a> </p>"},517:function(o,t,e){var p,s;s=e(463),o.exports=p||{},o.exports.__esModule&&(o.exports=o.exports["default"]),s&&(("function"==typeof o.exports?o.exports.options||(o.exports.options={}):o.exports).template=s)}});
-//# sourceMappingURL=17.b9708d434a10ad855f6b.js.map
