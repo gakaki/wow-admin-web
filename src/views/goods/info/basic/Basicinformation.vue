@@ -87,7 +87,6 @@
                  </select>
             </div>
         </div>
-        <!-- <designers :designersid.sync="info.designerVoList"></designers> -->
 
         <!--国家省份城市 监控数据有问题，暂不启用-->
         <!-- <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country> -->
@@ -185,7 +184,6 @@
 <script type="text/javascript">
     import Promise                          from    'thenfail'
     import brand                            from    './brand'
-    import designers                        from    './designers.vue'
     import country                          from    './country.vue'
     import {API_ROOT,httpGet,httpPost}      from    '../../../../config'
     import lodash                           from    'lodash'
@@ -195,7 +193,6 @@
         props:['productid','info','alertobj'],
         components:{
             brand,
-            designers,
             country,
             vSelect
         },
@@ -234,14 +231,15 @@
             }
         },
         events:{
-            // 深度拷贝原始数据，在watch到数据变化后，做比较
+            /**
+             * =====deepCopyInfo深度拷贝原始数据，在watch到数据变化后，做比较=====
+             */
             'deepCopyInfo':function(data){
-                // this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
                 $('#edit-product-info').validator('cleanUp');
-
-
+                /**
+                 * 获取设计师列表数据并做匹配筛选设置默认值
+                 */
                 httpGet('v1/designer/queryAllDesigner',{},'设计师列表获取失败',(data)=>{
-
                     Promise.then(()=>{
                         for (let i = 0; i < data.data.length; i++) {
                             data.data[i].primary=false;
@@ -273,15 +271,19 @@
                         }
                     })
                     .then(value=>{
+                        /**
+                         * 获取国家地区数据
+                         */
+                    })
+                    .then(value=>{
+                        /**
+                         * 在设计师跟国家地区默认数据设置完毕后，深拷贝冻结一份原始数据用于做比较判断
+                         */
                         this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
                         console.log(this.copyInfo);
                         console.log(22222);
                     })
-
                 });
-
-
-
             },
 
             //获取一些列表数据
