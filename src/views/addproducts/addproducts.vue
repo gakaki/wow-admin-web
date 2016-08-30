@@ -449,7 +449,7 @@
                 },
                 invalid: function(form, errors){
                     //数据验证没通过
-                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-15},500);
+                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-35},500);
                 },
                 valid: function(){
                     //表单验证通过，提交表单到服务器

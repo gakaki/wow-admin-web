@@ -6,6 +6,8 @@
     .add-product-hide-input span.msg-box{
         position: absolute;
         z-index: 999;
+        top: 3px;
+        right: 0;
     }
     #add-product-from span.n-right{
         top: 3px;
@@ -71,20 +73,14 @@
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label">设计师(可多选)</label>
             <div class="col-sm-4 add-product-hide-input">
-                <input v-model="info.designerVoList" type="text" class="form-control" placeholder="设计师数组">
+                <input v-model="info.designerVoList" type="text" class="form-control hidden" placeholder="设计师数组">
                 <v-select multiple :value.sync="info.designerVoList" :on-change="setSelect" label="designerName" :debounce="500" placeholder="设计师" :options="designerslist"></v-select>
-                <pre>
-                    {{info.designerVoList|json}}
-                </pre>
-                <pre>
-                    {{selected|json}}
-                </pre>
             </div>
         </div>
         <div v-if="info.designerVoList.length>0" class="form-group">
             <label for="firstname" class="col-sm-2 control-label">主设计师</label>
             <div class="col-sm-4 add-product-hide-input">
-                <input data-rule="required" name="primaryTag" v-model="primaryTag" type="text" class="form-control" placeholder="主设计师">
+                <input data-rule="required" name="primaryTag" v-model="primaryTag" type="text" class="form-control hidden" placeholder="主设计师">
                 <select v-model="primaryTag" id="primaryTag" @change="isPrimary($event)" class="form-control">
                     <option value="" selected>请选择主设计师</option>
                     <option v-for="item in info.designerVoList" v-bind:value="item.designerId">{{item.designerName}}</option>
@@ -243,13 +239,14 @@
                 // this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
                 $('#edit-product-info').validator('cleanUp');
 
-                Promise.then(()=>{
-                    httpGet('v1/designer/queryAllDesigner',{},'设计师列表获取失败',(data)=>{
+
+                httpGet('v1/designer/queryAllDesigner',{},'设计师列表获取失败',(data)=>{
+
+                    Promise.then(()=>{
                         for (let i = 0; i < data.data.length; i++) {
                             data.data[i].primary=false;
                         };
                         this.$set('designerslist',data.data);
-
                         //遍历已有的设计师，把某个默认主设计师的值改成true
                         for(let a=0; a<this.info.designerVoList.length;a++){
                            if (this.info.designerVoList[a].primary==true) {
@@ -262,7 +259,6 @@
                                this.designerslist.find(findDesignersTrue)
                            }
                         }
-
                         // 设置默认设计师列表
                         let designer=this.info.designerVoList;
                         this.$set('info.designerVoList',[]);
@@ -275,11 +271,17 @@
                            this.$set('designersIdTag',designer[a].designerId);
                            this.designerslist.find(findDesigners)
                         }
-                    });
-                })
-                .then(value=>{
-                    console.log(22222);
-                })
+                    })
+                    .then(value=>{
+                        this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                        console.log(this.copyInfo);
+                        console.log(22222);
+                    })
+
+                });
+
+
+
             },
 
             //获取一些列表数据
@@ -379,7 +381,7 @@
                 },
                 invalid: function(form, errors){
                     //数据验证没通过
-                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-15},500);
+                    $("body").animate({scrollTop: $(".msg-wrap").offset().top-35},500);
                 },
                 valid: function(){
                     _this.$dispatch('loadingStart', 'msg');
