@@ -136,7 +136,7 @@
         <Alert :duration="2000" :alertshow.sync="alertObj.alertShow" :type="alertObj.alertType" :info="alertObj.alertInfo"></Alert>
 
         <!-- 基础信息 -->
-        <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync="vuex_getProductDetails.data.info"></Basicinformation>
+        <Basicinformation :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :info.sync="vuex_getProductDetails.data.info" :country-list="countryList" :province-list="provinceList" :city-list="cityList"></Basicinformation>
 
         <!-- 销售属性 -->
         <sales-attribute :alertobj.sync="alertObj" :productid="vuex_getProductDetails.data.productId" :serials="vuex_getProductDetails.data.serials"></sales-attribute>
@@ -152,8 +152,9 @@
     import productImage         from    './info/image/image.vue'
     import {getProductDetails}  from    '../../vuex/getters'
     import {setProductDetails}  from    '../../vuex/actions'
-    import spinner              from    '../../components/common/spinner/Spinner';
+    import spinner              from    '../../components/common/spinner/Spinner'
     import Alert                from    '../../components/common/alert/Alert'
+    import {httpGet}            from    '../../config'
 
     export default{
         components:{
@@ -174,6 +175,10 @@
                 },
                 imagesPrimary:[],
                 imagesDesc:[],
+                //国家省份城市
+                countryList:[],
+                provinceList:[],
+                cityList:[],
             }
         },
         vuex:{
@@ -191,7 +196,6 @@
             'vuex_getProductDetails':function(val,oldval){
                 if (val.resCode==0) {
                     this.$broadcast('infoGetData', 'msg');
-                    this.$broadcast('deepCopyInfo', val.data.info);
                     this.$broadcast('deepCopySerials', val.data.serials);
                     // 过滤掉图片列表里面多余的modifed字段
                     for (var i = 0; i < val.data.images.length; i++) {
@@ -202,6 +206,40 @@
                             this.$broadcast('colorImgList','msg')
                         }
                     }
+
+                    /**
+                     * 获取国家数据并设置默认值
+                     */
+                    let thisInfo=this.vuex_getProductDetails.data.info
+                     httpGet('v1/country/queryAllCountries',{},'获取国家数据错误',(data) =>{
+                         //设置默认国家
+                         this.$set('countryList',data.data);
+                         this.filterObj(data.data,thisInfo.originCountryId,'vuex_getProductDetails.data.info.originCountryId');
+
+                         //如果是中国，获取省份
+                         if(thisInfo.originCountryId.id==107){
+                             httpGet('v1/area/subarea',{"areaId":0},'获取省份数据错误',(data)=>{
+                                 this.$set('provinceList',data.data.areaList);
+                                 this.filterObj(data.data.areaList,thisInfo.originProvinceId,'vuex_getProductDetails.data.info.originProvinceId');
+
+                                 if (thisInfo.originProvinceId.id) {
+                                     //  根据省份获取城市
+                                      httpGet('v1/area/subarea',{"areaId":thisInfo.originProvinceId.id},'获取城市数据错误',(data)=>{
+                                          this.$set('cityList',data.data.areaList);
+                                          this.filterObj(data.data.areaList,thisInfo.originCity,'vuex_getProductDetails.data.info.originCity');
+                                          //国家身份城市默认值设置完毕，深拷贝
+                                         this.$broadcast('deepCopyInfo', true);
+                                      });
+                                 }
+
+                             });
+                         }else{
+                             //国家身份城市默认值设置完毕，深拷贝
+                             this.$set('vuex_getProductDetails.data.info.originProvinceId','');
+                             this.$set('vuex_getProductDetails.data.info.originCity','');
+                             this.$broadcast('deepCopyInfo', true);
+                         }
+                     });
                 }else {
                     this.$set('alertObj',{alertType:'alert-danger',alertInfo:'获取商品数据错误',alertShow:true})
                 }
@@ -236,7 +274,22 @@
             //loading end
             loadingEnd:function(){
                 this.$broadcast('hide::spinner');
-            }
+            },
+
+            /**
+             * 根据国家／省份／城市／三者的id查询列表里面对应的数据
+             * id用来筛选data里面哪一条数据的id是匹配的
+             * data是从服务器获取的list数据
+             * setName指定你想要set数据的变量
+             */
+            filterObj:function(data,id,setName){
+                let defaultCountry = (data) => {
+                    if (data.id==id) {
+                        this.$set(setName,data)
+                    }
+                }
+                data.filter(defaultCountry);
+            },
         },
         detached(){
             this.$set('imagesPrimary',[])

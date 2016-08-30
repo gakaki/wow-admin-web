@@ -43,7 +43,10 @@ const state = {
                 productName:'',
                 sellingPoint:'',
                 detailDescription:'',
-                designerVoList:[]
+                designerVoList:[],
+                originCountryId:{
+                    id:'',
+                }
             }
         }
     },

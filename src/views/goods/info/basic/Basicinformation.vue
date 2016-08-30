@@ -20,6 +20,10 @@
         font-size: 14px;
         width: 50%;
     }
+    .selectDisabled{
+        pointer-events: none;
+        background: #f0f0f0;
+    }
 </style>
 <template>
     <div id="edit-product-info" class="col-md-12 addproduct-box-html form-horizontal">
@@ -69,27 +73,57 @@
         <!-- 品牌 -->
         <brand :brandid.sync="info.brandId" :brandlist="brandList"></brand>
 
-        <!-- 设计师 监控数据有问题，暂不启用-->
+        <!-- 设计师 -->
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label">设计师(可多选)</label>
             <div class="col-sm-4 add-product-hide-input">
                 <input v-model="info.designerVoList" type="text" class="form-control hidden" placeholder="设计师数组">
-                <v-select multiple :value.sync="info.designerVoList" :on-change="setSelect" label="designerName" :debounce="500" placeholder="设计师" :options="designerslist"></v-select>
+                <div v-bind:class="{'selectDisabled':selectDisabled==true}">
+                    <v-select multiple :value.sync="info.designerVoList" :on-change="setSelect" label="designerName" :debounce="500" placeholder="设计师" :options="designerslist"></v-select>
+                </div>
             </div>
         </div>
         <div v-if="info.designerVoList.length>0" class="form-group">
             <label for="firstname" class="col-sm-2 control-label">主设计师</label>
             <div class="col-sm-4 add-product-hide-input">
                 <input data-rule="required" name="primaryTag" v-model="primaryTag" type="text" class="form-control hidden" placeholder="主设计师">
-                <select v-model="primaryTag" id="primaryTag" @change="isPrimary($event)" class="form-control">
-                    <option value="" selected>请选择主设计师</option>
-                    <option v-for="item in info.designerVoList" v-bind:value="item.designerId">{{item.designerName}}</option>
-                 </select>
+                <div v-bind:class="{'selectDisabled':selectDisabled==true}">
+                    <select v-model="primaryTag" id="primaryTag" @change="isPrimary($event)" class="form-control">
+                        <option value="" selected>请选择主设计师</option>
+                        <option v-for="item in info.designerVoList" v-bind:value="item.designerId">{{item.designerName}}</option>
+                     </select>
+                 </div>
             </div>
         </div>
 
-        <!--国家省份城市 监控数据有问题，暂不启用-->
-        <!-- <country :origin-country-id.sync="info.originCountryId" :origin-province-id.sync="info.originProvinceId" :origin-city.sync="info.originCity" ></country> -->
+        <!-- 国家省份城市 -->
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>产地/国家</label>
+            <div class="col-sm-4">
+                <input name="info.originCountryId" v-bind:value="info.originCountryId" type="text" class="form-control hidden" placeholder="国家">
+                <div v-bind:class="{'selectDisabled':selectDisabled==true}" class="input-group add-product-hide-input">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">国家</span>
+                    <v-select :on-change="setOriginCountryId" :value.sync="info.originCountryId" class="origin_country" label="name" :debounce="500" placeholder="搜索国家" :options="countryList"></v-select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" v-if="info.originCountryId.id==107">
+            <label for="firstname" class="col-sm-2 control-label">产地/省-市</label>
+            <div class="col-sm-4">
+                <input name="info.originProvinceId" v-bind:value="info.originProvinceId" type="text" class="form-control hidden" placeholder="省份">
+                <div v-bind:class="{'selectDisabled':selectDisabled==true}" class="input-group add-product-hide-input">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">省份</span>
+                    <v-select :on-change="setOriginProvinceId" :value.sync="info.originProvinceId" class="origin_country" label="areaName" :debounce="500" placeholder="搜索省份" :options="provinceList" ></v-select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <input name="info.originCity" v-bind:value="info.originCity" type="text" class="form-control hidden" placeholder="城市">
+                <div v-bind:class="{'selectDisabled':selectDisabled==true}" class="input-group add-product-hide-input">
+                    <span style="border-top-left-radius:4px; border-bottom-left-radius:4px;" class="input-group-addon">城市</span>
+                    <v-select :on-change="setOriginCityId" :value.sync="info.originCity" class="origin_country" label="areaName" :debounce="500" placeholder="搜索城市" :options="cityList" ></v-select>
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="firstname" class="col-sm-2 control-label"><span class="text-danger">*</span>风格</label>
@@ -184,16 +218,14 @@
 <script type="text/javascript">
     import Promise                          from    'thenfail'
     import brand                            from    './brand'
-    import country                          from    './country.vue'
     import {API_ROOT,httpGet,httpPost}      from    '../../../../config'
     import lodash                           from    'lodash'
     import vSelect                          from    '../../../../components/common/vue-select/src/index.js'
 
     export default{
-        props:['productid','info','alertobj'],
+        props:['productid','info','alertobj','countryList','provinceList','cityList'],
         components:{
             brand,
-            country,
             vSelect
         },
         data(){
@@ -217,6 +249,10 @@
                 designerslist:[],
                 designersIdTag:'',
                 primaryTag:'',
+
+                //标示
+                tagTip:false,
+                selectDisabled:true
             }
         },
         watch:{
@@ -224,7 +260,6 @@
                 handler: 'isEqual',
                 deep: true
             },
-
             'info.designerVoList.length':function(val,oldval){
                 $("#primaryTag").val('')
                 this.$set('primaryTag','')
@@ -234,7 +269,8 @@
             /**
              * =====deepCopyInfo深度拷贝原始数据，在watch到数据变化后，做比较=====
              */
-            'deepCopyInfo':function(data){
+            'deepCopyInfo':function(msg){
+                this.$set('tagTip',msg);
                 $('#edit-product-info').validator('cleanUp');
                 /**
                  * 获取设计师列表数据并做匹配筛选设置默认值
@@ -271,17 +307,8 @@
                         }
                     })
                     .then(value=>{
-                        /**
-                         * 获取国家地区数据
-                         */
-                    })
-                    .then(value=>{
-                        /**
-                         * 在设计师跟国家地区默认数据设置完毕后，深拷贝冻结一份原始数据用于做比较判断
-                         */
-                        this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
-                        console.log(this.copyInfo);
-                        console.log(22222);
+                         this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                         this.$set('selectDisabled',false)
                     })
                 });
             },
@@ -303,9 +330,6 @@
                 httpGet('v1/brand/queryAll',{},'获取品牌数据失败',(data)=> {
                     this.$set('brandList',data.data.brandList)
                 });
-
-                //广播通知国家组件获取数据
-                this.$broadcast('countrylist', 'msg');
 
                 //获取风格／适用人群／适用场景
                 httpGet('v1/dictionarys',{"keyGroups":["style","applicable_people","applicable_scene"]},'获取字典属性失败',(data)=> {
@@ -332,18 +356,30 @@
              * 确认修改按钮
              */
             modificationInfo:function(){
-                this.$set('editInfoObj.productId',this.productid);
-                this.$set('editInfoObj.info',this.info);
-                httpPost('v1/product/info',this.editInfoObj,'修改失败',(data)=> {
-                    this.$dispatch('loadingEnd', 'msg');
-                    if (data.resCode==0) {
-                        this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
-                        this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
-                        this.$set('disabled',true);
-                    }else {
-                        this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
+                Promise.then(()=>{
+                    this.$set('editInfoObj.productId',this.productid);
+                    this.$set('editInfoObj.info',JSON.parse(JSON.stringify(this.info)));
+                    this.$set('editInfoObj.info.originCountryId',this.info.originCountryId.id);
+                    if (this.editInfoObj.info.originCountryId==107) {
+                        this.$set('editInfoObj.info.originProvinceId',this.info.originProvinceId.id);
+                        this.$set('editInfoObj.info.originCity',this.info.originCity.id);
+                    }else{
+                        this.$set('editInfoObj.info.originProvinceId','');
+                        this.$set('editInfoObj.info.originCity','');
                     }
-                });
+                })
+                .then(value=>{
+                    httpPost('v1/product/info',this.editInfoObj,'修改失败',(data)=> {
+                        this.$dispatch('loadingEnd', 'msg');
+                        if (data.resCode==0) {
+                            this.$set('alertobj',{alertType:'alert-success',alertInfo:'修改成功',alertShow:true})
+                            this.$set('copyInfo',JSON.parse(JSON.stringify(this.info)));
+                            this.$set('disabled',true);
+                        }else {
+                            this.$set('alertobj',{alertType:'alert-danger',alertInfo:'修改失败',alertShow:true})
+                        }
+                    });
+                })
             },
 
             //选择主设计师的时候，从已选的数组里面找到对应的设置设计师设置primary=true
@@ -358,12 +394,52 @@
                         this.info.designerVoList[index].primary=false;
                         if(value.designerId==Number(event.target.value)){
                             this.info.designerVoList[index].primary=true;
-                            // this.$dispatch('deepCopyInfo',1)
                         }
                     };
                     this.info.designerVoList.find(findDesignersTrue)
                 }
             },
+
+            /**
+             * 设置国家id的值并设置默认值
+             * 非中国的国家，不用设置省份城市
+             */
+            setOriginCountryId:function(val){
+                if (val.id) {
+                    if (!val.id) {
+                        this.$set('originCountryId','')
+                        return;
+                    }
+                    if(val.id==107){
+                        //如果是中国，获取省份
+                        httpGet('v1/area/subarea',{"areaId":0},'获取省份数据错误',(data)=>{
+                            this.$set('provinceList',data.data.areaList);
+                        });
+                    }
+                }
+            },
+
+            /**
+             * 设置省份id的值并设置默认值
+             */
+            setOriginProvinceId:function(val){
+                if (val.id) {
+                    httpGet('v1/area/subarea',{"areaId":val.id},'获取城市数据错误',(data)=>{
+                        this.$set('cityList',data.data.areaList);
+                        if (this.tagTip) {
+                            this.$set('tagTip',false);
+                        }else {
+                            this.$set('info.originCity','');
+                        }
+                    });
+                }
+            },
+
+            /**
+             * 设置城市id的值并设置默认值
+             */
+            setOriginCityId:function(val){
+            }
         },
         ready(){
             let _this=this;
