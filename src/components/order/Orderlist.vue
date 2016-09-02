@@ -21,15 +21,15 @@
                             <li>{{items.orderCreateTimeFormat}}</li>
                             <li>订单号：<span class="text-primary">{{ items.orderCode }}</span></li>
                             <li class="pull-right"><a v-link='{ path: "/order/list/details/"+items.orderCode}'>详情</a></li>
-                            <!-- <li class="pull-right"><a href="javascript:void(0);">备注</a></li> -->
+                            <li class="pull-right"><a href="javascript:void(0);">备注</a></li>
                         </ul>
                     </td>
                 </tr>
 
                 <!--单件商品渲染-->
                 <tr v-for="itemsList in items.orderItemVos" v-if="items.orderItemVos.length<=1">
-                    <td style="border-right:1px solid #fff;">
-                        <img class="pull-left" style='height:80px; margin-right:5px;' v-bind:src="itemsList.specImg+'?imageView2/1/w/80/h/80'" />
+                    <td style="border-right:1px solid #fff;"  @click='click_h5_link(itemsList.productId)'>
+                        <img class="pull-left" style='height:80px; margin-right:5px;' v-bind:src=itemsList.specImg />
                         <span class="pull-left">
                             <p>
                                 <a href="javascript:void(0);">{{itemsList.productName}}</a>
@@ -73,8 +73,8 @@
 
                 <!--多商品渲染-->
                 <tr v-for="itemsList in items.orderItemVos" v-if="items.orderItemVos.length>1">
-                    <td style="border-right:1px solid #fff;">
-                        <img class="pull-left" style='width:80px' v-bind:src="itemsList.specImg+'?imageView2/1/w/80/h/80'" />
+                    <td style="border-right:1px solid #fff;"  @click='click_h5_link(itemsList.productId)'>
+                        <img class="pull-left" style='width:80px' v-bind:src=itemsList.specImg />
                         <span class="pull-left">
                             <p>
                                 <a href="javascript:void(0);">{{itemsList.productName}}</a>
@@ -127,7 +127,6 @@
 </template>
 
 <script type="text/javascript">
-
 import Express          from    '../../components/order/Express'
 import {getExpressobj}  from    '../../vuex/getters'
 import {expressObj}     from    '../../vuex/actions'
@@ -158,6 +157,10 @@ export default {
         }
     },
     methods:{
+        click_h5_link:function(id){
+            console.log(id)
+            window.open(`http://m.wowdsgn.com/item/${id}`, '_blank');
+        },
         getExpressObjAjax:function(orderid){
             let jsontext=JSON.stringify({"orderCode":orderid});
             this.$http.get(API_ROOT+'v1/order/orderDetail',{paramJson:jsontext}).then((response) => {

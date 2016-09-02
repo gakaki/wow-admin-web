@@ -185,6 +185,7 @@
     import vsPopover            from    '../../components/common/popover/Popover'
     import {API_ROOT}           from    '../../config'
 
+
     export default{
         data(){
             return{
