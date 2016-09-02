@@ -122,13 +122,14 @@
     </thead>
     <tbody v-for="item in vuex_getProductList.data.productListPageVo">
         <tr v-for="items in item.productListVo">
-            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
+            <td v-if="$index==0" v-bind:rowspan="item.productListVo.length" @click='click_h5_link(item.productPageVo.productId)'>
                 <img v-bind:src="item.productPageVo.productImg+'?imageView2/1/w/50/h/50'" style="width:50px;" alt="" />
+
                 <p>
                     id：{{item.productPageVo.productId}}
                 </p>
                 <p>
-                    <a href="#">{{item.productPageVo.productName}}</a>
+                    {{item.productPageVo.productName}}
                 </p>
             </td>
             <td v-if="$index==0" v-bind:rowspan="item.productListVo.length">
@@ -212,6 +213,10 @@
             }
         },
         methods:{
+            click_h5_link:function(id){
+                window.open(`http://m.wowdsgn.com/item/${id}`, '_blank');
+
+            },
             // 删除商品
             deleteData: function(id) {
                 this.$broadcast('show::spinner');
