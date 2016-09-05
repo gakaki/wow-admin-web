@@ -143,7 +143,14 @@ export default{
             checkAll : false,
             fruitOptions: [
                 {value:'{"name":"顺丰速运","code":"shunfeng"}', label:'顺丰速运'},
-                {value:'{"name":"日日顺","code":"rrs"}', label:'日日顺'},
+                {value:'{"name":"日日顺","code":"rrs"}',       label:'日日顺'},
+                {value:'{"name":"全峰","code":"quanfengkuaidi"}', label:'全峰'},
+                {value:'{"name":"韵达","code":"yunda"}', label:'韵达'},
+                {value:'{"name":"中通","code":"zhongtong"}', label:'中通'},
+                {value:'{"name":"天天","code":"tiantian"}', label:'天天'},
+                {value:'{"name":"百世汇通","code":"baishiwuliu"}', label:'百世汇通'},
+                {value:'{"name":"宅急送","code":"zhaijisong"}', label:'宅急送'},
+                {value:'{"name":"德邦","code":"debangwuliu"}', label:'德邦'},
             ],
             checkedItems:[],
             expressinfo:{
