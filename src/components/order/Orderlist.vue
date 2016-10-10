@@ -30,11 +30,11 @@
                 <tr v-for="itemsList in items.orderItemVos" v-if="items.orderItemVos.length<=1">
                     <td style="border-right:1px solid #fff;"  @click='click_h5_link(itemsList.productId)'>
 
-                        <img class="pull-left" style='height:80px; margin-right:5px;' v-bind:src="itemsList.specImg+'?imageView2/1/w/80/h/80'" />
+                        <img class="pull-left" style='height:80px; margin-right:5px;' v-bind:src="itemsList.specImg+'?imageView2/1/w/80/h/80/format/webp'" />
 
                         <span class="pull-left">
                             <p>
-                                <a href="javascript:void(0);">{{itemsList.productName}}</a>
+                                <a href="javascript:void(0);"  >{{itemsList.productName}}</a>
                             </p>
                             <p class="text-muted">
                                 {{itemsList.specName}}
@@ -160,6 +160,9 @@ export default {
         }
     },
     methods:{
+        click_console(obj){
+            console.log(obj)
+        },
         click_h5_link:function(id){
             console.log(id)
             window.open(`http://m.wowdsgn.com/item/${id}`, '_blank');
@@ -168,6 +171,9 @@ export default {
             let jsontext=JSON.stringify({"orderCode":orderid});
             this.$http.get(API_ROOT+'v1/order/orderDetail',{paramJson:jsontext}).then((response) => {
                 if (response.data.resCode=='0') {
+
+                    console.log(response.data);
+
                     let obj={
                         tag:true,
                         orderid:response.data.data.orderCode,

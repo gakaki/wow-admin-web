@@ -35,7 +35,7 @@ export function httpPost(url,data,errText,callback){
 let get_base_url = function( host="127.0.0.1" ){
 
     let res                                     = ""
-    let default_url                             = "http://10.0.60.121:9090/admin-api-dev/"
+    let default_url                             = "http://admin-api.wowdsgn.com/"
 
     let match = {
         "/127|local|10.0/":                      default_url,
@@ -136,3 +136,25 @@ export const leftSider={
         // }
     ]
 }
+//
+//
+//
+//快递配置
+// export const config_expressInfo =
+// {
+
+//     "shunfeng":"顺丰速运",
+//     'debangwuliu':"德邦",
+//     'xinbangwuliu':"新邦",
+//     'shentong':"申通",
+//     "zhongtong":"中通",
+//     "yuantong":"圆通速递",
+//     "rrs":"日日顺",
+//     "quanfengkuaidi":"全峰",
+//     "yunda":"韵达",
+//     "tiantian":"天天",
+//     "baishiwuliu":"百世汇通",
+//     "zhaijisong":"宅急送",
+//     "debangwuliu":"德邦",
+//
+// }

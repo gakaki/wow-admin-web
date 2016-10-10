@@ -151,6 +151,12 @@ export default{
                 {value:'{"name":"百世汇通","code":"baishiwuliu"}', label:'百世汇通'},
                 {value:'{"name":"宅急送","code":"zhaijisong"}', label:'宅急送'},
                 {value:'{"name":"德邦","code":"debangwuliu"}', label:'德邦'},
+                {value:'{"name":"新邦","code":"xinbangwuliu"}', label:'新邦'},
+
+                {value:'{"name":"申通","code":"shentong"}', label:'申通'},
+                {value:'{"name":"圆通速递","code":"yuantong"}', label:'圆通速递'},
+
+
             ],
             checkedItems:[],
             expressinfo:{
