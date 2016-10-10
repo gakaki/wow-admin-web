@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60d346b0-3f2b-4b96-bc09-481379eab573" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/1.879d3e1dccee396178d1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/1.879d3e1dccee396178d1.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/5.5836f795321652a5ab38.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/5.5836f795321652a5ab38.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/app.506e32f1df6b8ea26ad2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/app.506e32f1df6b8ea26ad2.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/manifest.3cb99b91882fc1e70bc3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/static/js/manifest.3cb99b91882fc1e70bc3.js.map" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.html" afterPath="$PROJECT_DIR$/dist/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/order/Orderdetails.vue" afterPath="$PROJECT_DIR$/src/components/order/Orderdetails.vue" />
     </list>
     <ignored path="admin-web.iws" />
@@ -35,12 +25,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Express.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Express.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/order/Express.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1755">
-              <caret line="117" column="36" lean-forward="false" selection-start-line="117" selection-start-column="36" selection-end-line="117" selection-end-column="36" />
-              <folding />
+            <state relative-caret-position="360">
+              <caret line="148" column="71" lean-forward="true" selection-start-line="148" selection-start-column="71" selection-end-line="148" selection-end-column="71" />
+              <folding>
+                <element signature="e#5933#6008#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -48,8 +40,8 @@
       <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="62" column="1" lean-forward="false" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
+            <state relative-caret-position="553">
+              <caret line="149" column="20" lean-forward="false" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
               <folding>
                 <element signature="e#23#44#0" expanded="true" />
               </folding>
@@ -57,10 +49,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Orderdetails.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Orderdetails.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/order/Orderdetails.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
+            <state relative-caret-position="521">
               <caret line="476" column="25" lean-forward="false" selection-start-line="476" selection-start-column="16" selection-end-line="476" selection-end-column="25" />
               <folding />
             </state>
@@ -111,9 +103,9 @@
         <option value="$PROJECT_DIR$/src/views/mixin/mixin_global.vue" />
         <option value="$PROJECT_DIR$/src/views/goods/Goods.vue" />
         <option value="$PROJECT_DIR$/src/components/order/Orderlist.vue" />
-        <option value="$PROJECT_DIR$/src/components/order/Express.vue" />
         <option value="$PROJECT_DIR$/src/config.js" />
         <option value="$PROJECT_DIR$/src/components/order/Orderdetails.vue" />
+        <option value="$PROJECT_DIR$/src/components/order/Express.vue" />
       </list>
     </option>
   </component>
@@ -434,7 +426,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#5933#6008#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -683,24 +677,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/order/Express.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1755">
-          <caret line="117" column="36" lean-forward="false" selection-start-line="117" selection-start-column="36" selection-end-line="117" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="62" column="1" lean-forward="false" selection-start-line="62" selection-start-column="1" selection-end-line="62" selection-end-column="1" />
-          <folding>
-            <element signature="e#23#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/goods/info/image/image.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3900">
@@ -719,9 +695,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/order/Orderdetails.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
+        <state relative-caret-position="521">
           <caret line="476" column="25" lean-forward="false" selection-start-line="476" selection-start-column="16" selection-end-line="476" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="149" column="20" lean-forward="false" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
+          <folding>
+            <element signature="e#23#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/order/Express.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="148" column="71" lean-forward="true" selection-start-line="148" selection-start-column="71" selection-end-line="148" selection-end-column="71" />
+          <folding>
+            <element signature="e#5933#6008#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

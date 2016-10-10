@@ -167,6 +167,7 @@
 </style>
 
 <template>
+
     <div class="row" style="margin-bottom:20px;">
         <div class="col-md-6">
             <div class="code-box-meta">
@@ -258,7 +259,8 @@
                                             <li style=:width:70px;>
                                                 <b>包裹 - {{$index+1}}</b>
                                             </li>
-                                            <li class="text-muted">{{items.deliveryCompanyName}} 运单号：{{items.deliveryOrderNo}}</li>
+                                            <li class="text-muted">
+                                                {{items.deliveryCompanyName}} 运单号：{{items.deliveryOrderNo}}</li>
                                             <li>
                                                 <span class="text-success">
                                                     {{items.expressLastInfo}}
@@ -472,6 +474,7 @@
         props:['details'],
         data(){
             return{
+                testmodel:{data:null},
                 loadingSrc:uploadImgLoad,
                 loadingOpen:false,
                 showmodal:false,
@@ -492,10 +495,18 @@
                 this.$set('expressModalInfo.com',data.code);
                 this.$set('expressModalInfo.nu',data.number)
                 this.$set('expressModalInfo.list','');
+
                 this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:data.code,express_code:data.number}).then((response) => {
-                    this.$set('expressModalInfo.list',response.data.data.data);
-                    this.$set('loadingOpen',false);
+
+                    if ( response.data.data ){
+                        this.$set('expressModalInfo.list',response.data.data.data);
+                        this.$set('loadingOpen',false);
+                    }else{
+                        console.log("没有查到对应的快递信息1")
+                    }
+
                 }, (response) => {
+
                 });
             }
         },
@@ -508,11 +519,25 @@
         watch:{
             //详情数据有变化的时候，查询快递接口更新对应的快递信息
             'details':function(val,oldval){
+
+
                 if (val.data.deliveryOrders!=undefined) {
+
+//                    console.log(val.data.deliveryOrders,val.data.deliveryOrders.length)
+
                     if (val.data.deliveryOrders.length>0) {
                         for (let a = 0; a < this.details.data.deliveryOrders.length; a++) {
-                            this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:this.details.data.deliveryOrders[a].deliveryCompanyCode,express_code:this.details.data.deliveryOrders[a].deliveryOrderNo}).then((response) => {
-                                this.$set('details.data.deliveryOrders['+a+'].expressLastInfo',response.data.data.data[0].context)
+//                            console.log(val.data.deliveryOrders.length ,a , this.details.data.deliveryOrders[a].deliveryCompanyCode)
+                            let o = this.details.data.deliveryOrders[a]
+//console.log(o)
+                            this.$http.post('http://apidev.dev.wowdsgn.com/home/express',{express_company:o.deliveryCompanyCode,express_code:o.deliveryOrderNo}).then((response) => {
+
+//                                console.log(o.deliveryCompanyCode,response.data)
+                                if ( response.data.data ){
+                                    this.$set(`this.details.data.deliveryOrders[${a}].expressLastInfo`,response.data.data.data[0].context)
+                                }else{
+                                    console.log("没有查到对应的快递信息")
+                                }
                             }, (response) => {
                             });
                         }
